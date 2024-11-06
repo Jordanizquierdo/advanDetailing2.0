@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Servicios</title>
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <script src="{% static 'js/script.js' %}" defer></script>
+</head>
+<body>
+  <!-- Contenedor Principal -->
+  <div style="display: flex;">
+    <!-- Barra Lateral de Carrito -->
+    <div class="slicebar" id="sidebar">
+      <button class="toggle-btn" onclick="toggleSidebar()">
+        <i class="fa fa-chevron-left"></i>
+      </button>
+      <h3 class="slicebar-title">
+        <i class="fa fa-shopping-cart slicebar-icon"></i> Carrito de Compras
+      </h3>
+      <ul></ul>
+      <div class="total">Total: $0</div>
+      <button id="btn" style="display: none;" onclick="clearCart()">Limpiar Carrito</button>
+      <button id="btn-secondary" style="display: none;">Pagar Carrito</button>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div style="flex: 1; padding: 20px;">
+      <!-- Cuadros de Servicios -->
+      <div class="services">
+        <div class="service" id="lavado-basico">
+          <h3>Lavado Básico</h3>
+          <button onclick="showServiceDetails('Lavado Básico', 12000, 'lavado-basico')">Ver más</button>
+        </div>
+        <div class="service blue" id="lavado-intermedio">
+          <h3>Lavado Intermedio</h3>
+          <button onclick="showServiceDetails('Lavado Intermedio', 18000, 'lavado-intermedio')">Ver más</button>
+        </div>
+        <div class="service" id="lavado-avanzado">
+          <h3>Lavado Avanzado</h3>
+          <button onclick="showServiceDetails('Lavado Avanzado', 25000, 'lavado-avanzado')">Ver más</button>
+        </div>
+        <div class="service">
+          <h3>Servicios Especiales</h3>
+          <button onclick="showService('Servicios Especiales')">Ver más</button>
+        </div>
+      </div>
+
+      <!-- Contenedor de Detalles del Servicio -->
+      <div id="service-details-container" style="display: none; margin-top: 20px;">
+        <!-- Los detalles del servicio seleccionado se mostrarán aquí -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>

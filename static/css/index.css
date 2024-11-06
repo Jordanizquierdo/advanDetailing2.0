@@ -1,0 +1,158 @@
+/* Estilos de la Barra Lateral */
+body{
+    font-family: Arial, sans-serif;
+}
+.slicebar {
+    background-color: #333;
+    color: #FFF;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    border-radius: 8px;
+    transition: width 0.3s;
+}
+
+.slicebar.collapsed {
+    width: 50px;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #FFF;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.slicebar-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.slicebar-icon {
+    margin-right: 10px;
+}
+
+.total {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+#btn, #btn-secondary {
+    background-color: transparent;
+    border: 1px solid #00AEEF;
+    color: #00AEEF;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#btn:hover, #btn-secondary:hover {
+    background-color: #00AEEF;
+    color: #FFF;
+}
+
+/* Estilos de Servicios */
+.services {
+    display: flex;
+    gap: 10px;
+}
+
+.service-details-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #FFF;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.service-details-column {
+    flex: 1;
+    padding: 0 10px;
+    padding-left: 100px;
+}
+
+.service-details-column p {
+    margin: 5px 0;
+}
+
+.service-details-center {
+    text-align: center;
+    font-weight: bold;
+}
+
+.service-details-price {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.add-to-cart-button {
+    background-color: transparent;
+    border: 1px solid #00AEEF;
+    color: #00AEEF;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+    background-color: #00AEEF;
+    color: #FFF;
+}
+
+.add-to-cart-icon {
+    margin-left: 8px;
+    font-size: 16px;
+}
+
+.service {
+    background-color: #111;
+    color: white;
+    padding: 20px;
+    margin: 0 10px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s;
+    width: 200px;
+    height: 200px;
+}
+
+.service:hover {
+    transform: scale(1.05);
+}
+
+.service.blue {
+    background-color: #5078FF;
+    width: 200px;
+    height: 200px;
+}
+
+.service h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.service button {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.service button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
