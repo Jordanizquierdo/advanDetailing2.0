@@ -81,11 +81,9 @@ WSGI_APPLICATION = 'advanDetailing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '34.72.136.66',
-        'NAME': 'advan',
-        'USER': 'Jordan',
-        'PASSWORD': 'advan123',
-        'PORT': '3306'
+        'NAME': 'LOCAL_ADVAN',
+        'USER': 'root',
+        'PASSWORD': ''
     }
 }
 
