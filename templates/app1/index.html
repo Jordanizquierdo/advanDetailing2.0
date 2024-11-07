@@ -9,13 +9,25 @@
   <script src="{% static 'js/script.js' %}" defer></script>
 </head>
 <body>
+  <!-- Barra Superior -->
+  <div class="topbar">
+    <div class="topbar-content">
+      <div class="topbar-links">
+        <a href="#quienes-somos">Quiénes Somos</a>
+        <a href="#vision">Visión</a>
+        <a href="#mision">Misión</a>
+      </div>
+      <div class="topbar-auth">
+        <a href="#iniciar-sesion">Iniciar Sesión</a>
+        <a href="#registrarse">Registrarse</a>
+      </div>
+    </div>
+  </div>
+
   <!-- Contenedor Principal -->
-  <div style="display: flex;">
+  <div class="main-container">
     <!-- Barra Lateral de Carrito -->
     <div class="slicebar" id="sidebar">
-      <button class="toggle-btn" onclick="toggleSidebar()">
-        <i class="fa fa-chevron-left"></i>
-      </button>
       <h3 class="slicebar-title">
         <i class="fa fa-shopping-cart slicebar-icon"></i> Carrito de Compras
       </h3>
@@ -26,7 +38,7 @@
     </div>
 
     <!-- Contenido Principal -->
-    <div style="flex: 1; padding: 20px;">
+    <div class="content" style="flex: 1; padding: 20px;">
       <!-- Cuadros de Servicios -->
       <div class="services">
         <div class="service" id="lavado-basico">
