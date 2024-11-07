@@ -82,29 +82,83 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         </div>
       </div>
     `;
+  } else if (serviceName === "Servicios Especiales") {
+    // Detalles de servicios especiales
+    serviceDetailsHTML = `
+      <div class="service-details-container">
+        <div class="service-details-center">
+          <h3>${serviceName}</h3>
+        </div>
+
+        <!-- Servicio Especial 1 -->
+        <div class="special-service">
+          <h4>Grabado de patente</h4>
+          <p>Valor: $15,000</p>
+          <button class="add-to-cart-button" onclick="addToCart('Grabado de patente', 15000)">
+            Añadir al carrito
+            <i class="fa fa-plus add-to-cart-icon"></i>
+          </button>
+        </div>
+
+        <!-- Servicio Especial 2 -->
+        <div class="special-service">
+          <h4>Cueros (Limpieza a vapor y humectación)</h4>
+          <p>Valor: $25,000</p>
+          <button class="add-to-cart-button" onclick="addToCart('Cueros (Limpieza a vapor y humectación)', 25000)">
+            Añadir al carrito
+            <i class="fa fa-plus add-to-cart-icon"></i>
+          </button>
+        </div>
+
+        <!-- Servicio Especial 3 -->
+        <div class="special-service">
+          <h4>Sanitización con retiro de malos olores</h4>
+          <p>Valor: $20,000</p>
+          <button class="add-to-cart-button" onclick="addToCart('Sanitización con retiro de malos olores', 20000)">
+            Añadir al carrito
+            <i class="fa fa-plus add-to-cart-icon"></i>
+          </button>
+        </div>
+
+        <!-- Servicio Especial 4 -->
+        <div class="special-service">
+          <h4>Pulido de carrocería</h4>
+          <p>Valor: $45,000</p>
+          <button class="add-to-cart-button" onclick="addToCart('Pulido de carrocería', 45000)">
+            Añadir al carrito
+            <i class="fa fa-plus add-to-cart-icon"></i>
+          </button>
+        </div>
+
+        <!-- Servicio Especial 5 -->
+        <div class="special-service">
+          <h4>Limpieza de tableros a vapor</h4>
+          <p>Valor: $15,000</p>
+          <button class="add-to-cart-button" onclick="addToCart('Limpieza de tableros a vapor', 15000)">
+            Añadir al carrito
+            <i class="fa fa-plus add-to-cart-icon"></i>
+          </button>
+        </div>
+      </div>
+    `;
   }
 
   serviceDetailsContainer.innerHTML = serviceDetailsHTML;
-  serviceDetailsContainer.style.display = "block"; // Mostrar el contenedor de detalles
+  serviceDetailsContainer.style.display = "block";
 }
 
-// Función para añadir al carrito (permitiendo solo un servicio a la vez)
+// Función para añadir al carrito
 function addToCart(serviceName, servicePrice) {
-  cart = []; // Limpiar el carrito antes de añadir un nuevo servicio
-
-  cart.push({ title: serviceName, price: servicePrice }); // Añadir el nuevo servicio
-
-  // Actualizar la barra lateral del carrito
+  cart.push({ title: serviceName, price: servicePrice });
   updateCartSidebar();
 }
 
-// Función para actualizar el contenido de la barra lateral
+// Función para actualizar el carrito en la barra lateral
 function updateCartSidebar() {
   const sidebar = document.getElementById("sidebar");
   const cartList = sidebar.querySelector("ul");
   const totalPrice = sidebar.querySelector(".total");
 
-  // Limpiar contenido previo
   cartList.innerHTML = "";
   let total = 0;
 
@@ -115,12 +169,20 @@ function updateCartSidebar() {
     total += item.price;
   });
 
-  // Mostrar el total
   totalPrice.textContent = `Total: $${total.toLocaleString()}`;
-
-  // Mostrar el botón de limpiar carrito si hay un elemento
   document.getElementById("btn").style.display = cart.length ? "block" : "none";
   document.getElementById("btn-secondary").style.display = cart.length ? "block" : "none";
+}
+
+// Función para redirigir a la página de pago con los datos del carrito
+function PayCart() {
+  if (cart.length === 0) {
+    alert("El carrito está vacío. Añade servicios antes de proceder al pago.");
+    return;
+  }
+
+  const cartData = encodeURIComponent(JSON.stringify(cart));
+  window.location.href = `/carrito/?cartList=${cartData}`;
 }
 
 // Función para limpiar el carrito
@@ -128,4 +190,3 @@ function clearCart() {
   cart = [];
   updateCartSidebar();
 }
-

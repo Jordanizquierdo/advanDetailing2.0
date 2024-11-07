@@ -33,8 +33,8 @@
       </h3>
       <ul></ul>
       <div class="total">Total: $0</div>
-      <button id="btn" style="display: none;" onclick="clearCart()">Limpiar Carrito</button>
-      <button id="btn-secondary" style="display: none;">Pagar Carrito</button>
+      <button id="btn" onclick="clearCart()">Limpiar Carrito</button>
+      <button id="btn-secondary" onclick="PayCart()" >Pagar Carrito</button>
     </div>
 
     <!-- Contenido Principal -->
@@ -53,9 +53,9 @@
           <h3>Lavado Avanzado</h3>
           <button onclick="showServiceDetails('Lavado Avanzado', 25000, 'lavado-avanzado')">Ver más</button>
         </div>
-        <div class="service">
+        <div class="service" id="servicios-especiales">
           <h3>Servicios Especiales</h3>
-          <button onclick="showService('Servicios Especiales')">Ver más</button>
+          <button onclick="showServiceDetails('Servicios Especiales', 0, 'servicios-especiales')">Ver más</button>
         </div>
       </div>
 

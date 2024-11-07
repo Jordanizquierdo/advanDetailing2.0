@@ -88,6 +88,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
     cursor: pointer;
     margin-top: 10px;
+    display: none;
   }
   
   #btn:hover, #btn-secondary:hover {
@@ -195,3 +196,15 @@ body {
     font-size: 16px;
   }
   
+
+  .special-service {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .special-service h4 {
+    margin: 0;
+    font-size: 1.2em;
+  }
