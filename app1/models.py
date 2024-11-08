@@ -6,18 +6,24 @@ class Clientes(models.Model):
     password = models.CharField(max_length=45)
     telefono = models.CharField(max_length=45)
     direccion = models.CharField(max_length=45)
-    fecha_registro = models.DateTimeField()
-    vehiculo_id = models.IntegerField()
+    fecha_registro = models.DateTimeField(auto_now_add=True)  
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
 
 
 class Reservas(models.Model):
-    hora_Reserva = models.DateTimeField()
-    fecha_Reserva = models.DateField()
+    hora_reserva = models.DateTimeField()
+    fecha_reserva = models.DateField()
     estado = models.CharField(max_length=20)
-    administrador_id = models.IntegerField()
-    servicio_id = models.IntegerField()
-    clientes_id = models.IntegerField()
-    clientes_id_vehiculo = models.IntegerField()
+    administrador = models.ForeignKey('Encargado', on_delete=models.SET_NULL, null=True)
+    servicio = models.ForeignKey('Servicios', on_delete=models.CASCADE)
+    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE)
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Reserva de {self.cliente} para {self.servicio}"
 
 
 class Encargado(models.Model):
@@ -27,6 +33,9 @@ class Encargado(models.Model):
     correo = models.CharField(max_length=45)
     telefono = models.CharField(max_length=9)
 
+    def __str__(self):
+        return f"{self.nombre} {self.apellido}"
+
 
 class Servicios(models.Model):
     nombre_servicio = models.CharField(max_length=45)
@@ -34,16 +43,26 @@ class Servicios(models.Model):
     precio = models.IntegerField()
     duracion = models.CharField(max_length=45)
 
+    def __str__(self):
+        return self.nombre_servicio
+
 
 class Reviews(models.Model):
     comentarios = models.CharField(max_length=45)
     calificacion = models.CharField(max_length=45)
     fecha_review = models.DateField()
-    clientes_id = models.IntegerField()
-    clientes_id_vehiculo = models.IntegerField()
+    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE)
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Review de {self.cliente} para {self.vehiculo}"
+
 
 class Vehiculo(models.Model):
     marca = models.CharField(max_length=45)
     modelo = models.CharField(max_length=45)
     year = models.CharField(max_length=45)
     patente = models.CharField(max_length=5)
+
+    def __str__(self):
+        return f"{self.marca} {self.modelo} ({self.patente})"

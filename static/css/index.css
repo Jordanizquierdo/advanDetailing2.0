@@ -1,210 +1,195 @@
 /* Estilos Generales */
 body {
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Barra Superior */
-  .topbar {
-    background-color: #333;
-    color: #FFF;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    margin-left: -30px;
-    margin-top: -10px;
-    margin-right: -10px;
-  }
-  
-  .topbar-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .topbar-links a,
-  .topbar-auth a {
-    color: #FFF;
-    text-decoration: none;
-    margin: 0 15px;
-    font-weight: bold;
-    transition: color 0.3s;
-  }
-  
-  .topbar-links a:hover,
-  .topbar-auth a:hover {
-    color: #00AEEF;
-  }
-  
-  /* Contenedor Principal */
-  .main-container {
-    display: flex;
-    padding: 20px;
-    margin-top: 100px; /* Espacio para la barra superior */
-  }
-  
-  /* Barra Lateral de Carrito */
-  .slicebar {
-    background-color: #333;
-    color: #FFF;
-    width: 250px;
-    height: 100vh;
-    padding: 20px;
-    border-radius: 8px;
-    transition: width 0.3s;
-    margin-left: -30px;
- 
-  }
-  
-  .slicebar.collapsed {
-    width: 50px;
-  }
-  
-  .slicebar-title {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .slicebar-icon {
-    margin-right: 10px;
-  }
-  
-  .total {
-    font-weight: bold;
-    margin: 10px 0;
-  }
-  
-  #btn, #btn-secondary {
-    background-color: transparent;
-    border: 1px solid #00AEEF;
-    color: #00AEEF;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
-    transition: background-color 0.3s, color 0.3s;
-    cursor: pointer;
-    margin-top: 10px;
-    display: none;
-  }
-  
-  #btn:hover, #btn-secondary:hover {
-    background-color: #00AEEF;
-    color: #FFF;
-  }
-  
-  /* Estilos de Servicios */
-  .services {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .service {
-    background-color: #111;
-    color: white;
-    padding: 20px;
-    margin: 0 10px;
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.3s;
-    width: 200px;
-    height: 200px;
-  }
-  
-  .service:hover {
-    transform: scale(1.05);
-  }
-  
-  .service.blue {
-    background-color: #5078FF;
-  }
-  
-  .service h3 {
-    margin-bottom: 20px;
-    font-size: 18px;
-  }
-  
-  .service button {
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .service button:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-  
-  /* Detalles del Servicio */
-  .service-details-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: #FFF;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-  }
-  
-  .service-details-column {
-    flex: 1;
-    padding: 0 10px;
-    padding-left: 100px;
-  }
-  
-  .service-details-column p {
-    margin: 5px 0;
-  }
-  
-  .service-details-center {
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  .service-details-price {
-    margin: 10px 0;
-    font-size: 18px;
-  }
-  
-  .add-to-cart-button {
-    background-color: transparent;
-    border: 1px solid #00AEEF;
-    color: #00AEEF;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
-    transition: background-color 0.3s, color 0.3s;
-    cursor: pointer;
-  }
-  
-  .add-to-cart-button:hover {
-    background-color: #00AEEF;
-    color: #FFF;
-  }
-  
-  .add-to-cart-icon {
-    margin-left: 8px;
-    font-size: 16px;
-  }
-  
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
 
-  .special-service {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
+/* Barra Superior */
+.topbar {
+  background-color: #1a1a2e;
+  color: #FFF;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.topbar-links a,
+.topbar-auth a {
+  color: #FFF;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.topbar-links a:hover,
+.topbar-auth a:hover {
+  color: #00d9ff;
+}
+
+/* Contenedor Principal */
+.main-container {
+  display: flex;
+  padding: 40px;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 100px auto;
+}
+
+/* Barra Lateral de Carrito */
+.slicebar {
+  background-color: #1a1a2e;
+  color: #FFF;
+  width: 280px;
+  height: calc(100vh - 100px);
+  padding: 30px;
+  border-radius: 10px;
   
-  .special-service h4 {
-    margin: 0;
-    font-size: 1.2em;
-  }
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.slicebar-title {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 20px 0;
+}
+
+#btn, #btn-secondary {
+  background-color: transparent;
+  border: 2px solid #00d9ff;
+  color: #00d9ff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+}
+
+#btn:hover, #btn-secondary:hover {
+  background-color: #00d9ff;
+  color: #FFF;
+}
+
+/* Estilos de Servicios */
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.service {
+  background-color: #FFF;
+  color: #333;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  transition: box-shadow 0.3s, transform 0.3s;
+  width: 220px;
+  height: 220px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.service.blue {
+  background-color: #5078FF;
+  color: white;
+}
+
+.service h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.service button {
+  color: white;
+  font-size: 16px;
+  background-color: #00d9ff;
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.service button:hover {
+  background-color: #00a3c4;
+}
+
+/* Detalles del Servicio */
+.service-details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #FFF;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  margin-top: 20px;
+}
+
+.service-details-column {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.service-details-column p {
+  margin: 10px 0;
+}
+
+.service-details-price {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.add-to-cart-button {
+  background-color: transparent;
+  border: 2px solid #00d9ff;
+  color: #00d9ff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+  background-color: #00d9ff;
+  color: #FFF;
+}
+
+.special-service {
+  padding: 15px;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.special-service h4 {
+  margin: 0;
+  font-size: 18px;
+}

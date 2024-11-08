@@ -190,3 +190,4 @@ function clearCart() {
   cart = [];
   updateCartSidebar();
 }
+

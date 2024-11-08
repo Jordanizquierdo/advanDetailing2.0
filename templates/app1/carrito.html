@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,17 +24,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in cart_items %}
-                    <tr>
-                        <td>{{ item.title }}</td>
-                        <td>${{ item.price|intcomma }}</td>
-                    </tr>
-                    {% endfor %}
+                    {% if cart_items %}
+                        {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item.title }}</td>
+                            <td>${{ item.price|intcomma }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="2">No hay servicios en el carrito.</td>
+                        </tr>
+                    {% endif %}
                 </tbody>
                 <tfoot>
                     <tr>
                         <td><strong>Total</strong></td>
-                        <td><strong>${{ total|intcomma }}</strong></td>
+                        <td><strong>${{ total|default:"0"|intcomma }}</strong></td>
                     </tr>
                 </tfoot>
             </table>
