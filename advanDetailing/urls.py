@@ -8,5 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('service/<str:service>', views.service_detail, name='service_detail'),
     # path('users', views.user_list, name='user_list'),
-    path('carrito/',views.carrito)
+    path('carrito/', views.carrito, name='carrito'),  # Asegúrate de usar 'carrito/' aquí
+
 ]

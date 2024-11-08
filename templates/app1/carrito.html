@@ -1,11 +1,62 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="{% static 'css/carrito.css' %}">
+    <script src="{% static 'js/carrito.js' %}" defer></script>
 </head>
 <body>
-    <h1>SOY EL CARRITO</h1>
+    <div class="container">
+        <h1>Carrito de Compras</h1>
+
+        <!-- Tabla de servicios seleccionados -->
+        <div class="cart-summary">
+            <h2>Servicios Seleccionados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Servicio</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.title }}</td>
+                        <td>${{ item.price|intcomma }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>${{ total|intcomma }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Selección de fecha -->
+        <div class="date-picker">
+            <h2>Selecciona la Fecha</h2>
+            <input type="date" id="selectedDate">
+        </div>
+
+        <!-- Selección de método de pago -->
+        <div class="payment-method">
+            <h2>Método de Pago</h2>
+            <select id="paymentMethod">
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                <option value="transferencia">Transferencia Bancaria</option>
+            </select>
+        </div>
+
+        <!-- Botón de reserva -->
+        <button id="reserveButton" onclick="reserveService()">Reservar Servicio</button>
+    </div>
 </body>
 </html>

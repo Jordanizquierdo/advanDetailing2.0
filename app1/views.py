@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import json
 
 
 
@@ -11,4 +11,18 @@ def home(request):
 
 
 def carrito(request):
-    return  render(request, 'app1/carrito.html')
+    cart_data = request.GET.get("cartList", "[]")
+    
+    try:
+        cart_data = json.loads(cart_data)
+    except json.JSONDecodeError:
+        cart_data = []
+
+    total = sum(item['price'] for item in cart_data)
+
+    context = {
+        'cart_items': cart_data,
+        'total': total,
+    }
+
+    return render(request, 'app1/carrito.html', context)
