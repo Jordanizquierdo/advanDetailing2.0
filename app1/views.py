@@ -35,7 +35,7 @@ def login_view(request):
     else:
         form = FormularioLogin()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'app1/login.html', {'form': form})
 
 
 
@@ -47,8 +47,8 @@ def registrar(request):
             usuario.set_password(form.cleaned_data['password'])
             usuario.save()
             login(request, usuario)
-            return redirect('inicio')
+            return redirect('index')
     else:
         form = FormularioRegistro()
-    return render(request, 'registro.html', {'form': form})
+    return render(request, 'app1/registro.html', {'form': form})
 
