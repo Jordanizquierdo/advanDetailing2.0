@@ -4,6 +4,6 @@ from app1 import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    # path('service/<str:service>', views.service_detail, name='service_detail'),
-    # path('users', views.user_list, name='user_list'),
+    path('login/', views.login_view, name='login'),
+    path('registro/', views.registrar, name='registro'),
 ]

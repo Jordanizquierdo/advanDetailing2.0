@@ -1,0 +1,54 @@
+/* logreg.css */
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.form-container {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.form-container h2 {
+    text-align: center;
+}
+
+.form-container label {
+    font-weight: bold;
+}
+
+.form-container input {
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8em;
+}
+
+.submit-button {
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.submit-button:disabled {
+    background-color: #a5d6a7;
+}
