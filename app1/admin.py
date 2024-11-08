@@ -3,11 +3,11 @@ from .models import Clientes, Reservas, Encargado, Servicios, Reviews, Vehiculo
 
 @admin.register(Clientes)
 class ClientesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'email', 'telefono', 'direccion', 'fecha_registro', 'vehiculo_id')
+    list_display = ('id', 'nombre', 'email', 'telefono', 'direccion', 'fecha_registro', 'vehiculo')
 
 @admin.register(Reservas)
 class ReservasAdmin(admin.ModelAdmin):
-    list_display = ('id', 'hora_Reserva', 'fecha_Reserva', 'estado', 'administrador_id', 'servicio_id', 'clientes_id', 'clientes_id_vehiculo')
+    list_display = ('id', 'hora_reserva', 'fecha_reserva', 'estado', 'administrador', 'servicio', 'cliente', 'vehiculo')
 
 @admin.register(Encargado)
 class EncargadoAdmin(admin.ModelAdmin):
@@ -19,7 +19,7 @@ class ServiciosAdmin(admin.ModelAdmin):
 
 @admin.register(Reviews)
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'comentarios', 'calificacion', 'fecha_review', 'clientes_id', 'clientes_id_vehiculo')
+    list_display = ('id', 'comentarios', 'calificacion', 'fecha_review', 'cliente', 'vehiculo')
 
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
