@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Clientes(models.Model):
     nombre = models.CharField(max_length=45)
@@ -6,8 +7,8 @@ class Clientes(models.Model):
     password = models.CharField(max_length=45)
     telefono = models.CharField(max_length=45)
     direccion = models.CharField(max_length=45)
-    fecha_registro = models.DateTimeField(auto_now_add=True)  
-    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE)
+    fecha_registro = models.DateTimeField(default=timezone.now)
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)  # Permitir valores nulos
 
     def __str__(self):
         return self.nombre
@@ -18,9 +19,9 @@ class Reservas(models.Model):
     fecha_reserva = models.DateField()
     estado = models.CharField(max_length=20)
     administrador = models.ForeignKey('Encargado', on_delete=models.SET_NULL, null=True)
-    servicio = models.ForeignKey('Servicios', on_delete=models.CASCADE)
-    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE)
-    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE)
+    servicio = models.ForeignKey('Servicios', on_delete=models.CASCADE, null=True)
+    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True)  # Permitir valores nulos temporalmente
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)  # Si ya es anulable
 
     def __str__(self):
         return f"Reserva de {self.cliente} para {self.servicio}"
@@ -51,8 +52,8 @@ class Reviews(models.Model):
     comentarios = models.CharField(max_length=45)
     calificacion = models.CharField(max_length=45)
     fecha_review = models.DateField()
-    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE)
-    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE)
+    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True )
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"Review de {self.cliente} para {self.vehiculo}"
