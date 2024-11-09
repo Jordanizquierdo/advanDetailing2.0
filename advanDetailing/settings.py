@@ -79,14 +79,23 @@ WSGI_APPLICATION = 'advanDetailing.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'HOST': '34.72.136.66',
+#         'NAME': 'advan',
+#         'USER': 'Jordan',
+#         'PASSWORD': 'advan123',
+#         'PORT': '3306'
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '34.72.136.66',
-        'NAME': 'advan',
-        'USER': 'Jordan',
-        'PASSWORD': 'advan123',
-        'PORT': '3306'
+        'NAME': 'lavado',
+        'USER': 'root',
+        'PASSWORD': ''
     }
 }
 

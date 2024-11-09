@@ -8,24 +8,31 @@ body {
 }
 
 /* Barra Superior */
-.topbar {
-  background-color: #1a1a2e;
-  color: #FFF;
+.topbar-content {
+  background-color: #1a1a2e;    
+  color: #FFF;                  
   padding: 15px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex;                
+  align-items: center;         
+  justify-content: space-between; 
   position: sticky;
   top: 0;
   z-index: 10;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
+
+.topbar-links,
+.topbar-auth {
+  display: flex;                  
+  gap: 15px;                       
+}
+
+/* Estilos de los enlaces */
 .topbar-links a,
 .topbar-auth a {
   color: #FFF;
   text-decoration: none;
-  margin: 0 15px;
   font-weight: bold;
   font-size: 16px;
   transition: color 0.3s;
@@ -174,6 +181,7 @@ body {
   font-weight: bold;
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
+  margin-top: auto;
 }
 
 .add-to-cart-button:hover {
@@ -184,12 +192,31 @@ body {
 .special-service {
   padding: 15px;
   margin: 20px 0;
-  border: 1px solid #ddd;
+  border: 1px solid #FFF;
   border-radius: 8px;
-  background-color: #fafafa;
+  background-color: #333;
+  width: 100px;
+  height: 230px;
+  color: #FFF;
+  flex-direction: column;
 }
 
 .special-service h4 {
   margin: 0;
   font-size: 18px;
+}
+
+/* Botón para el Panel de Administración */
+.admin-button {
+  background-color: #1a1a2e;
+  color: #FFF;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.admin-button:hover {
+  background-color: #00a3c4;
 }
