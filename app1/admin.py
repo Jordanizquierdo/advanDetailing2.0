@@ -1,9 +1,16 @@
 from django.contrib import admin
+from django.contrib.auth.hashers import make_password  # Importa make_password
 from .models import Clientes, Reservas, Encargado, Servicios, Reviews, Vehiculo
 
 @admin.register(Clientes)
 class ClientesAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre', 'email', 'telefono', 'direccion', 'fecha_registro', 'vehiculo')
+
+    def save_model(self, request, obj, form, change):
+        # Si la contraseña ha cambiado o se está creando un nuevo cliente
+        if obj.password:
+            obj.password = make_password(obj.password)  # Cifra la contraseña antes de guardarla
+        super().save_model(request, obj, form, change)
 
 @admin.register(Reservas)
 class ReservasAdmin(admin.ModelAdmin):
@@ -12,6 +19,12 @@ class ReservasAdmin(admin.ModelAdmin):
 @admin.register(Encargado)
 class EncargadoAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre', 'apellido', 'correo', 'telefono')
+
+    def save_model(self, request, obj, form, change):
+        # Si la contraseña ha cambiado o se está creando un nuevo encargado
+        if obj.password:
+            obj.password = make_password(obj.password)  # Cifra la contraseña antes de guardarla
+        super().save_model(request, obj, form, change)
 
 @admin.register(Servicios)
 class ServiciosAdmin(admin.ModelAdmin):
