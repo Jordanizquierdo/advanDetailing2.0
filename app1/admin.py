@@ -1,26 +1,36 @@
+# admin.py
 from django.contrib import admin
-from .models import Clientes, Reservas, Encargado, Servicios, Reviews, Vehiculo
-
-@admin.register(Clientes)
-class ClientesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'email', 'telefono', 'direccion', 'fecha_registro', 'vehiculo')
-
-@admin.register(Reservas)
-class ReservasAdmin(admin.ModelAdmin):
-    list_display = ('id', 'hora_reserva', 'fecha_reserva', 'estado', 'administrador', 'servicio', 'cliente', 'vehiculo')
+from .models import Encargado, Cliente, Vehiculo, Servicio, Reserva, Review
 
 @admin.register(Encargado)
 class EncargadoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'apellido', 'correo', 'telefono')
+    list_display = ('nombre', 'telefono', 'correo', 'usuario')
+    search_fields = ('nombre', 'telefono', 'correo')
 
-@admin.register(Servicios)
-class ServiciosAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre_servicio', 'descripcion', 'precio', 'duracion')
-
-@admin.register(Reviews)
-class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'comentarios', 'calificacion', 'fecha_review', 'cliente', 'vehiculo')
+@admin.register(Cliente)
+class ClienteAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'telefono', 'direccion', 'usuario')
+    search_fields = ('nombre', 'telefono', 'direccion')
 
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'marca', 'modelo', 'year', 'patente')
+    list_display = ('marca', 'modelo', 'year', 'patente')
+    search_fields = ('marca', 'modelo', 'patente')
+
+@admin.register(Servicio)
+class ServicioAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'descripcion', 'precio', 'duracion')
+    search_fields = ('nombre', 'descripcion')
+    list_filter = ('precio',)
+
+@admin.register(Reserva)
+class ReservaAdmin(admin.ModelAdmin):
+    list_display = ('hora_reserva', 'fecha_reserva', 'estado', 'administrador', 'servicio', 'cliente', 'vehiculo')
+    search_fields = ('estado',)
+    list_filter = ('estado', 'fecha_reserva')
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('comentarios', 'calificacion', 'fecha_review', 'cliente', 'vehiculo')
+    search_fields = ('comentarios',)
+    list_filter = ('calificacion', 'fecha_review')

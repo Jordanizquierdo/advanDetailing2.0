@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Clientes - AdvanDetailing</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    <div class="register-container">
+        <h2>Registro de Cliente</h2>
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Usuario:</label>
+                <input type="text" name="username" id="username" placeholder="Ingrese su usuario" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" name="email" id="email" placeholder="Ingrese su correo" required>
+            </div>
+            <div class="form-group">
+                <label for="password1">Contraseña:</label>
+                <input type="password" name="password1" id="password1" placeholder="Ingrese su contraseña" required>
+            </div>
+            <div class="form-group">
+                <label for="password2">Confirmar Contraseña:</label>
+                <input type="password" name="password2" id="password2" placeholder="Confirme su contraseña" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" required>
+            </div>
+            {% if form.errors %}
+                <div class="error-message">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <button type="submit" class="register-button">Registrar</button>
+        </form>
+        <p class="login-link">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+    </div>
+</body>
+</html>
