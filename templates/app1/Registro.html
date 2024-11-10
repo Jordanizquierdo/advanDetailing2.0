@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrarse</title>
+  <link rel="stylesheet" href="{% static 'css/logreg.css' %}">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Registrarse</h2>
+    <form method="POST" action="{% url 'registro' %}">
+      {% csrf_token %}
+      
+      <div class="input-field">
+        <label>Nombre de Usuario</label>
+        <input type="text" name="username" required>
+        {% if form.username.errors %}
+          <div class="error-message">{{ form.username.errors.0 }}</div>
+        {% endif %}
+      </div>
+      
+      <div class="input-field">
+        <label>Correo Electrónico</label>
+        <input type="email" name="email" required>
+        {% if form.email.errors %}
+          <div class="error-message">{{ form.email.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div class="input-field">
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+        {% if form.password.errors %}
+          <div class="error-message">{{ form.password.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div class="input-field">
+        <label>Confirmar Contraseña</label>
+        <input type="password" name="confirm_password" required>
+        {% if form.confirm_password.errors %}
+          <div class="error-message">{{ form.confirm_password.errors.0 }}</div>
+        {% endif %}
+      </div>
+      
+      <button type="submit" class="submit-button">Registrarse</button>
+    </form>
+  </div>
+</body>
+</html>

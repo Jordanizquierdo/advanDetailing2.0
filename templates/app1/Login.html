@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="{% static 'css/logreg.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Iniciar Sesión</h2>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.username_or_email.label_tag }}
+            {{ form.username_or_email }}
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            <button type="submit" class="submit-button">Iniciar Sesión</button>
+        </form>
+        {% if form.non_field_errors %}
+            <div class="error-message">{{ form.non_field_errors }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
