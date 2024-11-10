@@ -13,7 +13,7 @@
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
             {{ form.username_or_email.label_tag }}
-            {{ form.username_or_email }}
+            <input type="email" name="email" required>
             {{ form.password.label_tag }}
             {{ form.password }}
             <button type="submit" class="submit-button">Iniciar Sesión</button>

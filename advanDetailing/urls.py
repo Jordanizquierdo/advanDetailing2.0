@@ -4,10 +4,10 @@ from app1 import views
 from django.contrib import admin
 
 urlpatterns = [
-    path('', views.home),
+    path('', views.login_view, name='login'), 
+    path('home/', views.home, name='home'),
+    path('index_admin/', views.index_admin, name='index_admin'),
     path('admin/', admin.site.urls),
-    # path('service/<str:service>', views.service_detail, name='service_detail'),
-    # path('users', views.user_list, name='user_list'),
-    path('carrito/', views.carrito, name='carrito'),  # Asegúrate de usar 'carrito/' aquí
-
+    path('carrito/', views.carrito, name='carrito'),
+    path('logout/', views.logout_view, name='logout'),
 ]

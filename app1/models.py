@@ -3,12 +3,12 @@ from django.utils import timezone
 
 class Clientes(models.Model):
     nombre = models.CharField(max_length=45)
-    email = models.CharField(max_length=45)
+    email = models.EmailField(max_length=45)
     password = models.CharField(max_length=45)
     telefono = models.CharField(max_length=45)
     direccion = models.CharField(max_length=45)
     fecha_registro = models.DateTimeField(default=timezone.now)
-    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)  # Permitir valores nulos
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.nombre
@@ -16,12 +16,12 @@ class Clientes(models.Model):
 
 class Reservas(models.Model):
     hora_reserva = models.DateTimeField()
-    fecha_reserva = models.DateField()
+    fecha_reserva = models.DateTimeField()  # Cambié a DateTimeField para incluir la hora
     estado = models.CharField(max_length=20)
     administrador = models.ForeignKey('Encargado', on_delete=models.SET_NULL, null=True)
     servicio = models.ForeignKey('Servicios', on_delete=models.CASCADE, null=True)
-    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True)  # Permitir valores nulos temporalmente
-    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)  # Si ya es anulable
+    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True)
+    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"Reserva de {self.cliente} para {self.servicio}"
@@ -31,7 +31,7 @@ class Encargado(models.Model):
     nombre = models.CharField(max_length=45)
     apellido = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
-    correo = models.CharField(max_length=45)
+    correo = models.EmailField(max_length=45)  # Usar EmailField para validación
     telefono = models.CharField(max_length=9)
 
     def __str__(self):
@@ -50,9 +50,9 @@ class Servicios(models.Model):
 
 class Reviews(models.Model):
     comentarios = models.CharField(max_length=45)
-    calificacion = models.CharField(max_length=45)
+    calificacion = models.IntegerField()  # Cambié a IntegerField para almacenar una calificación numérica
     fecha_review = models.DateField()
-    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True )
+    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True)
     vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
