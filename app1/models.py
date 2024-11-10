@@ -1,17 +1,33 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    """Modelo de usuario extendido para incluir tanto a Clientes como a Encargados."""
+    is_cliente = models.BooleanField(default=False)
+    is_encargado = models.BooleanField(default=False)
 
 class Clientes(models.Model):
-    nombre = models.CharField(max_length=45)
-    email = models.EmailField(max_length=45)
-    password = models.CharField(max_length=45)
+    """Modelo Clientes que se vincula al modelo de usuario Django."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cliente_profile")
     telefono = models.CharField(max_length=45)
     direccion = models.CharField(max_length=45)
     fecha_registro = models.DateTimeField(default=timezone.now)
     vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.nombre
+        return self.user.username
+
+class Encargado(models.Model):
+    """Modelo Encargado que se vincula al modelo de usuario Django."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="encargado_profile")
+    telefono = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+
+
 
 
 class Reservas(models.Model):
@@ -27,15 +43,6 @@ class Reservas(models.Model):
         return f"Reserva de {self.cliente} para {self.servicio}"
 
 
-class Encargado(models.Model):
-    nombre = models.CharField(max_length=45)
-    apellido = models.CharField(max_length=45)
-    password = models.CharField(max_length=45)
-    correo = models.EmailField(max_length=45)  # Usar EmailField para validación
-    telefono = models.CharField(max_length=9)
-
-    def __str__(self):
-        return f"{self.nombre} {self.apellido}"
 
 
 class Servicios(models.Model):
