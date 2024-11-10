@@ -19,8 +19,7 @@ class Cliente(models.Model):
     telefono = models.CharField(max_length=45, null=True)
     direccion = models.CharField(max_length=45, null=True)
     correo = models.CharField(max_length=45, null=True)
-    # fecha_registro = 
-    #agregar fecha de registro
+    fecha_registro = models.DateTimeField(auto_now_add=True)
     # arreglar el forms,views con encargado y cliente, reiniciar makemigrations
     def __str__(self):
         return self.nombre or "Cliente sin nombre"

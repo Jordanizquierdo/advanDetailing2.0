@@ -1,18 +1,20 @@
-# forms.py
-from django import forms
-from .models import Encargado, Cliente, Vehiculo, Servicio, Reserva, Review
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(
-        label="Password", 
+        label="Password",
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
     password2 = forms.CharField(
-        label="Confirm Password", 
+        label="Confirm Password",
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    is_encargado = forms.BooleanField(
+        required=False,
+        label="¿Registrar como Encargado?",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
 
     class Meta:
@@ -36,68 +38,10 @@ class RegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+from django import forms
 
+class EmailAuthenticationForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
-
-
-class EncargadoForm(forms.ModelForm):
-    class Meta:
-        model = Encargado
-        fields = ['usuario', 'nombre', 'telefono', 'correo']
-        widgets = {
-            'nombre': forms.TextInput(attrs={'placeholder': 'Nombre'}),
-            'telefono': forms.TextInput(attrs={'placeholder': 'Teléfono'}),
-            'correo': forms.EmailInput(attrs={'placeholder': 'Correo electrónico'}),
-        }
-
-class ClienteForm(forms.ModelForm):
-    class Meta:
-        model = Cliente
-        fields = ['usuario', 'nombre', 'telefono', 'direccion']
-        widgets = {
-            'nombre': forms.TextInput(attrs={'placeholder': 'Nombre'}),
-            'telefono': forms.TextInput(attrs={'placeholder': 'Teléfono'}),
-            'direccion': forms.TextInput(attrs={'placeholder': 'Dirección'}),
-        }
-
-class VehiculoForm(forms.ModelForm):
-    class Meta:
-        model = Vehiculo
-        fields = ['marca', 'modelo', 'year', 'patente']
-        widgets = {
-            'marca': forms.TextInput(attrs={'placeholder': 'Marca'}),
-            'modelo': forms.TextInput(attrs={'placeholder': 'Modelo'}),
-            'year': forms.TextInput(attrs={'placeholder': 'Año'}),
-            'patente': forms.TextInput(attrs={'placeholder': 'Patente'}),
-        }
-
-class ServicioForm(forms.ModelForm):
-    class Meta:
-        model = Servicio
-        fields = ['nombre', 'descripcion', 'precio', 'duracion']
-        widgets = {
-            'nombre': forms.TextInput(attrs={'placeholder': 'Nombre del servicio'}),
-            'descripcion': forms.Textarea(attrs={'placeholder': 'Descripción', 'rows': 3}),
-            'precio': forms.NumberInput(attrs={'placeholder': 'Precio'}),
-            'duracion': forms.TextInput(attrs={'placeholder': 'Duración'}),
-        }
-
-class ReservaForm(forms.ModelForm):
-    class Meta:
-        model = Reserva
-        fields = ['hora_reserva', 'fecha_reserva', 'estado', 'administrador', 'servicio', 'cliente', 'vehiculo']
-        widgets = {
-            'hora_reserva': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'fecha_reserva': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'estado': forms.TextInput(attrs={'placeholder': 'Estado'}),
-        }
-
-class ReviewForm(forms.ModelForm):
-    class Meta:
-        model = Review
-        fields = ['comentarios', 'calificacion', 'fecha_review', 'cliente', 'vehiculo']
-        widgets = {
-            'comentarios': forms.Textarea(attrs={'placeholder': 'Comentarios', 'rows': 3}),
-            'calificacion': forms.NumberInput(attrs={'placeholder': 'Calificación', 'min': 1, 'max': 5}),
-            'fecha_review': forms.DateInput(attrs={'type': 'date'}),
-        }
