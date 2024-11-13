@@ -54,6 +54,20 @@ def login_view(request):
     return render(request, "app1/login.html", {"form": form})
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def logout_view(request):
     # Elimina la sesión y redirige al login
     request.session.flush()

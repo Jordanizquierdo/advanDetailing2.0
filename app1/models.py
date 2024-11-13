@@ -1,12 +1,12 @@
 from django.db import models
 from django.utils import timezone
 
-from django.contrib.auth.hashers import make_password  # Importa make_password
+from django.contrib.auth.hashers import make_password 
 
 class Clientes(models.Model):
     nombre = models.CharField(max_length=45)
     email = models.EmailField(max_length=45)
-    password = models.CharField(max_length=128)  # Asegúrate de tener suficiente longitud para la contraseña cifrada
+    password = models.CharField(max_length=300)  
     telefono = models.CharField(max_length=45)
     direccion = models.CharField(max_length=45)
     fecha_registro = models.DateTimeField(default=timezone.now)
@@ -22,8 +22,8 @@ class Clientes(models.Model):
 class Encargado(models.Model):
     nombre = models.CharField(max_length=45)
     apellido = models.CharField(max_length=45)
-    password = models.CharField(max_length=128)  # Asegúrate de tener suficiente longitud para la contraseña cifrada
-    correo = models.EmailField(max_length=45)  # Usar EmailField para validación
+    password = models.CharField(max_length=300)  
+    correo = models.EmailField(max_length=45)  
     telefono = models.CharField(max_length=9)
 
     def set_password(self, password):
@@ -35,7 +35,7 @@ class Encargado(models.Model):
 
 class Reservas(models.Model):
     hora_reserva = models.DateTimeField()
-    fecha_reserva = models.DateTimeField()  # Cambié a DateTimeField para incluir la hora
+    fecha_reserva = models.DateTimeField() 
     estado = models.CharField(max_length=20)
     administrador = models.ForeignKey('Encargado', on_delete=models.SET_NULL, null=True)
     servicio = models.ForeignKey('Servicios', on_delete=models.CASCADE, null=True)
@@ -60,7 +60,7 @@ class Servicios(models.Model):
 
 class Reviews(models.Model):
     comentarios = models.CharField(max_length=45)
-    calificacion = models.IntegerField()  # Cambié a IntegerField para almacenar una calificación numérica
+    calificacion = models.IntegerField()  
     fecha_review = models.DateField()
     cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True)
     vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
