@@ -2,12 +2,18 @@ import json
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Clientes,Encargado
-from .forms import CustomAuthenticationForm
+from .forms import CustomAuthenticationForm,ClienteForm
 
 from django.contrib.auth.hashers import check_password  # Importa check_password
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Clientes, Encargado
+from datetime import datetime
+from .models import Reservas, Servicios
+
+from .models import Reservas, Servicios, Vehiculo
+from datetime import datetime
+import json
 from .forms import CustomAuthenticationForm
 
 def login_view(request):
@@ -90,14 +96,7 @@ def index_admin(request):
 
 
 
-from datetime import datetime
-from django.shortcuts import render, redirect
-from .models import Reservas, Servicios
 
-from django.shortcuts import render, redirect
-from .models import Reservas, Servicios, Vehiculo
-from datetime import datetime
-import json
 
 def carrito(request):
     # Obtener los datos del carrito y cliente desde la URL
@@ -160,8 +159,27 @@ def carrito(request):
             reserva.servicios.add(servicio)
 
 
-        return redirect('home')  # Redirige a la página principal
+        return redirect('home')  
 
     return render(request, 'app1/carrito.html', context)
 
+from django.shortcuts import render, redirect
+from .forms import ClienteForm, VehiculoFormSet
 
+def registrar_cliente(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        formset = VehiculoFormSet(request.POST)
+
+        if form.is_valid() and formset.is_valid():
+            cliente = form.save()
+            vehiculos = formset.save(commit=False)
+            for vehiculo in vehiculos:
+                vehiculo.cliente = cliente  # Asigna el cliente a cada vehículo
+                vehiculo.save()
+            return redirect('/')
+    else:
+        form = ClienteForm()
+        formset = VehiculoFormSet()
+
+    return render(request, 'app1/Registro.html', {'form': form, 'formset': formset})

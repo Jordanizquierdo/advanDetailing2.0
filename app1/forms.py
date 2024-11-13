@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
-from .models import Clientes, Encargado
+from .models import Clientes, Encargado,Vehiculo
+from django.forms import inlineformset_factory
 
 class CustomAuthenticationForm(forms.Form):
     username_or_email = forms.CharField(label="Usuario o Email")
@@ -72,3 +73,37 @@ class CustomAuthenticationForm(forms.Form):
 
     def get_user(self):
         return self.user
+
+
+
+class ClienteForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput, label="Contraseña")
+    confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirmar Contraseña")
+
+    class Meta:
+        model = Clientes
+        fields = ['nombre', 'email', 'password', 'telefono', 'direccion']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password and confirm_password and password != confirm_password:
+            self.add_error('confirm_password', "Las contraseñas no coinciden.")
+        
+        return cleaned_data
+
+    def save(self, commit=True):
+        cliente = super().save(commit=False)
+        cliente.set_password(self.cleaned_data['password'])
+        if commit:
+            cliente.save()
+        return cliente
+
+class VehiculoForm(forms.ModelForm):
+    class Meta:
+        model = Vehiculo
+        fields = ['marca', 'modelo', 'year', 'patente']
+
+VehiculoFormSet = inlineformset_factory(Clientes, Vehiculo, form=VehiculoForm, extra=1, can_delete=True)
