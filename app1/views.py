@@ -4,11 +4,13 @@ from django.contrib import messages
 from .models import Clientes,Encargado
 from .forms import CustomAuthenticationForm
 
+from django.contrib.auth.hashers import check_password  # Importa check_password
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Clientes, Encargado
+from .forms import CustomAuthenticationForm
+
 def login_view(request):
-    # Si el usuario ya está autenticado, redirige según el tipo de usuario
-    if request.user.is_authenticated:
-        if request.user.is_staff:
-            return redirect("index_admin")
 
     form = CustomAuthenticationForm()
 
@@ -16,16 +18,22 @@ def login_view(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         correo = request.POST.get("email")
+        password = password.strip()  # Elimina espacios al principio y al final de la contraseña
+
+
         # cliente
         if email and password:
             try:
                 cliente = Clientes.objects.get(email__iexact=email)
-                if cliente.password == password:
+                if check_password(password, cliente.password):  # Verifica la contraseña cifrada
                     request.session['cliente_id'] = cliente.id
-                    print("contraseña correcta")
+                    print("Contraseña correcta")
                     return redirect("/home")
                 else:
                     print("Contraseña incorrecta.")
+                    print("html",password)
+                    print("db",cliente.password)
+                    messages.error(request, "Contraseña incorrecta.")
             except Clientes.DoesNotExist:
                 messages.error(request, "No se encontró una cuenta con este correo.")
 
@@ -33,17 +41,30 @@ def login_view(request):
         if correo and password:
             try:
                 encargado = Encargado.objects.get(correo__iexact=correo)
-                if encargado.password == password:
+                if check_password(password, encargado.password):  # Verifica la contraseña cifrada
                     request.session['encargado_id'] = encargado.id
-                    print("contraseña correcta")
+                    print("Contraseña correcta")
                     return redirect("index_admin")
                 else:
                     print("Contraseña incorrecta.")
-            except Clientes.DoesNotExist:
+                    messages.error(request, "Contraseña incorrecta.")
+            except Encargado.DoesNotExist:
                 messages.error(request, "No se encontró una cuenta con este correo.")
-        
 
     return render(request, "app1/login.html", {"form": form})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
