@@ -3,20 +3,7 @@ from django.utils import timezone
 
 from django.contrib.auth.hashers import make_password 
 
-class Clientes(models.Model):
-    nombre = models.CharField(max_length=45)
-    email = models.EmailField(max_length=45)
-    password = models.CharField(max_length=300)  
-    telefono = models.CharField(max_length=45)
-    direccion = models.CharField(max_length=45)
-    fecha_registro = models.DateTimeField(default=timezone.now)
-    vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 
-    def set_password(self, password):
-        self.password = make_password(password)  # Cifra la contraseña
-
-    def __str__(self):
-        return self.nombre
 
 
 class Encargado(models.Model):
@@ -33,17 +20,19 @@ class Encargado(models.Model):
         return f"{self.nombre} {self.apellido}"
 
 
+
 class Reservas(models.Model):
     hora_reserva = models.DateTimeField()
     fecha_reserva = models.DateTimeField() 
     estado = models.CharField(max_length=20)
     administrador = models.ForeignKey('Encargado', on_delete=models.SET_NULL, null=True)
-    servicio = models.ForeignKey('Servicios', on_delete=models.CASCADE, null=True)
+    servicios = models.ManyToManyField('Servicios')  # Cambiado a ManyToManyField
     cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True)
     vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"Reserva de {self.cliente} para {self.servicio}"
+        return f"Reserva de {self.cliente} para {', '.join(s.nombre_servicio for s in self.servicios.all())}"
+
 
 
 
@@ -69,7 +58,23 @@ class Reviews(models.Model):
         return f"Review de {self.cliente} para {self.vehiculo}"
 
 
+class Clientes(models.Model):
+    nombre = models.CharField(max_length=45)
+    email = models.EmailField(max_length=45)
+    password = models.CharField(max_length=300)  
+    telefono = models.CharField(max_length=45)
+    direccion = models.CharField(max_length=45)
+    fecha_registro = models.DateTimeField(default=timezone.now, null=True)
+
+    def set_password(self, password):
+        self.password = make_password(password)  # Cifra la contraseña
+
+    def __str__(self):
+        return self.nombre
+
+
 class Vehiculo(models.Model):
+    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE, related_name="vehiculos",null=True)  # Relación de "uno a muchos"
     marca = models.CharField(max_length=45)
     modelo = models.CharField(max_length=45)
     year = models.CharField(max_length=45)
