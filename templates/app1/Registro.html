@@ -2,51 +2,94 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrarse</title>
-  <link rel="stylesheet" href="{% static 'css/logreg.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cliente y Vehículos</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
 </head>
 <body>
-  <div class="form-container">
-    <h2>Registrarse</h2>
-    <form method="POST" action="{% url 'registro' %}">
-      {% csrf_token %}
-      
-      <div class="input-field">
-        <label>Nombre de Usuario</label>
-        <input type="text" name="username" required>
-        {% if form.username.errors %}
-          <div class="error-message">{{ form.username.errors.0 }}</div>
-        {% endif %}
-      </div>
-      
-      <div class="input-field">
-        <label>Correo Electrónico</label>
-        <input type="email" name="email" required>
-        {% if form.email.errors %}
-          <div class="error-message">{{ form.email.errors.0 }}</div>
-        {% endif %}
-      </div>
+    <div class="form-container">
+        <h2>Registro de Cliente y Vehículos</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Campos del Cliente -->
+            <div class="input-field">
+                <label>Nombre</label>
+                <input type="text" name="nombre">
+                {% if form.nombre.errors %}
+                    <div class="error-message">{{ form.nombre.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="input-field">
+                <label>Correo Electrónico</label>
+                <input type="email" name="email">
+                {% if form.email.errors %}
+                    <div class="error-message">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
 
-      <div class="input-field">
-        <label>Contraseña</label>
-        <input type="password" name="password" required>
-        {% if form.password.errors %}
-          <div class="error-message">{{ form.password.errors.0 }}</div>
-        {% endif %}
-      </div>
+            <div class="input-field">
+                <label>Teléfono</label>
+                <input type="text" name="telefono">
+                {% if form.telefono.errors %}
+                    <div class="error-message">{{ form.telefono.errors.0 }}</div>
+                {% endif %}
+            </div>
 
-      <div class="input-field">
-        <label>Confirmar Contraseña</label>
-        <input type="password" name="confirm_password" required>
-        {% if form.confirm_password.errors %}
-          <div class="error-message">{{ form.confirm_password.errors.0 }}</div>
-        {% endif %}
-      </div>
-      
-      <button type="submit" class="submit-button">Registrarse</button>
-    </form>
-  </div>
+            <div class="input-field">
+                <label>Dirección</label>
+                <input type="text" name="direccion">
+                {% if form.direccion.errors %}
+                    <div class="error-message">{{ form.direccion.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="input-field">
+                <label>Contraseña</label>
+                <input type="password" name="password" required>
+                {% if form.password.errors %}
+                    <div class="error-message">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="input-field">
+                <label>Confirmar Contraseña</label>
+                <input type="password" name="confirm_password" required>
+                {% if form.confirm_password.errors %}
+                    <div class="error-message">{{ form.confirm_password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Vehiculos Formset -->
+            <h3>Información de Vehículos</h3>
+            {{ formset.management_form }}
+            <div id="vehiculos">
+                {% for form in formset %}
+                    <div class="vehiculo-form">
+                        <div class="input-field">
+                            {{ form.marca.label_tag }}
+                            {{ form.marca }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.modelo.label_tag }}
+                            {{ form.modelo }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.year.label_tag }}
+                            {{ form.year }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.patente.label_tag }}
+                            {{ form.patente }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <button type="submit" class="submit-button">Registrarse</button>
+        </form>
+    </div>
 </body>
 </html>
