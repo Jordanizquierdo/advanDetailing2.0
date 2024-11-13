@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras</title>
     <link rel="stylesheet" href="{% static 'css/carrito.css' %}">
-    <script src="{% static 'js/carrito.js' %}" defer></script>
+    <script src="{% static 'js/script_carrito.js' %}" defer></script>
 </head>
 <body>
     <div class="container">
@@ -46,24 +46,40 @@
             </table>
         </div>
 
-        <!-- Selección de fecha -->
-        <div class="date-picker">
-            <h2>Selecciona la Fecha</h2>
-            <input type="date" id="selectedDate">
-        </div>
+        <!-- Formulario para completar la reserva -->
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Selección de fecha y hora -->
+            <div class="date-time-picker">
+                <h2>Selecciona la Fecha y Hora</h2>
+                <input type="date" id="selectedDate" name="fecha_reserva" required>
+                <input type="time" id="selectedTime" name="hora_reserva" min="09:00" max="20:00" required>
+            </div>
 
-        <!-- Selección de método de pago -->
-        <div class="payment-method">
-            <h2>Método de Pago</h2>
-            <select id="paymentMethod">
-                <option value="efectivo">Efectivo</option>
-                <option value="tarjeta">Tarjeta de Crédito/Débito</option>
-                <option value="transferencia">Transferencia Bancaria</option>
+            <label for="vehiculo">Selecciona tu vehículo:</label>
+            <select name="vehiculo" id="vehiculo" required>
+                {% for vehiculo in vehiculos %}
+                    <option value="{{ vehiculo.id }}">{{ vehiculo.modelo }} - {{ vehiculo.marca }}</option>
+                {% endfor %}
             </select>
-        </div>
 
-        <!-- Botón de reserva -->
-        <button id="reserveButton" onclick="reserveService()">Reservar Servicio</button>
+
+            <!-- Selección de método de pago -->
+            <div class="payment-method">
+                <h2>Método de Pago</h2>
+                <select id="paymentMethod" name="payment_method" required>
+                    <option value="efectivo">Efectivo</option>
+                    <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                    <option value="transferencia">Transferencia Bancaria</option>
+                </select>
+            </div>
+
+
+
+            <!-- Botón de reserva -->
+            <button type="submit">Reservar Servicio</button>
+        </form>
     </div>
 </body>
 </html>

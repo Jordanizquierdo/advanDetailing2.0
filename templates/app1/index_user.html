@@ -9,7 +9,13 @@
   <script src="{% static 'js/script.js' %}" defer></script>
 </head>
 <body>
-  <!-- Navbar -->
+
+  <script>
+    const clienteId = "{{ cliente_id|default:'' }}";
+    console.log(clienteId);  
+  </script>
+
+  <!-- top_bar -->
   <div class="topbar">
     <div class="topbar-content">
       <div class="topbar-links">

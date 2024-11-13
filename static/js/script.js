@@ -1,11 +1,47 @@
 let cart = []; // Carrito inicial vacío
 
+// Función para añadir al carrito
+function addToCart(serviceName, servicePrice, serviceType) {
+  const serviceIds = {
+    "Lavado Básico": 1,
+    "Lavado Intermedio": 2,
+    "Lavado Avanzado": 3,
+    // Servicios Especiales
+    "Grabado de patente": 4,
+    "Cueros (Limpieza a vapor y humectación)": 5,
+    "Sanitización con retiro de malos olores": 6,
+    "Pulido de carrocería": 7,
+    "Limpieza de tableros a vapor": 8,
+  };
+
+  const serviceId = serviceIds[serviceName] || 0; // 0 para servicios no definidos
+
+  // Verifica si el servicio es un tipo de lavado
+  const isLavado = ["Lavado Básico", "Lavado Intermedio", "Lavado Avanzado"].includes(serviceName);
+
+  // Comprueba si ya hay un tipo de lavado en el carrito
+  if (isLavado && cart.some(item => ["Lavado Básico", "Lavado Intermedio", "Lavado Avanzado"].includes(item.title))) {
+    alert("Solo puedes añadir un tipo de lavado al carrito.");
+    return;
+  }
+
+  // Comprueba si el servicio especial ya está en el carrito
+  if (cart.some(item => item.title === serviceName)) {
+    alert(`El servicio "${serviceName}" ya está en el carrito.`);
+    return;
+  }
+
+  // Añade el servicio al carrito si pasa las validaciones
+  cart.push({ title: serviceName, price: servicePrice, type: serviceType, id: serviceId });
+  updateCartSidebar();
+}
+
 // Función para mostrar los detalles del servicio
 function showServiceDetails(serviceName, servicePrice, serviceId) {
   const serviceDetailsContainer = document.getElementById("service-details-container");
-
   let serviceDetailsHTML = "";
 
+  // Detalles de servicios básicos
   if (serviceId === "lavado-basico") {
     serviceDetailsHTML = `
       <div class="service-details-container">
@@ -18,7 +54,7 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         <div class="service-details-center">
           <h3>${serviceName}</h3>
           <p class="service-details-price">Valor: $${servicePrice.toLocaleString()}</p>
-          <button class="add-to-cart-button" onclick="addToCart('${serviceName}', ${servicePrice})">
+          <button class="add-to-cart-button" onclick="addToCart('${serviceName}', ${servicePrice}, 'lavado')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
@@ -42,7 +78,7 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         <div class="service-details-center">
           <h3>${serviceName}</h3>
           <p class="service-details-price">Valor: $${servicePrice.toLocaleString()}</p>
-          <button class="add-to-cart-button" onclick="addToCart('${serviceName}', ${servicePrice})">
+          <button class="add-to-cart-button" onclick="addToCart('${serviceName}', ${servicePrice}, 'lavado')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
@@ -68,7 +104,7 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         <div class="service-details-center">
           <h3>${serviceName}</h3>
           <p class="service-details-price">Valor: $${servicePrice.toLocaleString()}</p>
-          <button class="add-to-cart-button" onclick="addToCart('${serviceName}', ${servicePrice})">
+          <button class="add-to-cart-button" onclick="addToCart('${serviceName}', ${servicePrice}, 'lavado')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
@@ -83,58 +119,47 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
       </div>
     `;
   } else if (serviceName === "Servicios Especiales") {
-    // Detalles de servicios especiales
     serviceDetailsHTML = `
       <div class="service-details-container">
         <div class="service-details-center">
           <h3>${serviceName}</h3>
         </div>
-
-        <!-- Servicio Especial 1 -->
         <div class="special-service">
           <h4>Grabado de patente</h4>
           <p>Valor: $15,000</p>
-          <button class="add-to-cart-button" onclick="addToCart('Grabado de patente', 15000)">
+          <button class="add-to-cart-button" onclick="addToCart('Grabado de patente', 15000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
         </div>
-
-        <!-- Servicio Especial 2 -->
         <div class="special-service">
           <h4>Cueros (Limpieza a vapor y humectación)</h4>
           <p>Valor: $25,000</p>
-          <button class="add-to-cart-button" onclick="addToCart('Cueros (Limpieza a vapor y humectación)', 25000)">
+          <button class="add-to-cart-button" onclick="addToCart('Cueros (Limpieza a vapor y humectación)', 25000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
         </div>
-
-        <!-- Servicio Especial 3 -->
         <div class="special-service">
           <h4>Sanitización con retiro de malos olores</h4>
           <p>Valor: $20,000</p>
-          <button class="add-to-cart-button" onclick="addToCart('Sanitización con retiro de malos olores', 20000)">
+          <button class="add-to-cart-button" onclick="addToCart('Sanitización con retiro de malos olores', 20000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
         </div>
-
-        <!-- Servicio Especial 4 -->
         <div class="special-service">
           <h4>Pulido de carrocería</h4>
           <p>Valor: $45,000</p>
-          <button class="add-to-cart-button" onclick="addToCart('Pulido de carrocería', 45000)">
+          <button class="add-to-cart-button" onclick="addToCart('Pulido de carrocería', 45000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
         </div>
-
-        <!-- Servicio Especial 5 -->
         <div class="special-service">
           <h4>Limpieza de tableros a vapor</h4>
           <p>Valor: $15,000</p>
-          <button class="add-to-cart-button" onclick="addToCart('Limpieza de tableros a vapor', 15000)">
+          <button class="add-to-cart-button" onclick="addToCart('Limpieza de tableros a vapor', 15000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
@@ -145,12 +170,6 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
 
   serviceDetailsContainer.innerHTML = serviceDetailsHTML;
   serviceDetailsContainer.style.display = "block";
-}
-
-// Función para añadir al carrito
-function addToCart(serviceName, servicePrice) {
-  cart.push({ title: serviceName, price: servicePrice });
-  updateCartSidebar();
 }
 
 // Función para actualizar el carrito en la barra lateral
@@ -181,8 +200,11 @@ function PayCart() {
     return;
   }
 
+  const clienteIdParam = encodeURIComponent(clienteId);
   const cartData = encodeURIComponent(JSON.stringify(cart));
-  window.location.href = `/carrito/?cartList=${cartData}`;
+
+  // Redirige a la página del carrito con el carrito y el ID del cliente
+  window.location.href = `/carrito/?cartList=${cartData}&clienteId=${clienteIdParam}`;
 }
 
 // Función para limpiar el carrito
@@ -190,4 +212,3 @@ function clearCart() {
   cart = [];
   updateCartSidebar();
 }
-
