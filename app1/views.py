@@ -183,3 +183,16 @@ def registrar_cliente(request):
         formset = VehiculoFormSet()
 
     return render(request, 'app1/Registro.html', {'form': form, 'formset': formset})
+
+
+def clientes_view(request):
+    #
+    return render(request, 'clientes.html')
+
+def reservas_view(request):
+    #
+    return render(request, 'reservas.html')
+
+def vehiculos_view(request):
+    #
+    return render(request, 'vehiculos.html')
