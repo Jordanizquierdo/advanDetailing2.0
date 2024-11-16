@@ -212,9 +212,3 @@ function clearCart() {
   cart = [];
   updateCartSidebar();
 }
-
-// funcion del menu lateral
-function toggleMenu() {
-  const sidebar = document.getElementById('sidebar');
-  sidebar.classList.toggle('slicebar-open');
-}
