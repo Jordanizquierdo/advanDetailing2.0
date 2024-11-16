@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'advanDetailing.wsgi.application'
 #         'HOST': '34.72.136.66',
 #         'NAME': 'advan',
 #         'USER': 'Jordan',
-#         'PASSWORD': 'advan123',
+#         'PASSWORD': '967Oa3uxoVkAG4qD4idR',
 #         'PORT': '3306'
 #     }
 # }
