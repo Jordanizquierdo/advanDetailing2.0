@@ -24,9 +24,16 @@
         <a href="#mision">Misión</a>
       </div>
       <div class="topbar-auth">
-        <a href="#iniciar-sesion">Iniciar Sesión</a>
-        <a href="#registrar Vehiculo">Registrarse</a>
-        <a href="/logout/">Cerrar sesion</a>
+        {% if cliente_id %}
+          <!-- Opciones para usuario autenticado -->
+          <a href="/reservas/">Mis Reservas</a>
+          <a href="/ver_vehiculos/">Mis Vehículos</a>
+          <a href="/logout/">Cerrar Sesión</a>
+        {% else %}
+          <!-- Opciones para usuario no autenticado -->
+          <a href="/login/">Iniciar Sesión</a>
+          <a href="/register/">Registrarse</a>
+        {% endif %}
       </div>
     </div>
   </div>

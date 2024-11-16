@@ -1,0 +1,90 @@
+/* General */
+body {
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    width: 90%;
+}
+
+h2 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin-top: 20px;
+    color: #555555;
+}
+
+.table-container {
+    margin-top: 10px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.table thead th {
+    background-color: #5078FF;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.table tbody td {
+    border-bottom: 1px solid #dddddd;
+    padding: 8px;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    background-color: #5078FF;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #5078FF;
+}
+
+/* Reservas */
+.reservations-section {
+    margin-bottom: 20px;
+}
+
+.no-reservations {
+    color: #888888;
+    text-align: center;
+    margin-top: 10px;
+}

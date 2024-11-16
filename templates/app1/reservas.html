@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reservas</title>
+    <link rel="stylesheet" href="{% static 'css/reservas.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Reservas de {{ cliente.nombre }}</h2>
+
+        <!-- Reservas Futuras -->
+        <div class="reservations-section">
+            <h3>Reservas Futuras</h3>
+            {% if reservas_futuras %}
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha y Hora</th>
+                                <th>Estado</th>
+                                <th>Vehículo</th>
+                                <th>Servicios</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reserva in reservas_futuras %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ reserva.hora_reserva }}</td>
+                                    <td>{{ reserva.estado }}</td>
+                                    <td>{{ reserva.vehiculo }}</td>
+                                    <td>
+                                        <ul>
+                                            {% for servicio in reserva.servicios.all %}
+                                                <li>{{ servicio.nombre_servicio }} - ${{ servicio.precio }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-reservations">No tienes reservas futuras registradas.</p>
+            {% endif %}
+        </div>
+
+        <!-- Reservas Pasadas -->
+        <div class="reservations-section">
+            <h3>Reservas Pasadas</h3>
+            {% if reservas_pasadas %}
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha y Hora</th>
+                                <th>Estado</th>
+                                <th>Vehículo</th>
+                                <th>Servicios</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reserva in reservas_pasadas %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ reserva.hora_reserva }}</td>
+                                    <td>{{ reserva.estado }}</td>
+                                    <td>{{ reserva.vehiculo }}</td>
+                                    <td>
+                                        <ul>
+                                            {% for servicio in reserva.servicios.all %}
+                                                <li>{{ servicio.nombre_servicio }} - ${{ servicio.precio }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-reservations">No tienes reservas pasadas registradas.</p>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'home' %}" class="btn">Volver al Inicio</a>
+    </div>
+</body>
+</html>
