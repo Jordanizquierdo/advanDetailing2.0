@@ -3,11 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src="{% static 'js/script.js' %}" defer></script>
     <title>Document</title>
 </head>
 <body>
     <h5>SOY EL ADMIN</h5>
+    
     <a href="{% url 'logout' %}" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres cerrar sesión?');">Cerrar sesión</a>
-
+    <div class="topbar">
+        <div class="topbar-content">
+          <!-- Botón para abrir/cerrar el menu -->
+          <button class="menu-toggle" onclick="toggleMenu()">Menú</button>
+        </div>
+    </div>
+    
+    <!-- Menu lateral -->
+    <div class="slicebar" id="sidebar">
+        <h2 class="slicebar-title">Menú</h2>
+        <ul class="menu">
+            <li><a href="#">Clientes</a></li>
+            <li><a href="#">Reservas</a></li>
+            <li><a href="#">Vehículos</a></li>
+        </ul>
+    </div>
 </body>
 </html>

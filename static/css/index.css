@@ -220,3 +220,50 @@ body {
 .admin-button:hover {
   background-color: #00a3c4;
 }
+
+/* Estilos del Menú Lateral */
+.slicebar {
+  background-color: #1a1a2e;
+  color: #FFF;
+  width: 280px;
+  padding: 30px;
+  position: fixed;
+  top: 0;
+  left: -3000px;
+  height: 100vh;
+  transition: left 0.3s ease; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.slicebar-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu li {
+  margin-bottom: 10px;
+}
+
+.menu li a {
+  color: #FFF;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  display: block;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+}
+
+.menu li a:hover {
+  background-color: #00a3c4;
+}
+
+.slicebar-open {
+  left: 0;
+}

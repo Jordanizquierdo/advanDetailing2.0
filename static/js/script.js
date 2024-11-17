@@ -220,3 +220,10 @@ function PayCart() {
   // Redirige a la página del carrito con los parámetros necesarios (clienteId y cartData)
   window.location.href = `/carrito/?cliente_id=${clienteIdParam}&cart=${cartData}`;
 }
+
+// menu desplegable
+function toggleMenu() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('slicebar-open');
+}
+
