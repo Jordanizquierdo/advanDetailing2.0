@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends "app1/index_admin.html" %}
+
+    {% block title %}Vehículos Registrados{% endblock %}
+
+    {% block content %}
+    <div class="table-title">Vehículos Registrados</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Patente</th>
+                <th>Cliente Asociado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehiculo in vehiculos %}
+            <tr>
+                <td>{{ vehiculo.marca }}</td>
+                <td>{{ vehiculo.modelo }}</td>
+                <td>{{ vehiculo.year }}</td>
+                <td>{{ vehiculo.patente }}</td>
+                <td>{{ vehiculo.cliente.nombre }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}
+
+</body>
+</html>

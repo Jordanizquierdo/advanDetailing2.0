@@ -1,35 +1,41 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/index_admin.css' %}">
     <script src="{% static 'js/script.js' %}" defer></script>
     <script src="https://kit.fontawesome.com/f6efce63ba.js" crossorigin="anonymous"></script>
-    <title>Menu de Encargado</title>
+    <title>{% block title %}Página{% endblock %}</title>
 </head>
 <body>
-    <!-- top_bar -->
-  <div class="topbar">
-    <div class="topbar-content">
-        <button onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
-      <div class="topbar-auth">
-          <!-- Opciones para usuario autenticado -->
-          <a href="/logout/">Cerrar Sesión</a>
-      </div>
+    <!-- Barra Superior -->
+    <div class="topbar">
+        <div class="topbar-content">
+            <button onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <h4>Bienvenido al sistema de Encargado</h4>
+            <div class="topbar-auth">
+                <a href="/logout/">Cerrar Sesión</a>
+            </div>
+        </div>
     </div>
-  </div>
 
-    <!-- Menu lateral -->
+    <!-- Menu Lateral -->
     <div class="slicebar" id="sidebar">
         <h2 class="slicebar-title">Menú</h2>
         <ul class="menu">
-            <li><a href="#">Clientes</a></li>
-            <li><a href="#">Reservas</a></li>
-            <li><a href="#">Vehículos</a></li>
+            <li><a href="{% url 'ver_clientes_admin' %}">Clientes</a></li>
+            <li><a href="{% url 'ver_reservas_admin' %}">Reservas</a></li>
+            <li><a href="{% url 'ver_vehiculos_admin' %}">Vehículos</a></li>
         </ul>
     </div>
 
+    <!-- Contenedor Principal -->
+    <div class="main-container">
+        {% block content %}
+        <!-- Las tablas van aca °3° -->
+        {% endblock %}
+    </div>
 </body>
 </html>

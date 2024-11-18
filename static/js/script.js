@@ -226,3 +226,44 @@ function toggleMenu() {
   const sidebar = document.getElementById('sidebar');
   sidebar.classList.toggle('slicebar-open');
 }
+
+// funcion de la ventana emergente del clientes 
+
+function openModal(clienteId) {
+  console.log("Abriendo modal para cliente:", clienteId); // Depuración
+  const modal = document.getElementById('modal');
+  const modalBody = document.getElementById('modal-body');
+
+  // Limpia el contenido previo
+  modalBody.innerHTML = 'Cargando información...';
+
+  // Realiza una solicitud al servidor para obtener los datos del cliente
+  fetch(`/clientes/${clienteId}/vehiculos/`)
+      .then(response => response.json())
+      .then(data => {
+          if (data.vehiculos.length > 0) {
+              const vehicleInfo = data.vehiculos.map(v => `
+                  <p>
+                      <strong>Modelo:</strong> ${v.modelo}<br>
+                      <strong>Año:</strong> ${v.year}<br>
+                      <strong>Patente:</strong> ${v.patente}
+                  </p>
+              `).join('');
+              modalBody.innerHTML = vehicleInfo;
+          } else {
+              modalBody.innerHTML = '<p>Este cliente no tiene vehículos asociados.</p>';
+          }
+      })
+      .catch(error => {
+          console.error('Error al cargar los datos:', error);
+          modalBody.innerHTML = '<p>Hubo un error al cargar los datos. Inténtalo nuevamente.</p>';
+      });
+
+  // Muestra el modal
+  modal.style.display = 'block';
+}
+
+function closeModal() {
+  const modal = document.getElementById('modal');
+  modal.style.display = 'none';
+}

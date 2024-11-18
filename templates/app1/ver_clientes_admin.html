@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends "app1/index_admin.html" %}
+
+    {% block title %}Clientes Registrados{% endblock %}
+    
+    {% block content %}
+    <div class="table-title">Clientes Registrados</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>
+                    <button onclick="openModal('{{ cliente.id }}')" class="btn-modal">Ver Vehículos Asociados</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Vehículos Asociados</h2>
+            <div id="modal-body">
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

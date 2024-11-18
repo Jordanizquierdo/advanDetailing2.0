@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import check_password
 from django.utils.timezone import now
 from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo
 from .forms import CustomAuthenticationForm, ClienteForm, VehiculoFormSet
+from django.http import JsonResponse
 
 
 def login_view(request):
@@ -219,3 +220,48 @@ def ver_vehiculos(request):
 #     if 'cliente_id' in request.session:
 #         return redirect('home')
 #     return redirect('login')
+
+
+
+# estos son los para el admin
+
+def ver_clientes(request):
+    clientes = Clientes.objects.prefetch_related('vehiculos').all()
+    context = {
+        'clientes': clientes,
+    }
+    return render(request, 'app1/ver_clientes_admin.html', context)
+
+
+def ver_vehiculos_admin(request):
+    vehiculos = Vehiculo.objects.select_related('cliente').all()
+    context = {
+        'vehiculos': vehiculos,
+    }
+    return render(request, 'app1/ver_vehiculos_admin.html', context)
+
+def ver_reservas(request):
+    reservas = Reservas.objects.select_related('cliente', 'vehiculo').prefetch_related('servicios').all()
+
+    if request.method == 'POST':
+        reserva_id = request.POST.get('reserva_id')
+        nueva_estado = request.POST.get('estado')
+        try:
+            reserva = Reservas.objects.get(id=reserva_id)
+            reserva.estado = nueva_estado
+            reserva.save()
+        except Reservas.DoesNotExist:
+            messages.error(request, "La reserva no existe.")
+    
+    context = {
+        'reservas': reservas,
+    }
+    return render(request, 'app1/ver_reservas_admin.html', context)
+
+def cliente_vehiculos(request, cliente_id):
+    try:
+        cliente = Clientes.objects.prefetch_related('vehiculos').get(id=cliente_id)
+        vehiculos = cliente.vehiculos.values('modelo', 'year', 'patente')
+        return JsonResponse({'vehiculos': list(vehiculos)})
+    except Clientes.DoesNotExist:
+        return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
