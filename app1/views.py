@@ -68,6 +68,7 @@ def home(request):
 
 
 def index_admin(request):
+    print ("encargado_id")
     return render(request, 'app1/index_admin.html')
 
 
