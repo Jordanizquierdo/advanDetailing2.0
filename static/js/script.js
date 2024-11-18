@@ -218,7 +218,7 @@ function PayCart() {
   const cartData = encodeURIComponent(JSON.stringify(cart));
 
   // Redirige a la página del carrito con los parámetros necesarios (clienteId y cartData)
-  window.location.href = `/carrito/?cliente_id=${clienteIdParam}&cart=${cartData}`;
+  window.location.href = `/carrito/?clienteId=${clienteIdParam}&cartList=${cartData}`;
 }
 
 // menu desplegable
