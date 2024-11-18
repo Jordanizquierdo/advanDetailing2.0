@@ -69,9 +69,11 @@ def home(request):
 
 
 def index_admin(request):
-    print ("encargado_id")
-    return render(request, 'app1/index_admin.html')
-
+    reservas = Reservas.objects.select_related('cliente', 'vehiculo').all()
+    context = {
+        'reservas': reservas,
+    }
+    return render(request, 'app1/index_admin.html', context)
 
 def carrito(request):
     cliente_id = request.session.get('cliente_id')

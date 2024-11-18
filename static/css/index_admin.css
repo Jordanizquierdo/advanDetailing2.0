@@ -7,7 +7,7 @@ body {
     padding: 0;
   }
   
-  /* Barra Superior */
+/* Barra Superior */
   .topbar-content {
     background-color: #1a1a2e;    
     color: #FFF;                  
@@ -28,7 +28,7 @@ body {
     gap: 15px;                       
   }
   
-  /* Estilos de los enlaces */
+/* Estilos de los enlaces */
   .topbar-links a,
   .topbar-auth a {
     color: #FFF;
@@ -229,7 +229,7 @@ body {
     margin-top: 35px;
     position: fixed;
     top: 10px;
-    left: -3000px;
+    left: -500px;
     height: 100vh;
     transition: left 0.3s ease; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -316,6 +316,14 @@ table {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.table-container {
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+}
 table thead {
   background-color: #1a1a2e;
   color: #FFF;
@@ -405,7 +413,7 @@ table tbody td {
   background-color: #1a1a2e;
   color: #FFF;
   padding: 10px 20px;
-  border: none;
+  border: none; 
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -414,3 +422,16 @@ table tbody td {
 .btn-modal:hover {
   background-color: #00a3c4;
 }
+
+/* Contenedor de tablas */
+.table-container {
+  width: 80%; /* Ajusta el ancho al 80% de la ventana */
+  max-width: 1000px; /* Ancho máximo de la tabla */
+  margin: 20px auto; /* Centra horizontalmente */
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centra el contenido interno */
+}
+

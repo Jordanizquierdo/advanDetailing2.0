@@ -34,8 +34,34 @@
     <!-- Contenedor Principal -->
     <div class="main-container">
         {% block content %}
-        <!-- Las tablas van aca °3° -->
-        {% endblock %}
+    <div class="table-container">
+        <div class="table-title">Reservas</div><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.cliente.nombre }}</td>
+                    <td>{{ reserva.vehiculo.marca }} {{ reserva.vehiculo.modelo }}</td>
+                    <td>{{ reserva.fecha_reserva|date:"Y-m-d" }}</td>
+                    <td>{{ reserva.hora_reserva|time:"H:i" }}</td>
+                    <td>{{ reserva.estado }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
     </div>
 </body>
 </html>
