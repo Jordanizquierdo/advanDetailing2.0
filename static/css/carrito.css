@@ -37,7 +37,7 @@ tfoot td {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #5078FF;
     color: white;
     font-size: 16px;
     border: none;
@@ -46,7 +46,7 @@ tfoot td {
 }
 
 #reserveButton:hover {
-    background-color: #45a049;
+    background-color: #436efa;
 }
 
 /* Estilos para los campos de fecha y hora */

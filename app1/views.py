@@ -7,6 +7,7 @@ from django.utils.timezone import now
 from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo,Reviews
 from .forms import CustomAuthenticationForm, ClienteForm, VehiculoFormSet
 from django.http import JsonResponse
+from django.db import connection
 
 
 def login_view(request):
@@ -218,14 +219,7 @@ def ver_vehiculos(request):
     return render(request, 'app1/ver_vehiculos.html', context)
 
 
-# def index_redirect(request):
-#     if 'cliente_id' in request.session:
-#         return redirect('home')
-#     return redirect('login')
 
-
-
-# estos son los para el admin
 
 def ver_clientes(request):
     clientes = Clientes.objects.prefetch_related('vehiculos').all()
@@ -279,12 +273,6 @@ def mision_view(request):
 
 
 
-from django.shortcuts import render, redirect
-from django.db import connection
-from django.contrib import messages
-from django.utils.timezone import now
-from .models import Vehiculo, Clientes
-
 def agregar_resena_view(request):
     if request.method == 'POST':
         cliente_id = request.session.get('cliente_id')
@@ -328,8 +316,6 @@ def agregar_resena_view(request):
 
     return render(request, 'app1/agregar_resena.html', {'vehiculos': vehiculos})
 
-from django.shortcuts import render, redirect
-from django.db import connection
 
 def ver_resenas_view(request):
     cliente_id = request.session.get('cliente_id')
@@ -369,3 +355,46 @@ def ver_resenas_view(request):
     })
 
 
+def actualizar_resena(request, resena_id):
+    # Verificar si el cliente está autenticado
+    cliente_id = request.session.get('cliente_id')
+    if not cliente_id:
+        return redirect('login')
+
+    # Obtener la reseña para mostrar los datos actuales en el formulario
+    resena = get_object_or_404(Reviews, id=resena_id, cliente_id=cliente_id)
+
+    if request.method == 'POST':
+        comentarios = request.POST.get('comentarios')
+        calificacion = request.POST.get('calificacion')
+
+        # Validar que los campos estén completos
+        if not comentarios or not calificacion:
+            messages.error(request, 'Todos los campos son requeridos.')
+            return redirect('actualizar_resena', resena_id=resena_id)
+
+        try:
+            # Llamar al procedimiento almacenado para actualizar la reseña
+            with connection.cursor() as cursor:
+                cursor.callproc('app1_actualizar_resena', [resena_id, comentarios, calificacion])
+            messages.success(request, 'Reseña actualizada exitosamente.')
+            return redirect('ver_resenas')  # Redirigir a la página de todas las reseñas
+        except Exception as e:
+            messages.error(request, f'Error al actualizar la reseña: {str(e)}')
+
+    return render(request, 'app1/actualizar_resena.html', {'resena': resena})
+
+
+
+
+def eliminar_resena(request, resena_id):
+    if request.method == 'POST':
+        try:
+            # Llamar al procedimiento almacenado para eliminar la reseña
+            with connection.cursor() as cursor:
+                cursor.callproc('app1_eliminar_resena', [resena_id])
+            messages.success(request, 'Reseña eliminada exitosamente.')
+        except Exception as e:
+            messages.error(request, f'Error al eliminar la reseña: {str(e)}')
+
+    return redirect('ver_resenas')

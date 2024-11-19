@@ -40,7 +40,7 @@ h1 {
 }
 
 .add-button:hover {
-    background-color: #45a049;
+    background-color: #00d9ff;
 }
 
 /* Estilo general para las secciones de reseñas */
@@ -73,22 +73,52 @@ h2 {
     color: #555;
 }
 
-/* Estilos para las reseñas individuales */
-.vehiculo,
-.calificacion,
-.comentarios,
-.fecha,
-.cliente {
-    font-weight: bold;
+/* Estilos para las acciones de reseña */
+.review-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-.comentarios {
-    font-style: italic;
-}
-
-.fecha {
-    color: #777;
+/* Botón Editar */
+.edit-button {
+    background-color: #5078FF;
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
     font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+    background-color: #5078FF;
+}
+
+/* Botón Eliminar */
+.delete-button {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+.delete-form {
+    margin: 0;
+    display: inline-block;
 }
 
 /* Estilo para cuando no hay reseñas */
@@ -97,7 +127,6 @@ h2 {
     font-size: 1.2rem;
     color: #888;
 }
-
 
 /* Botón de volver */
 .back-button {

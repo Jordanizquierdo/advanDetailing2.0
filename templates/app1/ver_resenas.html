@@ -29,6 +29,15 @@
                             <p class="calificacion"><strong>Calificación:</strong> {{ resena.calificacion }} / 5</p>
                             <p class="comentarios"><strong>Comentarios:</strong> "{{ resena.comentarios }}"</p>
                             <p class="fecha"><strong>Fecha:</strong> {{ resena.fecha_review }}</p>
+                            <div class="review-actions">
+                                <!-- Botón Editar -->
+                                <a href="{% url 'actualizar_resena' resena.id %}" class="edit-button">Editar</a>
+                                <!-- Botón Eliminar -->
+                                <form action="{% url 'eliminar_resena' resena.id %}" method="post" class="delete-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-button">Eliminar</button>
+                                </form>
+                            </div>
                         </article>
                     {% endfor %}
                 </div>

@@ -24,5 +24,8 @@ urlpatterns = [
     path('mision/', views.mision_view, name='mision'),
     path('resenas/', views.ver_resenas_view, name='ver_resenas'),
     path('agregar-resena/', views.agregar_resena_view, name='agregar_resena'),
+    path('actualizar_resena/<int:resena_id>/', views.actualizar_resena, name='actualizar_resena'),
+    path('eliminar_resena/<int:resena_id>/', views.eliminar_resena, name='eliminar_resena')
+
 
 ]
