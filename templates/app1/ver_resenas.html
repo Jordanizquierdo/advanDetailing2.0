@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseñas</title>
+    <link rel="stylesheet" href="{% static 'css/ver_resenas.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Reseñas</h1>
+        </header>
+
+        <!-- Botón para añadir reseña -->
+        <div class="add-button-container">
+            <a href="{% url 'agregar_resena' %}" class="add-button" aria-label="Añadir nueva reseña">+ Añadir Reseña</a>
+        </div>
+
+        <!-- Sección: Reseñas del cliente -->
+        <section class="user-reviews">
+            <h2>Mis Reseñas</h2>
+            {% if mis_resenas %}
+                <div class="reviews-container">
+                    {% for resena in mis_resenas %}
+                        <article class="review">
+                            <p class="vehiculo"><strong>Vehículo:</strong> {{ resena.vehiculo }}</p>
+                            <p class="calificacion"><strong>Calificación:</strong> {{ resena.calificacion }} / 5</p>
+                            <p class="comentarios"><strong>Comentarios:</strong> "{{ resena.comentarios }}"</p>
+                            <p class="fecha"><strong>Fecha:</strong> {{ resena.fecha_review }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-reviews">No has añadido ninguna reseña aún.</p>
+            {% endif %}
+        </section>
+
+        <!-- Sección: Todas las reseñas -->
+        <section class="all-reviews">
+            <h2>Reseñas de Otros Usuarios</h2>
+            {% if todas_resenas %}
+                <div class="reviews-container">
+                    {% for resena in todas_resenas %}
+                        <article class="review">
+                            <p class="vehiculo"><strong>Vehículo:</strong> {{ resena.vehiculo }}</p>
+                            <p class="calificacion"><strong>Calificación:</strong> {{ resena.calificacion }} / 5</p>
+                            <p class="comentarios"><strong>Comentarios:</strong> "{{ resena.comentarios }}"</p>
+                            <p class="cliente"><strong>Por:</strong> {{ resena.cliente_nombre }}</p>
+                            <p class="fecha"><strong>Fecha:</strong> {{ resena.fecha_review }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-reviews">No hay reseñas disponibles.</p>
+            {% endif %}
+        </section>
+    </div>
+    <a href="/" class="back-button">Volver</a>
+</body>
+</html>

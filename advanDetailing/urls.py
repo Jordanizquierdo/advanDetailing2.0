@@ -21,5 +21,8 @@ urlpatterns = [
     path('clientes/<int:cliente_id>/vehiculos/', views.cliente_vehiculos, name='cliente_vehiculos'),
     path('vision/', views.vision_view, name='vision'),
     path('quienes-somos/', views.quienes_somos_view, name='quienes_somos'),
-    path('mision/', views.mision_view, name='mision')
+    path('mision/', views.mision_view, name='mision'),
+    path('resenas/', views.ver_resenas_view, name='ver_resenas'),
+    path('agregar-resena/', views.agregar_resena_view, name='agregar_resena'),
+
 ]

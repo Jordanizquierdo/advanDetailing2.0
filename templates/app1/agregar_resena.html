@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Reseña</title>
+    <link rel="stylesheet" href="{% static 'css/resena.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Agregar Reseña</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="vehiculo_id">Selecciona tu Vehículo:</label>
+            <select name="vehiculo_id" id="vehiculo_id" required>
+                {% for vehiculo in vehiculos %}
+                    <option value="{{ vehiculo.id }}">{{ vehiculo.marca }} - {{ vehiculo.modelo }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="comentarios">Comentarios:</label>
+            <textarea name="comentarios" id="comentarios" required></textarea><br><br>
+
+            <label for="calificacion">Calificación:</label>
+            <select id="calificacion" name="calificacion" required>
+                <option value="">Selecciona una calificación</option>
+                {% for i in "12345" %}
+                    <option value="{{ i }}">{{ i }} Estrella{{ i|pluralize:"s" }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Agregar Reseña</button>
+        </form>
+
+        <br>
+        <a href="{% url 'ver_resenas' %}" class="back-button">Volver a Mis Reseñas</a>
+    </div>
+</body>
+</html>

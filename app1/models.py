@@ -26,7 +26,7 @@ class Reservas(models.Model):
     fecha_reserva = models.DateTimeField() 
     estado = models.CharField(max_length=20)
     administrador = models.ForeignKey('Encargado', on_delete=models.SET_NULL, null=True)
-    servicios = models.ManyToManyField('Servicios')  # Cambiado a ManyToManyField
+    servicios = models.ManyToManyField('Servicios')
     cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE, null=True)
     vehiculo = models.ForeignKey('Vehiculo', on_delete=models.CASCADE, null=True)
 

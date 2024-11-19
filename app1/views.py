@@ -1,10 +1,10 @@
 import json
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.utils.timezone import now
-from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo
+from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo,Reviews
 from .forms import CustomAuthenticationForm, ClienteForm, VehiculoFormSet
 from django.http import JsonResponse
 
@@ -276,3 +276,96 @@ def quienes_somos_view(request):
 
 def mision_view(request):
     return render(request, 'app1/mision.html')
+
+
+
+from django.shortcuts import render, redirect
+from django.db import connection
+from django.contrib import messages
+from django.utils.timezone import now
+from .models import Vehiculo, Clientes
+
+def agregar_resena_view(request):
+    if request.method == 'POST':
+        cliente_id = request.session.get('cliente_id')
+        vehiculo_id = request.POST.get('vehiculo_id')
+        comentarios = request.POST.get('comentarios')
+        calificacion = request.POST.get('calificacion')
+
+        errores = []
+
+        # Validaciones de los campos
+        if not cliente_id:
+            errores.append('No se encontró un cliente asociado. Por favor, inicia sesión.')
+        if not vehiculo_id:
+            errores.append('El campo "Vehículo" es obligatorio.')
+        if not comentarios or comentarios.strip() == "":
+            errores.append('El campo "Comentarios" es obligatorio.')
+        if not calificacion:
+            errores.append('El campo "Calificación" es obligatorio.')
+        elif not calificacion.isdigit() or int(calificacion) not in range(1, 6):
+            errores.append('La calificación debe ser un número entre 1 y 5.')
+
+        # Mostrar los errores, si existen
+        if errores:
+            for error in errores:
+                messages.error(request, error)
+            return redirect('agregar_resena')
+
+        # Proceder a guardar la reseña si no hay errores
+        try:
+            with connection.cursor() as cursor:
+                cursor.callproc('app1_crear_resena', [cliente_id, vehiculo_id, comentarios, calificacion])
+            messages.success(request, 'Reseña agregada exitosamente.')
+        except Exception as e:
+            messages.error(request, f'Hubo un problema al guardar la reseña: {e}')
+
+        return redirect('ver_resenas')
+
+    # Obtener los vehículos del cliente para el formulario
+    cliente_id = request.session.get('cliente_id')
+    vehiculos = Vehiculo.objects.filter(cliente_id=cliente_id) if cliente_id else []
+
+    return render(request, 'app1/agregar_resena.html', {'vehiculos': vehiculos})
+
+from django.shortcuts import render, redirect
+from django.db import connection
+
+def ver_resenas_view(request):
+    cliente_id = request.session.get('cliente_id')
+
+    mis_resenas = []
+    todas_resenas = []
+
+    # Obtener reseñas del cliente autenticado
+    if cliente_id:
+        with connection.cursor() as cursor:
+            cursor.callproc('app1_obtener_resenas_por_cliente', [cliente_id])
+            for row in cursor.fetchall():
+                mis_resenas.append({
+                    'id': row[0],
+                    'comentarios': row[1],
+                    'calificacion': row[2],
+                    'fecha_review': row[3],
+                    'vehiculo': f"{row[5]} {row[6]} ({row[7]})",  # Marca, modelo y patente
+                })
+
+    # Obtener todas las reseñas disponibles
+    with connection.cursor() as cursor:
+        cursor.callproc('app1_obtener_todas_resenas')
+        for row in cursor.fetchall():
+            todas_resenas.append({
+                'id': row[0],
+                'comentarios': row[1],
+                'calificacion': row[2],
+                'fecha_review': row[3],
+                'cliente_nombre': row[4],
+                'vehiculo': f"{row[5]} {row[6]} ({row[7]})",  # Marca, modelo y patente
+            })
+
+    return render(request, 'app1/ver_resenas.html', {
+        'mis_resenas': mis_resenas,
+        'todas_resenas': todas_resenas,
+    })
+
+
