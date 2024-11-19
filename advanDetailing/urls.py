@@ -19,4 +19,7 @@ urlpatterns = [
     path('vehiculosadmin/', views.ver_vehiculos_admin, name='ver_vehiculos_admin'),
     path('reservasadmin/', views.ver_reservas, name='ver_reservas_admin'),
     path('clientes/<int:cliente_id>/vehiculos/', views.cliente_vehiculos, name='cliente_vehiculos'),
+    path('vision/', views.vision_view, name='vision'),
+    path('quienes-somos/', views.quienes_somos_view, name='quienes_somos'),
+    path('mision/', views.mision_view, name='mision')
 ]

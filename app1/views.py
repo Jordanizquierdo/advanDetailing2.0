@@ -267,3 +267,12 @@ def cliente_vehiculos(request, cliente_id):
         return JsonResponse({'vehiculos': list(vehiculos)})
     except Clientes.DoesNotExist:
         return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
+
+def vision_view(request):
+    return render(request, 'app1/vision.html')
+
+def quienes_somos_view(request):
+    return render(request, 'app1/quienes-somos.html')
+
+def mision_view(request):
+    return render(request, 'app1/mision.html')
