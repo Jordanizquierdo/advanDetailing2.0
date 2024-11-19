@@ -193,22 +193,36 @@ function updateCartSidebar() {
   document.getElementById("btn-secondary").style.display = cart.length ? "block" : "none";
 }
 
-// Función para redirigir a la página de pago con los datos del carrito
-function PayCart() {
-  if (cart.length === 0) {
-    alert("El carrito está vacío. Añade servicios antes de proceder al pago.");
-    return;
-  }
-
-  const clienteIdParam = encodeURIComponent(clienteId);
-  const cartData = encodeURIComponent(JSON.stringify(cart));
-
-  // Redirige a la página del carrito con el carrito y el ID del cliente
-  window.location.href = `/carrito/?cartList=${cartData}&clienteId=${clienteIdParam}`;
-}
-
-// Función para limpiar el carrito
 function clearCart() {
   cart = [];
   updateCartSidebar();
+}
+
+
+function PayCart() {
+  // Verifica si el cliente está autenticado
+  if (!clienteId || clienteId === "") {
+    alert("Debes iniciar sesión para pagar el carrito.");
+    window.location.href = "/login/"; // Redirige al login si no está autenticado
+    return; 
+  }
+
+  // Verifica si el carrito está vacío
+  if (cart.length === 0) {
+    alert("El carrito está vacío. Añade servicios antes de proceder al pago.");
+    return; 
+  }
+
+  // Si el carrito tiene elementos y el usuario está autenticado, realiza el pago
+  const clienteIdParam = encodeURIComponent(clienteId);
+  const cartData = encodeURIComponent(JSON.stringify(cart));
+
+  // Redirige a la página del carrito con los parámetros necesarios (clienteId y cartData)
+  window.location.href = `/carrito/?cliente_id=${clienteIdParam}&cart=${cartData}`;
+}
+
+// menu desplegable
+function toggleMenu() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('slicebar-open');
 }

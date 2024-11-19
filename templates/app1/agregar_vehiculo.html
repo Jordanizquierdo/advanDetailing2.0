@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Vehículo</title>
+    <link rel="stylesheet" href="{% static 'css/vehiculos.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Agregar Vehículo</h2>
+        <form action="{% url 'agregar_vehiculo' %}" method="POST">
+            {% csrf_token %}
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca" placeholder="Ej: Toyota" required>
+            
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo" placeholder="Ej: Corolla" required>
+            
+            <label for="year">Año:</label>
+            <input type="text" id="year" name="year" placeholder="Ej: 2023" required>
+            
+            <label for="patente">Patente:</label>
+            <input type="text" id="patente" name="patente" placeholder="Ej: ABC123" required>
+            
+            <button type="submit">Agregar Vehículo</button>
+        </form>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'ver_vehiculos' %}" class="back-button">Volver</a>
+        </div>
+    </div>
+</body>
+</html>

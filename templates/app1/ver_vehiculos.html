@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Vehículos</title>
+    <link rel="stylesheet" href="{% static 'css/vehiculos.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Mis Vehículos</h2>
+
+        <!-- Botón para agregar un vehículo -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="{% url 'agregar_vehiculo' %}" class="add-button">Agregar Vehículo</a>
+        </div>
+
+        <div class="vehicle-list">
+            {% if vehiculos %}
+                {% for vehiculo in vehiculos %}
+                    <div class="vehicle-item">
+                        <p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
+                        <p><strong>Modelo:</strong> {{ vehiculo.modelo }}</p>
+                        <p><strong>Año:</strong> {{ vehiculo.year }}</p>
+                        <p><strong>Patente:</strong> {{ vehiculo.patente }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-vehicles">No tienes vehículos registrados.</p>
+            {% endif %}
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'home' %}" class="back-button">Volver</a>
+        </div>
+    </div>
+</body>
+</html>
