@@ -79,25 +79,15 @@ WSGI_APPLICATION = 'advanDetailing.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'database-1.c5km2iimkc8x.us-east-2.rds.amazonaws.com',
-        'NAME': 'advan',
-        'USER': 'admin',
-        'PASSWORD': '967Oa3uxoVkAG4qD4idR',
-        'PORT': '3306'
-    }
-}
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'lavado',
-#         'USER': 'root',
-#         'PASSWORD': ''
-#     }
-# }
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'lavado',
+         'USER': 'root',
+         'PASSWORD': ''
+     }
+ }
 
 
 # Password validation
@@ -122,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 

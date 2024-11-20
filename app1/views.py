@@ -17,31 +17,28 @@ def login_view(request):
         email = request.POST.get("email")
         password = request.POST.get("password").strip()
 
-        # Autenticación del cliente
         if email and password:
             try:
                 cliente = Clientes.objects.get(email__iexact=email)
                 if check_password(password, cliente.password):
                     request.session['cliente_id'] = cliente.id
                     return redirect("/home")
-                else:
-                    messages.error(request, "Contraseña incorrecta.")
             except Clientes.DoesNotExist:
-                messages.error(request, "No se encontró una cuenta con este correo.")
+                try:
+                    encargado = Encargado.objects.get(correo__iexact=email)
+                    if check_password(password, encargado.password):
+                        request.session['encargado_id'] = encargado.id
+                        return redirect("index_admin")
+                except Encargado.DoesNotExist:
+                    pass
 
-        # Autenticación del encargado
-        if email and password:
-            try:
-                encargado = Encargado.objects.get(correo__iexact=email)
-                if check_password(password, encargado.password):
-                    request.session['encargado_id'] = encargado.id
-                    return redirect("index_admin")
-                else:
-                    messages.error(request, "Contraseña incorrecta.")
-            except Encargado.DoesNotExist:
-                messages.error(request, "No se encontró una cuenta con este correo.")
+        # Mostrar mensaje genérico
+        messages.error(request, "Correo o contraseña incorrectos.")
 
     return render(request, "app1/login.html", {"form": form})
+
+
+
 
 
 def logout_view(request):

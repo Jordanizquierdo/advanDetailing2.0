@@ -14,21 +14,25 @@
             {% csrf_token %}
             
             <div class="input-field">
-                {{ form.username_or_email.label_tag }}
+                {{ form.email.label_tag }}
                 <input type="email" name="email" required>
             </div>
             
             <div class="input-field">
                 {{ form.password.label_tag }}
-                {{ form.password }}
+                {{ form.password }} 
             </div>
             
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <p class="error-message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <button type="submit" class="submit-button">Iniciar Sesión</button>
         </form>
-
-        {% if form.non_field_errors %}
-            <div class="error-message">{{ form.non_field_errors }}</div>
-        {% endif %}
 
         <a href="/register/" class="register-link">¿No tienes cuenta? Regístrate aquí</a>
     </div>
