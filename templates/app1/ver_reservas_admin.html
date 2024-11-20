@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reservas</title>
 </head>
 <body>
     {% extends "app1/index_admin.html" %}
@@ -11,49 +11,81 @@
     {% block title %}Reservas{% endblock %}
 
     {% block content %}
-<div class="table-container">
-    <div class="table-title">Reservas</div><br>
-    <table>
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Vehículo</th>
-                <th>Servicios</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for reserva in reservas %}
-            <tr>
-                <td>{{ reserva.cliente.nombre }}</td>
-                <td>{{ reserva.vehiculo.marca }} {{ reserva.vehiculo.modelo }}</td>
-                <td>
-                    <ul>
-                        {% for servicio in reserva.servicios.all %}
-                        <li>{{ servicio.nombre_servicio }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                <td>{{ reserva.fecha_reserva }}</td>
-                <td>{{ reserva.estado }}</td>
-                <td>
-                    <form method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="reserva_id" value="{{ reserva.id }}">
-                        <select name="estado">
-                            <option value="pendiente" {% if reserva.estado == "pendiente" %}selected{% endif %}>Pendiente</option>
-                            <option value="confirmado" {% if reserva.estado == "confirmado" %}selected{% endif %}>Confirmado</option>
-                        </select>
-                        <button type="submit">Actualizar</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-    {% endblock %}   
+    <div class="table-container">
+        <div class="table-title">Reservas Futuras</div><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Servicios</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas_futuras %}
+                <tr>
+                    <td>{{ reserva.cliente.nombre }}</td>
+                    <td>{{ reserva.vehiculo.marca }} {{ reserva.vehiculo.modelo }}</td>
+                    <td>
+                        <ul>
+                            {% for servicio in reserva.servicios.all %}
+                            <li>{{ servicio.nombre_servicio }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ reserva.fecha_reserva }}</td>
+                    <td>{{ reserva.estado }}</td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="reserva_id" value="{{ reserva.id }}">
+                            <select name="estado">
+                                <option value="pendiente" {% if reserva.estado == "pendiente" %}selected{% endif %}>Pendiente</option>
+                                <option value="confirmado" {% if reserva.estado == "confirmado" %}selected{% endif %}>Confirmado</option>
+                            </select>
+                            <button type="submit">Actualizar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-container">
+        <div class="table-title">Reservas Pasadas</div><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Servicios</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas_pasadas %}
+                <tr>
+                    <td>{{ reserva.cliente.nombre }}</td>
+                    <td>{{ reserva.vehiculo.marca }} {{ reserva.vehiculo.modelo }}</td>
+                    <td>
+                        <ul>
+                            {% for servicio in reserva.servicios.all %}
+                            <li>{{ servicio.nombre_servicio }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ reserva.fecha_reserva }}</td>
+                    <td>{{ reserva.estado }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
 </body>
 </html>

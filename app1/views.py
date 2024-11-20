@@ -236,8 +236,9 @@ def ver_vehiculos_admin(request):
     }
     return render(request, 'app1/ver_vehiculos_admin.html', context)
 
-def ver_reservas(request):
-    reservas = Reservas.objects.select_related('cliente', 'vehiculo').prefetch_related('servicios').all()
+def ver_reservas_admin(request):
+    reservas_futuras = Reservas.objects.filter(hora_reserva__gte=now()).select_related('cliente', 'vehiculo').prefetch_related('servicios')
+    reservas_pasadas = Reservas.objects.filter(hora_reserva__lt=now()).select_related('cliente', 'vehiculo').prefetch_related('servicios')
 
     if request.method == 'POST':
         reserva_id = request.POST.get('reserva_id')
@@ -248,11 +249,13 @@ def ver_reservas(request):
             reserva.save()
         except Reservas.DoesNotExist:
             messages.error(request, "La reserva no existe.")
-    
+
     context = {
-        'reservas': reservas,
+        'reservas_futuras': reservas_futuras,
+        'reservas_pasadas': reservas_pasadas,
     }
     return render(request, 'app1/ver_reservas_admin.html', context)
+
 
 def cliente_vehiculos(request, cliente_id):
     try:
