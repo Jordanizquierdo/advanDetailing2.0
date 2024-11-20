@@ -9,7 +9,7 @@ from .forms import CustomAuthenticationForm, ClienteForm, VehiculoFormSet
 from django.http import JsonResponse
 from django.db import connection
 
-
+#esto cambiado
 def login_view(request):
     form = CustomAuthenticationForm()
 
@@ -32,7 +32,7 @@ def login_view(request):
                 except Encargado.DoesNotExist:
                     pass
 
-        # Mostrar mensaje genérico
+        # Muestra mensaje
         messages.error(request, "Correo o contraseña incorrectos.")
 
     return render(request, "app1/login.html", {"form": form})

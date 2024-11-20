@@ -3,9 +3,9 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
 from .models import Clientes, Encargado,Vehiculo
 from django.forms import inlineformset_factory
-
+# esto esta cambiado
 class CustomAuthenticationForm(forms.Form):
-    email = forms.CharField(label="Email")  # Mantén el nombre para que coincida con tu diseño
+    email = forms.CharField(label="Email")
     password = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
 
     def clean(self):
@@ -43,7 +43,7 @@ class CustomAuthenticationForm(forms.Form):
 
 
 
-
+# esto tambien cambiado
 class ClienteForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'required': 'true'}), label="Contraseña")
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'required': 'true'}), label="Confirmar Contraseña")
@@ -75,7 +75,7 @@ class ClienteForm(forms.ModelForm):
             cliente.save()
         return cliente
 
-
+#igual que este.
 class VehiculoForm(forms.ModelForm):
     class Meta:
         model = Vehiculo
