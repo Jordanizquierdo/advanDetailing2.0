@@ -12,7 +12,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f3f4f6;
+    background-color: #1a1a2e;
 }
 
 .form-container {
@@ -89,4 +89,26 @@ h2 {
 
 .register-link:hover {
     text-decoration: underline;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-in-out forwards;
+}
+
+/* Formulario animado */
+.form-container {
+    animation: fadeInUp 1s ease-in-out forwards;
 }

@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/mvs.css' %}">
     <title>Visión - AdvanDetailing</title>
     <style>
         body {
@@ -26,7 +28,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         h1, h2 {
-            color: #00796B;
+            color: #ffffff;
         }
         p {
             line-height: 1.6;
@@ -39,6 +41,13 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+        }
+        a {
+            color: #333;
+            text-align: center;
+            align-items: center;
+            position: fixed;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -56,7 +65,9 @@
         <p>
             Queremos ser reconocidos por nuestro compromiso con la excelencia, el profesionalismo y el cuidado detallado de cada vehículo, construyendo relaciones duraderas con nuestros clientes y contribuyendo a la preservación del valor y la estética de sus autos.
         </p>
+            <a href="/">Volver al inicio</a>
     </section>
+
     <footer>
         &copy; 2024 AdvanDetailing. Todos los derechos reservados.
     </footer>

@@ -46,10 +46,16 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
     serviceDetailsHTML = `
       <div class="service-details-container">
         <div class="service-details-column">
-          <p>Lavado exterior</p>
-          <p>Limpieza interior</p>
-          <p>Aspirado</p>
-          <p>Limpieza de tableros</p>
+          <p>Este servicio contiene:</p>
+          <p>- Lavado exterior</p>
+          <p>- Limpieza interior</p>
+          <p>- Aspirado</p>
+          <p>- Limpieza de tableros</p>
+        </div>
+        <div class="service-details-column">
+          <p>- Limpieza de llantas</p>
+          <p>- Limpieza Maletero + Marcos</p>
+          <p>- Lavado de vidrios y espejos</p>
         </div>
         <div class="service-details-center">
           <h3>${serviceName}</h3>
@@ -58,11 +64,6 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
-        </div>
-        <div class="service-details-column">
-          <p>Limpieza de llantas</p>
-          <p>Limpieza Maletero + Marcos</p>
-          <p>Lavado de vidrios y espejos</p>
         </div>
       </div>
     `;
@@ -70,10 +71,16 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
     serviceDetailsHTML = `
       <div class="service-details-container">
         <div class="service-details-column">
-          <p>Lavado exterior completo</p>
-          <p>Limpieza profunda de asientos</p>
-          <p>Aspirado y lavado de alfombras</p>
-          <p>Desinfección interior</p>
+          <p>Este servicio contiene:</p>
+          <p>- Lavado exterior completo</p>
+          <p>- Limpieza profunda de asientos</p>
+          <p>- Aspirado y lavado de alfombras</p>
+          <p>- Desinfección interior</p>
+        </div>
+        <div class="service-details-column">
+          <p>- Limpieza de llantas y rines</p>
+          <p>- Protección de tableros</p>
+          <p>- Limpieza de espejos</p>
         </div>
         <div class="service-details-center">
           <h3>${serviceName}</h3>
@@ -82,11 +89,6 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
-        </div>
-        <div class="service-details-column">
-          <p>Limpieza de llantas y rines</p>
-          <p>Protección de tableros</p>
-          <p>Limpieza de espejos</p>
         </div>
       </div>
     `;
@@ -94,12 +96,20 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
     serviceDetailsHTML = `
       <div class="service-details-container">
         <div class="service-details-column">
-          <p>Lavado exterior</p>
-          <p>Limpieza interior</p>
-          <p>Aspirado</p>
-          <p>Limpieza de tableros</p>
-          <p>Encerado / Brillo</p>
-          <p>Lavado de Asientos</p>
+          <p>Este servicio contiene:</p>
+          <p>- Lavado exterior</p>
+          <p>- Limpieza interior</p>
+          <p>- Aspirado</p>
+          <p>- Limpieza de tableros</p>
+          <p>- Encerado / Brillo</p>
+          <p>- Lavado de Asientos</p>
+        </div>
+        <div class="service-details-column">
+          <p>- Limpieza de llantas</p>
+          <p>- Limpieza Maletero + marcos</p>
+          <p>- Lavado de vidrios y espejos</p>
+          <p>- Silicona + renovador</p>
+          <p>- Lavado de Alfombras</p>
         </div>
         <div class="service-details-center">
           <h3>${serviceName}</h3>
@@ -108,13 +118,6 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
           </button>
-        </div>
-        <div class="service-details-column">
-          <p>Limpieza de llantas</p>
-          <p>Limpieza Maletero + marcos</p>
-          <p>Lavado de vidrios y espejos</p>
-          <p>Silicona + renovador</p>
-          <p>Lavado de Alfombras</p>
         </div>
       </div>
     `;
@@ -126,7 +129,8 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         </div>
         <div class="special-service">
           <h4>Grabado de patente</h4>
-          <p>Valor: $15,000</p>
+          <p>Grabado láser de patente en vidrios</p>
+          <p class="service-details-price">Valor: $15,000</p>
           <button class="add-to-cart-button" onclick="addToCart('Grabado de patente', 15000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
@@ -134,7 +138,9 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         </div>
         <div class="special-service">
           <h4>Cueros (Limpieza a vapor y humectación)</h4>
-          <p>Valor: $25,000</p>
+          <p>Limpieza a vapor</p>
+          <p>Humectación de cueros</p>
+          <p class="service-details-price">Valor: $25,000</p>
           <button class="add-to-cart-button" onclick="addToCart('Cueros (Limpieza a vapor y humectación)', 25000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
@@ -142,7 +148,9 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         </div>
         <div class="special-service">
           <h4>Sanitización con retiro de malos olores</h4>
-          <p>Valor: $20,000</p>
+          <p>Desinfección profunda</p>
+          <p>Eliminación de olores</p>
+          <p class="service-details-price">Valor: $20,000</p>
           <button class="add-to-cart-button" onclick="addToCart('Sanitización con retiro de malos olores', 20000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
@@ -150,7 +158,9 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         </div>
         <div class="special-service">
           <h4>Pulido de carrocería</h4>
-          <p>Valor: $45,000</p>
+          <p>Pulido y abrillantado profesional</p>
+          <p>Eliminación de rayones menores</p>
+          <p class="service-details-price">Valor: $45,000</p>
           <button class="add-to-cart-button" onclick="addToCart('Pulido de carrocería', 45000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
@@ -158,7 +168,9 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
         </div>
         <div class="special-service">
           <h4>Limpieza de tableros a vapor</h4>
-          <p>Valor: $15,000</p>
+          <p>Limpieza profunda con vapor</p>
+          <p>Restauración de superficies</p>
+          <p class="service-details-price">Valor: $15,000</p>
           <button class="add-to-cart-button" onclick="addToCart('Limpieza de tableros a vapor', 15000, 'especial')">
             Añadir al carrito
             <i class="fa fa-plus add-to-cart-icon"></i>
@@ -171,6 +183,7 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
   serviceDetailsContainer.innerHTML = serviceDetailsHTML;
   serviceDetailsContainer.style.display = "block";
 }
+
 
 // Función para actualizar el carrito en la barra lateral
 function updateCartSidebar() {
@@ -267,3 +280,18 @@ function closeModal() {
   const modal = document.getElementById('modal');
   modal.style.display = 'none';
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const elementsToAnimate = document.querySelectorAll(".main-container, .slicebar, .services, .service, .service-details-container, .special-service, h1");
+
+  elementsToAnimate.forEach((element) => {
+    element.classList.add("animated");
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const animatedElements = document.querySelectorAll(".animated");
+  animatedElements.forEach((element, index) => {
+      element.style.animationDelay = `${index * 0.2}s`;
+  });
+});

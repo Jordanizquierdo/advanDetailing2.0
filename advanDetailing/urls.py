@@ -17,15 +17,13 @@ urlpatterns = [
     path('login/', views.login_view, name='login'), 
     path('clientesadmin/', views.ver_clientes, name='ver_clientes_admin'),
     path('vehiculosadmin/', views.ver_vehiculos_admin, name='ver_vehiculos_admin'),
-    path('reservasadmin/', views.ver_reservas, name='ver_reservas_admin'),
+    path('reservasadmin/', views.ver_reservas_admin, name='ver_reservas_admin'),
     path('clientes/<int:cliente_id>/vehiculos/', views.cliente_vehiculos, name='cliente_vehiculos'),
     path('vision/', views.vision_view, name='vision'),
     path('quienes-somos/', views.quienes_somos_view, name='quienes_somos'),
     path('mision/', views.mision_view, name='mision'),
-    path('resenas/', views.ver_resenas_view, name='ver_resenas'),
+    path('resenas/', views.ver_resenas_view, name='ver_resenas_view'),
     path('agregar-resena/', views.agregar_resena_view, name='agregar_resena'),
     path('actualizar_resena/<int:resena_id>/', views.actualizar_resena, name='actualizar_resena'),
     path('eliminar_resena/<int:resena_id>/', views.eliminar_resena, name='eliminar_resena')
-
-
 ]

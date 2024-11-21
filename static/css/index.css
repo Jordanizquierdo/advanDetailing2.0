@@ -1,7 +1,7 @@
 /* Estilos Generales */
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f4f6f8;
+  background-color: #424452;
   color: #333;
   margin: 0;
   padding: 0;
@@ -50,19 +50,21 @@ body {
   gap: 30px;
   max-width: 1200px;
   margin: 100px auto;
+  background-color: #424452;
 }
 
 /* Barra Lateral de Carrito */
 .slicebar {
-  background-color: #1a1a2e;
-  color: #FFF;
-  width: 280px;
-  height: calc(100vh - 100px);
-  padding: 30px;
+  background-color: #1a1a2e; 
+  color: #FFF; 
+  width: 260px;
+  padding: 20px;
   border-radius: 10px;
-  
+  height: auto;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  justify-content: center; 
 }
+
 
 .slicebar-title {
   display: flex;
@@ -98,9 +100,11 @@ body {
 /* Estilos de Servicios */
 .services {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-wrap: wrap;             
+  justify-content: center;    
+  gap: 20px;                   
 }
+
 
 .service {
   background-color: #FFF;
@@ -155,6 +159,8 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   margin-top: 20px;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
 .service-details-column {
@@ -167,10 +173,12 @@ body {
 }
 
 .service-details-price {
-  font-size: 20px;
+  text-align: right;
+  font-size: 18px;
   font-weight: bold;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
+
 
 .add-to-cart-button {
   background-color: transparent;
@@ -182,6 +190,7 @@ body {
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
   margin-top: auto;
+  margin-bottom: 10px;
 }
 
 .add-to-cart-button:hover {
@@ -190,20 +199,33 @@ body {
 }
 
 .special-service {
-  padding: 15px;
-  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   border: 1px solid #FFF;
   border-radius: 8px;
   background-color: #333;
-  width: 100px;
-  height: 230px;
+  width: 200px;
+  height: 220px;
   color: #FFF;
-  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .special-service h4 {
-  margin: 0;
-  font-size: 18px;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.special-service p {
+  font-size: 14px;
+  margin-bottom: 5px
+}
+
+.special-service h3 {
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 /* Botón para el Panel de Administración */
@@ -219,4 +241,34 @@ body {
 
 .admin-button:hover {
   background-color: #00a3c4;
+}
+
+h1 {
+  text-align: center;
+  color: #FFF;
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación inicial (sin mostrar) */
+.animated {
+  opacity: 0;
+  animation: fadeInUp 1s ease-in-out forwards;
+}
+
+/* Asegurarse que la topbar no tenga animaciones */
+.topbar-content {
+  animation: none;
 }
