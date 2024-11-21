@@ -11,42 +11,47 @@
     {% block title %}Clientes Registrados{% endblock %}
     
     {% block content %}
-<div class="table-container">
-    <div class="table-title">Clientes Registrados</div>
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cliente in clientes %}
-            <tr>
-                <td>{{ cliente.nombre }}</td>
-                <td>{{ cliente.email }}</td>
-                <td>{{ cliente.telefono }}</td>
-                <td>
-                    <button onclick="openModal('{{ cliente.id }}')" class="btn-modal">Ver Vehículos Asociados</button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Vehículos Asociados</h2>
-            <div id="modal-body">
+    <div class="table-container">
+        <div class="table-title">Clientes Registrados</div>
 
+        {% if clientes %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.nombre }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.telefono }}</td>
+                        <td>
+                            <button onclick="openModal('{{ cliente.id }}')" class="btn-modal">Ver Vehículos Asociados</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">No hay clientes registrados.</p>
+        {% endif %}
+    
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Vehículos Asociados</h2>
+                <div id="modal-body">
+
+                </div>
             </div>
         </div>
     </div>
-</div>
     {% endblock %}
 
 </body>

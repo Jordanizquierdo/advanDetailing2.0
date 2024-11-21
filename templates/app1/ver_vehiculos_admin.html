@@ -13,29 +13,34 @@
     {% block content %}
     <div class="table-container">
         <div class="table-title">Vehículos Registrados</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Año</th>
-                    <th>Patente</th>
-                    <th>Cliente Asociado</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for vehiculo in vehiculos %}
-                <tr>
-                    <td>{{ vehiculo.marca }}</td>
-                    <td>{{ vehiculo.modelo }}</td>
-                    <td>{{ vehiculo.year }}</td>
-                    <td>{{ vehiculo.patente }}</td>
-                    <td>{{ vehiculo.cliente.nombre }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+        {% if vehiculos %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Año</th>
+                        <th>Patente</th>
+                        <th>Cliente Asociado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vehiculo in vehiculos %}
+                    <tr>
+                        <td>{{ vehiculo.marca }}</td>
+                        <td>{{ vehiculo.modelo }}</td>
+                        <td>{{ vehiculo.year }}</td>
+                        <td>{{ vehiculo.patente }}</td>
+                        <td>{{ vehiculo.cliente.nombre }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">No hay vehículos registrados.</p>
+        {% endif %}
     </div>
-        {% endblock %}
+    {% endblock %}
 </body>
 </html>

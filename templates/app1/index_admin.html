@@ -36,6 +36,8 @@
         {% block content %}
     <div class="table-container">
         <div class="table-title">Reservas</div><br>
+        
+        {% if reservas %}
         <table>
             <thead>
                 <tr>
@@ -58,6 +60,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <p class="no-data">No hay reservas registradas.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

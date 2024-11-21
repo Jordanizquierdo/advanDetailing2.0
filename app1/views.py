@@ -17,31 +17,37 @@ def login_view(request):
         email = request.POST.get("email")
         password = request.POST.get("password").strip()
 
-        # Autenticación del cliente
-        if email and password:
-            try:
-                cliente = Clientes.objects.get(email__iexact=email)
-                if check_password(password, cliente.password):
-                    request.session['cliente_id'] = cliente.id
-                    return redirect("/home")
-                else:
-                    messages.error(request, "Contraseña incorrecta.")
-            except Clientes.DoesNotExist:
-                messages.error(request, "No se encontró una cuenta con este correo.")
+        # Validar si se recibió email y contraseña
+        if not email or not password:
+            messages.error(request, "Por favor, ingrese todos los campos.")
+            return render(request, "app1/login.html", {"form": form})
 
-        # Autenticación del encargado
-        if email and password:
-            try:
-                encargado = Encargado.objects.get(correo__iexact=email)
-                if check_password(password, encargado.password):
-                    request.session['encargado_id'] = encargado.id
-                    return redirect("index_admin")
-                else:
-                    messages.error(request, "Contraseña incorrecta.")
-            except Encargado.DoesNotExist:
-                messages.error(request, "No se encontró una cuenta con este correo.")
+        # Autenticación del encargado primero
+        try:
+            encargado = Encargado.objects.get(correo__iexact=email)
+            if check_password(password, encargado.password):
+                request.session['encargado_id'] = encargado.id
+                return redirect("index_admin")
+            else:
+                messages.error(request, "Contraseña incorrecta para encargado.")
+        except Encargado.DoesNotExist:
+            # Continúa con cliente si no existe el encargado
+            pass
+
+        # Autenticación del cliente
+        try:
+            cliente = Clientes.objects.get(email__iexact=email)
+            if check_password(password, cliente.password):
+                request.session['cliente_id'] = cliente.id
+                return redirect("/home")
+            else:
+                messages.error(request, "Contraseña incorrecta para cliente.")
+        except Clientes.DoesNotExist:
+            # Si no se encuentra en ninguno de los modelos
+            messages.error(request, "No se encontró una cuenta con este correo.")
 
     return render(request, "app1/login.html", {"form": form})
+
 
 
 def logout_view(request):

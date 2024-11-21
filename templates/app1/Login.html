@@ -22,13 +22,18 @@
                 {{ form.password.label_tag }}
                 {{ form.password }}
             </div>
+            {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <span style="color: red;">{{ message }}</span>
+            {% endfor %}
+            </ul>
+            {% endif %}
+
             
             <button type="submit" class="submit-button">Iniciar Sesión</button>
         </form>
 
-        {% if form.non_field_errors %}
-            <div class="error-message">{{ form.non_field_errors }}</div>
-        {% endif %}
 
         <a href="/register/" class="register-link">¿No tienes cuenta? Regístrate aquí</a>
     </div>

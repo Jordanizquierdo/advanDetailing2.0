@@ -295,3 +295,33 @@ document.addEventListener("DOMContentLoaded", () => {
       element.style.animationDelay = `${index * 0.2}s`;
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  if (form) {
+      form.style.animationDelay = "0.2s";
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Animar el título de la tabla
+  const tableTitle = document.querySelector(".table-title");
+  if (tableTitle) {
+      tableTitle.classList.add("table-header");
+      tableTitle.style.animationDelay = "0.1s";
+  }
+
+  // Selecciona las cabeceras de la tabla
+  const tableHeaders = document.querySelectorAll("table thead tr th");
+  tableHeaders.forEach((header, index) => {
+      header.classList.add("table-header");
+      header.style.animationDelay = `${index * 0.1 + 0.2}s`; // Inicia después del título
+  });
+
+  // Selecciona las filas de la tabla
+  const tableRows = document.querySelectorAll("table tbody tr");
+  tableRows.forEach((row, index) => {
+      row.classList.add("table-row");
+      row.style.animationDelay = `${index * 0.2 + 0.5}s`; // Inicia después de las cabeceras
+  });
+});
