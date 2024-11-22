@@ -144,20 +144,15 @@ def carrito(request):
 def registrar_cliente(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
-        formset = VehiculoFormSet(request.POST)
-
-        if form.is_valid() and formset.is_valid():
+        
+        if form.is_valid():
             cliente = form.save()
-            vehiculos = formset.save(commit=False)
-            for vehiculo in vehiculos:
-                vehiculo.cliente = cliente
-                vehiculo.save()
             return redirect('/')
     else:
         form = ClienteForm()
-        formset = VehiculoFormSet()
 
-    return render(request, 'app1/Registro.html', {'form': form, 'formset': formset})
+    return render(request, 'app1/Registro.html', {'form': form})
+
 
 
 def reservas_view(request):
@@ -407,3 +402,5 @@ def eliminar_resena(request, resena_id):
             messages.error(request, f'Error al eliminar la reseña: {str(e)}')
 
     return redirect('ver_resenas')
+
+

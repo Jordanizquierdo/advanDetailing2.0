@@ -1,82 +1,108 @@
 /* registro_cliente.css */
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #1a1a2e;
-  }
-  
-  .form-container {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
-    max-width: 400px;
-    width: 100%;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333333;
-  }
-  
-  .input-field {
-    margin-bottom: 1rem;
-  }
-  
-  .input-field label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #555555;
-  }
-  
-  .input-field input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .input-field input:focus {
-    border-color: #4a90e2;
-    outline: none;
-  }
-  
-  .error-message {
-    color: #d9534f;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #4a90e2;
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submit-button:hover {
-    background-color: #357ab8;
-  }
-  
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #1a1a2e;
+}
+
+.form-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333333;
+}
+
+.input-field {
+  margin-bottom: 1rem;
+}
+
+.input-field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #555555;
+}
+
+.input-field input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.input-field input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.input-field select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: #333333;
+  transition: border-color 0.3s ease;
+}
+
+.input-field select:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.input-field select:hover {
+  border-color: #4a90e2;
+}
+
+.option {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #4a90e2;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #357ab8;
+}
+
 /* Animaciones */
 @keyframes fadeInUp {
   from {
@@ -89,8 +115,18 @@
   }
 }
 
-/* Aplicar animaciones al formulario */
 form {
   opacity: 0;
   animation: fadeInUp 1s ease-in-out forwards;
-} 
+}
+
+/* Estilo para el mensaje adicional */
+.info-message {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #555555;
+}
+
+
