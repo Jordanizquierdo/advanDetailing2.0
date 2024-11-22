@@ -1,14 +1,182 @@
+
 import json
 from datetime import datetime
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.utils.timezone import now
-from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo,Reviews
+from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo, Reviews
 from .forms import CustomAuthenticationForm, ClienteForm, VehiculoFormSet
 from django.http import JsonResponse
 from django.db import connection
 
+
+def carrito(request):
+    cliente_id = request.session.get('cliente_id')
+    if not cliente_id:
+        messages.error(request, "Debes iniciar sesión para pagar.")
+        return redirect('login')
+
+    cart_data = request.GET.get("cartList", "[]")
+    try:
+        cart_data = json.loads(cart_data)
+    except json.JSONDecodeError:
+        cart_data = []
+
+    total = sum(item['price'] for item in cart_data)
+    duracion_total = sum(Servicios.objects.get(id=item['id']).duracion for item in cart_data)
+
+    context = {'cart_items': cart_data, 'total': total, 'duracion_total': duracion_total}
+
+    try:
+        cliente = Clientes.objects.get(id=cliente_id)
+        vehiculos = cliente.vehiculos.all()
+        context['vehiculos'] = vehiculos
+    except Clientes.DoesNotExist:
+        context['error'] = "Cliente no encontrado."
+        return render(request, 'app1/carrito.html', context)
+
+    if request.method == 'POST':
+        fecha_reserva = request.POST.get('fecha_reserva')
+        hora_reserva = request.POST.get('hora_reserva')
+        vehiculo_id = request.POST.get('vehiculo')
+        estado = "pendiente"
+
+        try:
+            fecha_hora_reserva = datetime.strptime(f"{fecha_reserva} {hora_reserva}", "%Y-%m-%d %H:%M")
+        except ValueError:
+            context['error'] = "Fecha y hora no válidas."
+            return render(request, 'app1/carrito.html', context)
+
+        try:
+            vehiculo = Vehiculo.objects.get(id=vehiculo_id)
+        except Vehiculo.DoesNotExist:
+            context['error'] = "Vehículo no válido."
+            return render(request, 'app1/carrito.html', context)
+
+        reserva = Reservas(
+            hora_reserva=fecha_hora_reserva,
+            fecha_reserva=fecha_hora_reserva,
+            estado=estado,
+            cliente=cliente,
+            vehiculo=vehiculo,
+        )
+        reserva.save()
+
+        for item in cart_data:
+            servicio = Servicios.objects.get(id=item['id'])
+            reserva.servicios.add(servicio)
+
+        return redirect('home')
+
+    return render(request, 'app1/carrito.html', context)
+
+
+def reservas_view(request):
+    cliente_id = request.session.get('cliente_id')
+    if not cliente_id:
+        return redirect('login')
+
+    try:
+        cliente = Clientes.objects.get(id=cliente_id)
+        reservas_futuras = Reservas.objects.filter(
+            cliente=cliente,
+            hora_reserva__gte=now(),
+            estado="pendiente"
+        ).select_related('vehiculo').prefetch_related('servicios')
+
+        reservas_pasadas = Reservas.objects.filter(
+            cliente=cliente,
+            hora_reserva__lt=now(),
+            estado="completada"
+        ).select_related('vehiculo').prefetch_related('servicios')
+    except Clientes.DoesNotExist:
+        reservas_futuras = []
+        reservas_pasadas = []
+        cliente = None
+
+    context = {
+        'reservas_futuras': reservas_futuras,
+        'reservas_pasadas': reservas_pasadas,
+        'cliente': cliente,
+    }
+    return render(request, 'app1/reservas.html', context)
+
+
+def agregar_resena_view(request):
+    if request.method == 'POST':
+        cliente_id = request.session.get('cliente_id')
+        vehiculo_id = request.POST.get('vehiculo_id')
+        comentarios = request.POST.get('comentarios')
+        calificacion = request.POST.get('calificacion')
+
+        errores = []
+
+        if not cliente_id:
+            errores.append('No se encontró un cliente asociado. Por favor, inicia sesión.')
+        if not vehiculo_id:
+            errores.append('El campo "Vehículo" es obligatorio.')
+        if not comentarios or comentarios.strip() == "":
+            errores.append('El campo "Comentarios" es obligatorio.')
+        if not calificacion:
+            errores.append('El campo "Calificación" es obligatorio.')
+        elif not calificacion.isdigit() or int(calificacion) not in range(1, 6):
+            errores.append('La calificación debe ser un número entre 1 y 5.')
+
+        if errores:
+            for error in errores:
+                messages.error(request, error)
+            return redirect('agregar_resena')
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.callproc('app1_crear_resena', [cliente_id, vehiculo_id, comentarios, calificacion])
+            messages.success(request, 'Reseña agregada exitosamente.')
+        except Exception as e:
+            messages.error(request, f'Hubo un problema al guardar la reseña: {e}')
+
+        return redirect('ver_resenas')
+
+    cliente_id = request.session.get('cliente_id')
+    vehiculos = Vehiculo.objects.filter(cliente_id=cliente_id) if cliente_id else []
+
+    return render(request, 'app1/agregar_resena.html', {'vehiculos': vehiculos})
+
+
+def ver_resenas_view(request):
+    cliente_id = request.session.get('cliente_id')
+
+    mis_resenas = []
+    todas_resenas = []
+
+    if cliente_id:
+        with connection.cursor() as cursor:
+            cursor.callproc('app1_obtener_resenas_por_cliente', [cliente_id])
+            for row in cursor.fetchall():
+                mis_resenas.append({
+                    'id': row[0],
+                    'comentarios': row[1],
+                    'calificacion': row[2],
+                    'fecha_review': row[3],
+                    'vehiculo': f"{row[5]} {row[6]} ({row[7]})",
+                })
+
+    with connection.cursor() as cursor:
+        cursor.callproc('app1_obtener_todas_resenas')
+        for row in cursor.fetchall():
+            todas_resenas.append({
+                'id': row[0],
+                'comentarios': row[1],
+                'calificacion': row[2],
+                'fecha_review': row[3],
+                'cliente_nombre': row[4],
+                'vehiculo': f"{row[5]} {row[6]} ({row[7]})",
+            })
+
+    return render(request, 'app1/ver_resenas.html', {
+        'mis_resenas': mis_resenas,
+        'todas_resenas': todas_resenas,
+    })
 
 def login_view(request):
     form = CustomAuthenticationForm()
@@ -31,23 +199,20 @@ def login_view(request):
             else:
                 messages.error(request, "Contraseña incorrecta para encargado.")
         except Encargado.DoesNotExist:
-            # Continúa con cliente si no existe el encargado
-            pass
+            pass  # Continúa con cliente si no existe el encargado
 
         # Autenticación del cliente
         try:
             cliente = Clientes.objects.get(email__iexact=email)
             if check_password(password, cliente.password):
                 request.session['cliente_id'] = cliente.id
-                return redirect("/home")
+                return redirect("home")
             else:
                 messages.error(request, "Contraseña incorrecta para cliente.")
         except Clientes.DoesNotExist:
-            # Si no se encuentra en ninguno de los modelos
             messages.error(request, "No se encontró una cuenta con este correo.")
 
     return render(request, "app1/login.html", {"form": form})
-
 
 
 def logout_view(request):
@@ -81,6 +246,7 @@ def index_admin(request):
         'reservas': reservas,
     }
     return render(request, 'app1/index_admin.html', context)
+
 
 def carrito(request):
     cliente_id = request.session.get('cliente_id')
@@ -133,8 +299,11 @@ def carrito(request):
         reserva.save()
 
         for item in cart_data:
-            servicio = Servicios.objects.get(id=item['id'])
-            reserva.servicios.add(servicio)
+            try:
+                servicio = Servicios.objects.get(id=item['id'])
+                reserva.servicios.add(servicio)
+            except Servicios.DoesNotExist:
+                continue
 
         return redirect('home')
 
@@ -152,7 +321,9 @@ def registrar_cliente(request):
             for vehiculo in vehiculos:
                 vehiculo.cliente = cliente
                 vehiculo.save()
-            return redirect('/')
+            return redirect('home')
+        else:
+            messages.error(request, "Error al registrar cliente o vehículos. Verifique los datos.")
     else:
         form = ClienteForm()
         formset = VehiculoFormSet()
@@ -160,33 +331,27 @@ def registrar_cliente(request):
     return render(request, 'app1/Registro.html', {'form': form, 'formset': formset})
 
 
-def reservas_view(request):
-    cliente_id = request.session.get('cliente_id')
-    if not cliente_id:
-        return redirect('login')
 
-    try:
-        cliente = Clientes.objects.get(id=cliente_id)
-        reservas_futuras = Reservas.objects.filter(
-            cliente=cliente,
-            hora_reserva__gte=now()
-        ).select_related('vehiculo').prefetch_related('servicios')
 
-        reservas_pasadas = Reservas.objects.filter(
-            cliente=cliente,
-            hora_reserva__lt=now()
-        ).select_related('vehiculo').prefetch_related('servicios')
-    except Clientes.DoesNotExist:
-        reservas_futuras = []
-        reservas_pasadas = []
-        cliente = None
 
-    context = {
-        'reservas_futuras': reservas_futuras,
-        'reservas_pasadas': reservas_pasadas,
-        'cliente': cliente,
-    }
-    return render(request, 'app1/reservas.html', context)
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.http import JsonResponse
+from django.db import connection
+from .models import Clientes, Vehiculo, Reservas, Reviews
+from .forms import ClienteForm, VehiculoFormSet
+from datetime import datetime
+from django.utils.timezone import now
 
 
 def agregar_vehiculo(request):
@@ -200,15 +365,25 @@ def agregar_vehiculo(request):
         year = request.POST.get('year')
         patente = request.POST.get('patente')
 
-        cliente = Clientes.objects.get(id=cliente_id)
-        Vehiculo.objects.create(
-            cliente=cliente,
-            marca=marca,
-            modelo=modelo,
-            year=year,
-            patente=patente
-        )
-        return redirect('ver_vehiculos')
+        # Validación de campos vacíos
+        if not marca or not modelo or not year or not patente:
+            messages.error(request, "Todos los campos son requeridos.")
+            return render(request, 'app1/agregar_vehiculo.html')
+
+        try:
+            cliente = Clientes.objects.get(id=cliente_id)
+            Vehiculo.objects.create(
+                cliente=cliente,
+                marca=marca,
+                modelo=modelo,
+                year=year,
+                patente=patente
+            )
+            messages.success(request, "Vehículo agregado exitosamente.")
+            return redirect('ver_vehiculos')
+        except Clientes.DoesNotExist:
+            messages.error(request, "Cliente no encontrado.")
+            return redirect('login')
 
     return render(request, 'app1/agregar_vehiculo.html')
 
@@ -218,13 +393,14 @@ def ver_vehiculos(request):
     if not cliente_id:
         return redirect('login')
 
-    cliente = Clientes.objects.get(id=cliente_id)
-    vehiculos = cliente.vehiculos.all()
-
-    context = {'vehiculos': vehiculos}
-    return render(request, 'app1/ver_vehiculos.html', context)
-
-
+    try:
+        cliente = Clientes.objects.get(id=cliente_id)
+        vehiculos = cliente.vehiculos.all()
+        context = {'vehiculos': vehiculos}
+        return render(request, 'app1/ver_vehiculos.html', context)
+    except Clientes.DoesNotExist:
+        messages.error(request, "Cliente no encontrado.")
+        return redirect('login')
 
 
 def ver_clientes(request):
@@ -242,6 +418,7 @@ def ver_vehiculos_admin(request):
     }
     return render(request, 'app1/ver_vehiculos_admin.html', context)
 
+
 def ver_reservas_admin(request):
     reservas_futuras = Reservas.objects.filter(hora_reserva__gte=now()).select_related('cliente', 'vehiculo').prefetch_related('servicios')
     reservas_pasadas = Reservas.objects.filter(hora_reserva__lt=now()).select_related('cliente', 'vehiculo').prefetch_related('servicios')
@@ -253,6 +430,7 @@ def ver_reservas_admin(request):
             reserva = Reservas.objects.get(id=reserva_id)
             reserva.estado = nueva_estado
             reserva.save()
+            messages.success(request, "Estado de la reserva actualizado.")
         except Reservas.DoesNotExist:
             messages.error(request, "La reserva no existe.")
 
@@ -271,97 +449,17 @@ def cliente_vehiculos(request, cliente_id):
     except Clientes.DoesNotExist:
         return JsonResponse({'error': 'Cliente no encontrado'}, status=404)
 
+
 def vision_view(request):
     return render(request, 'app1/vision.html')
+
 
 def quienes_somos_view(request):
     return render(request, 'app1/quienes-somos.html')
 
+
 def mision_view(request):
     return render(request, 'app1/mision.html')
-
-
-
-def agregar_resena_view(request):
-    if request.method == 'POST':
-        cliente_id = request.session.get('cliente_id')
-        vehiculo_id = request.POST.get('vehiculo_id')
-        comentarios = request.POST.get('comentarios')
-        calificacion = request.POST.get('calificacion')
-
-        errores = []
-
-        # Validaciones de los campos
-        if not cliente_id:
-            errores.append('No se encontró un cliente asociado. Por favor, inicia sesión.')
-        if not vehiculo_id:
-            errores.append('El campo "Vehículo" es obligatorio.')
-        if not comentarios or comentarios.strip() == "":
-            errores.append('El campo "Comentarios" es obligatorio.')
-        if not calificacion:
-            errores.append('El campo "Calificación" es obligatorio.')
-        elif not calificacion.isdigit() or int(calificacion) not in range(1, 6):
-            errores.append('La calificación debe ser un número entre 1 y 5.')
-
-        # Mostrar los errores, si existen
-        if errores:
-            for error in errores:
-                messages.error(request, error)
-            return redirect('agregar_resena')
-
-        # Proceder a guardar la reseña si no hay errores
-        try:
-            with connection.cursor() as cursor:
-                cursor.callproc('app1_crear_resena', [cliente_id, vehiculo_id, comentarios, calificacion])
-            messages.success(request, 'Reseña agregada exitosamente.')
-        except Exception as e:
-            messages.error(request, f'Hubo un problema al guardar la reseña: {e}')
-
-        return redirect('ver_resenas')
-
-    # Obtener los vehículos del cliente para el formulario
-    cliente_id = request.session.get('cliente_id')
-    vehiculos = Vehiculo.objects.filter(cliente_id=cliente_id) if cliente_id else []
-
-    return render(request, 'app1/agregar_resena.html', {'vehiculos': vehiculos})
-
-
-def ver_resenas_view(request):
-    cliente_id = request.session.get('cliente_id')
-
-    mis_resenas = []
-    todas_resenas = []
-
-    # Obtener reseñas del cliente autenticado
-    if cliente_id:
-        with connection.cursor() as cursor:
-            cursor.callproc('app1_obtener_resenas_por_cliente', [cliente_id])
-            for row in cursor.fetchall():
-                mis_resenas.append({
-                    'id': row[0],
-                    'comentarios': row[1],
-                    'calificacion': row[2],
-                    'fecha_review': row[3],
-                    'vehiculo': f"{row[5]} {row[6]} ({row[7]})",  # Marca, modelo y patente
-                })
-
-    # Obtener todas las reseñas disponibles
-    with connection.cursor() as cursor:
-        cursor.callproc('app1_obtener_todas_resenas')
-        for row in cursor.fetchall():
-            todas_resenas.append({
-                'id': row[0],
-                'comentarios': row[1],
-                'calificacion': row[2],
-                'fecha_review': row[3],
-                'cliente_nombre': row[4],
-                'vehiculo': f"{row[5]} {row[6]} ({row[7]})",  # Marca, modelo y patente
-            })
-
-    return render(request, 'app1/ver_resenas.html', {
-        'mis_resenas': mis_resenas,
-        'todas_resenas': todas_resenas,
-    })
 
 
 def actualizar_resena(request, resena_id):
@@ -392,8 +490,6 @@ def actualizar_resena(request, resena_id):
             messages.error(request, f'Error al actualizar la reseña: {str(e)}')
 
     return render(request, 'app1/actualizar_resena.html', {'resena': resena})
-
-
 
 
 def eliminar_resena(request, resena_id):
