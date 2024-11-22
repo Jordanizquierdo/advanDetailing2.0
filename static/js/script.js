@@ -1,11 +1,6 @@
 let cart = []; // Carrito inicial vacío
 
-/**
- * Añade un servicio al carrito si pasa las validaciones.
- * @param {string} serviceName - Nombre del servicio.
- * @param {number} servicePrice - Precio del servicio.
- * @param {string} serviceType - Tipo de servicio (por ejemplo, 'lavado' o 'especial').
- */
+// Función para añadir al carrito
 function addToCart(serviceName, servicePrice, serviceType) {
   const serviceIds = {
     "Lavado Básico": 1,
@@ -41,12 +36,7 @@ function addToCart(serviceName, servicePrice, serviceType) {
   updateCartSidebar();
 }
 
-/**
- * Muestra los detalles del servicio seleccionado.
- * @param {string} serviceName - Nombre del servicio.
- * @param {number} servicePrice - Precio del servicio.
- * @param {string} serviceId - ID del servicio.
- */
+// Función para mostrar los detalles del servicio
 function showServiceDetails(serviceName, servicePrice, serviceId) {
   const serviceDetailsContainer = document.getElementById("service-details-container");
   let serviceDetailsHTML = "";
@@ -190,118 +180,148 @@ function showServiceDetails(serviceName, servicePrice, serviceId) {
     `;
   }
 
-  // Insertar el HTML generado en el contenedor de detalles del servicio
   serviceDetailsContainer.innerHTML = serviceDetailsHTML;
+  serviceDetailsContainer.style.display = "block";
 }
 
-/**
- * Actualiza el carrito en la barra lateral.
- */
+
+// Función para actualizar el carrito en la barra lateral
 function updateCartSidebar() {
-  const cartSidebar = document.getElementById("cart-sidebar");
-  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+  const sidebar = document.getElementById("sidebar");
+  const cartList = sidebar.querySelector("ul");
+  const totalPrice = sidebar.querySelector(".total");
 
-  // Limpiar el contenido actual del carrito
-  cartSidebar.innerHTML = '';
+  cartList.innerHTML = "";
+  let total = 0;
 
-  // Mostrar los servicios en el carrito
-  cart.forEach(item => {
-    const cartItem = document.createElement("div");
-    cartItem.classList.add("cart-item");
-    cartItem.innerHTML = `
-      <span class="cart-item-title">${item.title}</span>
-      <span class="cart-item-price">$${item.price.toLocaleString()}</span>
-    `;
-    cartSidebar.appendChild(cartItem);
+  cart.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${item.title} - $${item.price.toLocaleString()}`;
+    cartList.appendChild(listItem);
+    total += item.price;
   });
 
-  // Mostrar el total del carrito
-  const totalElement = document.createElement("div");
-  totalElement.classList.add("cart-total");
-  totalElement.innerHTML = `Total: $${totalPrice.toLocaleString()}`;
-  cartSidebar.appendChild(totalElement);
-
-  // Mostrar el botón de "Proceder al pago"
-  const checkoutButton = document.createElement("button");
-  checkoutButton.classList.add("checkout-button");
-  checkoutButton.innerHTML = "Proceder al pago";
-  checkoutButton.onclick = PayCart;
-  cartSidebar.appendChild(checkoutButton);
+  totalPrice.textContent = `Total: $${total.toLocaleString()}`;
+  document.getElementById("btn").style.display = cart.length ? "block" : "none";
+  document.getElementById("btn-secondary").style.display = cart.length ? "block" : "none";
 }
 
-/**
- * Verifica que el carrito no esté vacío y procede al pago.
- */
+function clearCart() {
+  cart = [];
+  updateCartSidebar();
+}
+
+
 function PayCart() {
-  const clienteId = sessionStorage.getItem('clienteId'); // Cliente autenticado
-  if (!clienteId) {
-    alert("Debes iniciar sesión para proceder al pago.");
-    return;
+  // Verifica si el cliente está autenticado
+  if (!clienteId || clienteId === "") {
+    alert("Debes iniciar sesión para pagar el carrito.");
+    window.location.href = "/login/"; // Redirige al login si no está autenticado
+    return; 
   }
 
-  // Si el carrito no está vacío, proceder a la página de pago
+  // Verifica si el carrito está vacío
   if (cart.length === 0) {
-    alert("El carrito está vacío.");
-    return;
+    alert("El carrito está vacío. Añade servicios antes de proceder al pago.");
+    return; 
   }
 
-  // Redirigir a la página de pago con los datos del carrito
-  const checkoutUrl = `/checkout?cart=${JSON.stringify(cart)}`;
-  window.location.href = checkoutUrl;
+  // Si el carrito tiene elementos y el usuario está autenticado, realiza el pago
+  const clienteIdParam = encodeURIComponent(clienteId);
+  const cartData = encodeURIComponent(JSON.stringify(cart));
+
+  // Redirige a la página del carrito con los parámetros necesarios (clienteId y cartData)
+  window.location.href = `/carrito/?clienteId=${clienteIdParam}&cartList=${cartData}`;
 }
 
-/**
- * Abre el modal con información del vehículo del cliente.
- */
-function openModal() {
-  const modal = document.getElementById("vehicle-modal");
-  const clientId = sessionStorage.getItem("clienteId");
-
-  if (!clientId) {
-    alert("Debes iniciar sesión para ver los vehículos.");
-    return;
-  }
-
-  fetch(`/api/clients/${clientId}/vehicles`)
-    .then(response => response.json())
-    .then(data => {
-      let vehicleListHTML = "<ul>";
-      data.vehicles.forEach(vehicle => {
-        vehicleListHTML += `<li>${vehicle.model} (${vehicle.year})</li>`;
-      });
-      vehicleListHTML += "</ul>";
-      document.getElementById("vehicle-list").innerHTML = vehicleListHTML;
-      modal.style.display = "block"; // Mostrar el modal
-    })
-    .catch(error => {
-      console.error("Error al cargar los vehículos:", error);
-      alert("Hubo un error al cargar los vehículos.");
-    });
-}
-
-/**
- * Cierra el modal.
- */
-function closeModal() {
-  const modal = document.getElementById("vehicle-modal");
-  modal.style.display = "none"; // Ocultar el modal
-}
-
-/**
- * Muestra u oculta el menú lateral.
- */
+// menu desplegable
 function toggleMenu() {
-  const menu = document.getElementById("sidebar");
-  menu.classList.toggle("active");
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('slicebar-open');
 }
 
-/**
- * Animación de los elementos al cargarse la página.
- */
-window.onload = () => {
-  const containers = document.querySelectorAll(".animated-container");
-  containers.forEach((container, index) => {
-    container.style.animationDelay = `${index * 0.2}s`;
-    container.classList.add("animated");
+// funcion de la ventana emergente del clientes 
+
+function openModal(clienteId) {
+  console.log("Abriendo modal para cliente:", clienteId); // Depuración
+  const modal = document.getElementById('modal');
+  const modalBody = document.getElementById('modal-body');
+
+  // Limpia el contenido previo
+  modalBody.innerHTML = 'Cargando información...';
+
+  // Realiza una solicitud al servidor para obtener los datos del cliente
+  fetch(`/clientes/${clienteId}/vehiculos/`)
+      .then(response => response.json())
+      .then(data => {
+          if (data.vehiculos.length > 0) {
+              const vehicleInfo = data.vehiculos.map(v => `
+                  <p>
+                      <strong>Modelo:</strong> ${v.modelo}<br>
+                      <strong>Año:</strong> ${v.year}<br>
+                      <strong>Patente:</strong> ${v.patente}
+                  </p>
+              `).join('');
+              modalBody.innerHTML = vehicleInfo;
+          } else {
+              modalBody.innerHTML = '<p>Este cliente no tiene vehículos asociados.</p>';
+          }
+      })
+      .catch(error => {
+          console.error('Error al cargar los datos:', error);
+          modalBody.innerHTML = '<p>Hubo un error al cargar los datos. Inténtalo nuevamente.</p>';
+      });
+
+  // Muestra el modal
+  modal.style.display = 'block';
+}
+
+function closeModal() {
+  const modal = document.getElementById('modal');
+  modal.style.display = 'none';
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const elementsToAnimate = document.querySelectorAll(".main-container, .slicebar, .services, .service, .service-details-container, .special-service, h1");
+
+  elementsToAnimate.forEach((element) => {
+    element.classList.add("animated");
   });
-};
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const animatedElements = document.querySelectorAll(".animated");
+  animatedElements.forEach((element, index) => {
+      element.style.animationDelay = `${index * 0.2}s`;
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  if (form) {
+      form.style.animationDelay = "0.2s";
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Animar el título de la tabla
+  const tableTitle = document.querySelector(".table-title");
+  if (tableTitle) {
+      tableTitle.classList.add("table-header");
+      tableTitle.style.animationDelay = "0.1s";
+  }
+
+  // Selecciona las cabeceras de la tabla
+  const tableHeaders = document.querySelectorAll("table thead tr th");
+  tableHeaders.forEach((header, index) => {
+      header.classList.add("table-header");
+      header.style.animationDelay = `${index * 0.1 + 0.2}s`; // Inicia después del título
+  });
+
+  // Selecciona las filas de la tabla
+  const tableRows = document.querySelectorAll("table tbody tr");
+  tableRows.forEach((row, index) => {
+      row.classList.add("table-row");
+      row.style.animationDelay = `${index * 0.2 + 0.5}s`; // Inicia después de las cabeceras
+  });
+});
