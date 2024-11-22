@@ -1,29 +1,32 @@
 from django import forms
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
-from .models import Clientes, Encargado,Vehiculo
+from .models import Clientes, Encargado, Vehiculo
 from django.forms import inlineformset_factory
 
+# Formulario de autenticación personalizado que permite autenticación por email o nombre de usuario.
 class CustomAuthenticationForm(forms.Form):
     username_or_email = forms.CharField(label="Usuario o Email")
     password = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
 
+    # Método para limpiar y validar los datos ingresados.
     def clean(self):
         cleaned_data = super().clean()
         username_or_email = cleaned_data.get("username_or_email")
         password = cleaned_data.get("password")
         
+        # Validar que los campos no estén vacíos.
         if not username_or_email:
             raise ValidationError("El campo de usuario o correo electrónico no puede estar vacío.")
         
         user = None
 
-        # Verificar si es un email
+        # Verifica si el valor ingresado es un correo electrónico.
         if "@" in username_or_email:
             try:
-                # Buscar el cliente por email
+                # Busca al cliente por email.
                 cliente = Clientes.objects.get(email=username_or_email)
-                # Depuración: Imprimir la contraseña cifrada y la contraseña ingresada
+                # Depuración: Mostrar contraseñas (esto debería eliminarse en producción).
                 print(f"Cliente - Contraseña ingresada: {password}")
                 print(f"Cliente - Contraseña cifrada: {cliente.password}")
                 if check_password(password, cliente.password):
@@ -31,7 +34,7 @@ class CustomAuthenticationForm(forms.Form):
                 else:
                     raise ValidationError("Usuario o contraseña incorrectos.")
             except Clientes.DoesNotExist:
-                # Buscar al encargado si no es cliente
+                # Si no es cliente, busca al encargado por correo electrónico.
                 try:
                     encargado = Encargado.objects.get(correo=username_or_email)
                     print(f"Encargado - Contraseña ingresada: {password}")
@@ -43,7 +46,7 @@ class CustomAuthenticationForm(forms.Form):
                 except Encargado.DoesNotExist:
                     raise ValidationError("Usuario o contraseña incorrectos.")
         else:
-            # Buscar al cliente por nombre de usuario
+            # Si no es un correo, busca por nombre de usuario.
             try:
                 cliente = Clientes.objects.get(nombre=username_or_email)
                 print(f"Cliente - Contraseña ingresada: {password}")
@@ -53,7 +56,6 @@ class CustomAuthenticationForm(forms.Form):
                 else:
                     raise ValidationError("Usuario o contraseña incorrectos.")
             except Clientes.DoesNotExist:
-                # Buscar al encargado por nombre de usuario
                 try:
                     encargado = Encargado.objects.get(nombre=username_or_email)
                     print(f"Encargado - Contraseña ingresada: {password}")
@@ -65,17 +67,19 @@ class CustomAuthenticationForm(forms.Form):
                 except Encargado.DoesNotExist:
                     raise ValidationError("Usuario o contraseña incorrectos.")
         
+        # Si no se encuentra un usuario válido.
         if not user:
             raise ValidationError("Usuario o contraseña incorrectos.")
         
         self.user = user
         return cleaned_data
 
+    # Método para obtener el usuario autenticado.
     def get_user(self):
         return self.user
 
 
-
+# Formulario para gestionar clientes con validación de contraseña.
 class ClienteForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Contraseña")
     confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirmar Contraseña")
@@ -84,6 +88,7 @@ class ClienteForm(forms.ModelForm):
         model = Clientes
         fields = ['nombre', 'email', 'password', 'telefono', 'direccion']
 
+    # Validación para confirmar que las contraseñas coinciden.
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
@@ -94,6 +99,7 @@ class ClienteForm(forms.ModelForm):
         
         return cleaned_data
 
+    # Método para guardar el cliente y encriptar su contraseña.
     def save(self, commit=True):
         cliente = super().save(commit=False)
         cliente.set_password(self.cleaned_data['password'])
@@ -101,9 +107,13 @@ class ClienteForm(forms.ModelForm):
             cliente.save()
         return cliente
 
+
+# Formulario para gestionar vehículos.
 class VehiculoForm(forms.ModelForm):
     class Meta:
         model = Vehiculo
         fields = ['marca', 'modelo', 'year', 'patente']
 
+
+# InlineFormSet para relacionar clientes con sus vehículos, permite agregar o eliminar vehículos.
 VehiculoFormSet = inlineformset_factory(Clientes, Vehiculo, form=VehiculoForm, extra=1, can_delete=True)
