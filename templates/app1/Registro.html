@@ -4,36 +4,12 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Cliente y Vehículos</title>
+    <title>Registro de Cliente</title>
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
-    <script>
-        // Actualiza los modelos según la marca seleccionada
-        function updateModels(index) {
-            const marcaSelect = document.getElementById(`id_form-${index}-marca`);
-            const modeloSelect = document.getElementById(`id_form-${index}-modelo`);
-            modeloSelect.innerHTML = ''; // Limpiar las opciones previas
-
-            const modelosPorMarca = {
-                Toyota: ["Corolla", "Camry", "Hilux"],
-                Ford: ["Focus", "Fiesta", "Ranger"],
-                Chevrolet: ["Cruze", "Aveo", "S10"]
-            };
-
-            const modelos = modelosPorMarca[marcaSelect.value] || [];
-
-            // Agregar las opciones al select de modelo
-            modelos.forEach(modelo => {
-                const option = document.createElement("option");
-                option.value = modelo;
-                option.textContent = modelo;
-                modeloSelect.appendChild(option);
-            });
-        }
-    </script>
 </head>
 <body>
     <div class="form-container">
-        <h2>Registro de Cliente y Vehículos</h2>
+        <h2>Registro de Cliente</h2>
         <form method="POST">
             {% csrf_token %}
 
@@ -83,57 +59,7 @@
                 <input type="password" id="id_confirm_password" name="confirm_password" required>
             </div>
 
-            <!-- Vehículos Formset -->
-            <h3>Información de Vehículos</h3>
-            {{ formset.management_form }}
-            <div id="vehiculos">
-                {% for form in formset %}
-                    <div class="vehiculo-form">
-                        <!-- Campo Marca -->
-                        <div class="input-field">
-                            <label for="id_form-{{ forloop.counter0 }}-marca">Marca</label>
-                            <select id="id_form-{{ forloop.counter0 }}-marca" name="form-{{ forloop.counter0 }}-marca" onchange="updateModels('{{ forloop.counter0 }}')">
-                                <option value="">Seleccione una marca</option>
-                                <option value="Toyota">Toyota</option>
-                                <option value="Ford">Ford</option>
-                                <option value="Chevrolet">Chevrolet</option>
-                            </select>
-                            {% if form.marca.errors %}
-                                <div class="error-message">{{ form.marca.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Campo Modelo -->
-                        <div class="input-field">
-                            <label for="id_form-{{ forloop.counter0 }}-modelo">Modelo</label>
-                            <select id="id_form-{{ forloop.counter0 }}-modelo" name="form-{{ forloop.counter0 }}-modelo">
-                                <option value="">Seleccione un modelo</option>
-                            </select>
-                            {% if form.modelo.errors %}
-                                <div class="error-message">{{ form.modelo.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Campo Año -->
-                        <div class="input-field">
-                            <label for="id_form-{{ forloop.counter0 }}-year">Año</label>
-                            {{ form.year }}
-                            {% if form.year.errors %}
-                                <div class="error-message">{{ form.year.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Campo Patente -->
-                        <div class="input-field">
-                            <label for="id_form-{{ forloop.counter0 }}-patente">Patente</label>
-                            {{ form.patente }}
-                            {% if form.patente.errors %}
-                                <div class="error-message">{{ form.patente.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+            <p class="info-message">Puedes agregar un vehículo al iniciar sesión.</p>
 
             <button type="submit" class="submit-button">Registrarse</button>
         </form>

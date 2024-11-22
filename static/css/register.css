@@ -115,8 +115,18 @@ h2 {
   }
 }
 
-/* Aplicar animaciones al formulario */
 form {
   opacity: 0;
   animation: fadeInUp 1s ease-in-out forwards;
 }
+
+/* Estilo para el mensaje adicional */
+.info-message {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #555555;
+}
+
+

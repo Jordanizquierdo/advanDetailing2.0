@@ -143,27 +143,15 @@ def carrito(request):
 
 def registrar_cliente(request):
     if request.method == 'POST':
-        print(request.POST)  # Para depuración
         form = ClienteForm(request.POST)
-        formset = VehiculoFormSet(request.POST, prefix='vehiculos')
-
-        if form.is_valid() and formset.is_valid():
-            cliente = form.save(commit=False)
-            cliente.set_password(form.cleaned_data['password'])  # Cifrar la contraseña
-            cliente.save()
-            for vehiculo_form in formset:
-                vehiculo = vehiculo_form.save(commit=False)
-                vehiculo.cliente = cliente
-                vehiculo.save()
+        
+        if form.is_valid():
+            cliente = form.save()
             return redirect('/')
-        else:
-            print(form.errors)  # Para depuración
-            print(formset.errors)
     else:
         form = ClienteForm()
-        formset = VehiculoFormSet(prefix='vehiculos')
 
-    return render(request, 'app1/Registro.html', {'form': form, 'formset': formset})
+    return render(request, 'app1/Registro.html', {'form': form})
 
 
 
@@ -416,7 +404,3 @@ def eliminar_resena(request, resena_id):
     return redirect('ver_resenas')
 
 
-
-
-
-# arreglar el registro, no registra vehiculo, revisar el html y el views, agregar las funcionalidades.
