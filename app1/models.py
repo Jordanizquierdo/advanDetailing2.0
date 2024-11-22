@@ -1,133 +1,104 @@
+
 from django.db import models
-
-# Modelo para representar las marcas de vehículos.
-class Marca(models.Model):
-    id_marca = models.AutoField(primary_key=True)
-    marca = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.marca
+from django.utils import timezone
+from django.contrib.auth.hashers import make_password
 
 
-# Modelo para representar los modelos de vehículos.
-class Modelo(models.Model):
-    id_modelo = models.AutoField(primary_key=True)
-    id_marca = models.ForeignKey(
-        Marca, on_delete=models.CASCADE, related_name="modelos", null=True, blank=True
-    )
-    modelo = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.modelo
-
-
-# Modelo para representar los clientes.
-class Cliente(models.Model):
-    id_cliente = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=300)
-    telefono = models.CharField(max_length=15)
-    direccion = models.CharField(max_length=100)
-    fecha_registro = models.DateTimeField(auto_now_add=True)
-
-    def set_password(self, password):
-        from django.contrib.auth.hashers import make_password
-        self.password = make_password(password)
-
-    def __str__(self):
-        return self.nombre
-
-
-# Modelo para representar los vehículos de los clientes.
-class Vehiculo(models.Model):
-    id_vehiculo = models.AutoField(primary_key=True)
-    id_cliente = models.ForeignKey(
-        Cliente, on_delete=models.CASCADE, related_name="vehiculos", null=True, blank=True
-    )
-    id_modelo = models.ForeignKey(
-        Modelo, on_delete=models.CASCADE, null=True, blank=True
-    )
-    id_marca = models.ForeignKey(
-        Marca, on_delete=models.CASCADE, null=True, blank=True
-    )
-    marca = models.CharField(max_length=50)
-    modelo = models.CharField(max_length=50)
-    year = models.CharField(max_length=4)
-    patente = models.CharField(max_length=10)
-
-    def __str__(self):
-        return f"{self.marca} {self.modelo} ({self.patente})"
-
-
-# Modelo para representar los encargados.
+# Modelo para representar a los encargados del sistema.
 class Encargado(models.Model):
-    id_encargado = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    password = models.CharField(max_length=300)
-    correo = models.EmailField(unique=True)
+    nombre = models.CharField(max_length=45)  # Nombre del encargado.
+    apellido = models.CharField(max_length=45)  # Apellido del encargado.
+    password = models.CharField(max_length=300)  # Contraseña cifrada.
+    correo = models.EmailField(max_length=45)  # Correo electrónico único del encargado.
+    telefono = models.CharField(max_length=9)  # Teléfono de contacto.
 
+    # Método para cifrar y guardar la contraseña.
     def set_password(self, password):
-        from django.contrib.auth.hashers import make_password
         self.password = make_password(password)
 
+    # Representación legible del encargado.
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
 
 
-# Modelo para representar los servicios ofrecidos.
-class Servicios(models.Model):
-    id_servicio = models.AutoField(primary_key=True)
-    nombre_servicio = models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=100)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    duracion = models.CharField(max_length=50)
+# Modelo para representar las reservas realizadas por los clientes.
+class Reservas(models.Model):
+    hora_reserva = models.DateTimeField()  # Fecha y hora específica de la reserva.
+    fecha_reserva = models.DateTimeField()  # Fecha de creación o confirmación de la reserva.
+    estado = models.CharField(max_length=20)  # Estado de la reserva (ejemplo: "pendiente", "confirmada").
+    administrador = models.ForeignKey(
+        'Encargado', on_delete=models.SET_NULL, null=True
+    )  # Relación con el encargado que administra la reserva.
+    servicios = models.ManyToManyField('Servicios')  # Servicios incluidos en la reserva.
+    cliente = models.ForeignKey(
+        'Clientes', on_delete=models.CASCADE, null=True
+    )  # Cliente asociado a la reserva.
+    vehiculo = models.ForeignKey(
+        'Vehiculo', on_delete=models.CASCADE, null=True
+    )  # Vehículo relacionado con la reserva.
 
+    # Representación legible de la reserva.
+    def __str__(self):
+        return f"Reserva de {self.cliente} para {', '.join(s.nombre_servicio for s in self.servicios.all())}"
+
+
+# Modelo para representar servicios ofrecidos.
+class Servicios(models.Model):
+    nombre_servicio = models.CharField(max_length=45)  # Nombre del servicio.
+    descripcion = models.CharField(max_length=100)  # Breve descripción del servicio.
+    precio = models.IntegerField()  # Precio del servicio.
+    duracion = models.CharField(max_length=45)  # Duración del servicio (ejemplo: "30 minutos").
+
+    # Representación legible del servicio.
     def __str__(self):
         return self.nombre_servicio
 
 
-# Modelo para representar las reservas realizadas.
-class Reservas(models.Model):
-    id_reserva = models.AutoField(primary_key=True)
-    id_encargado = models.ForeignKey(
-        Encargado, on_delete=models.SET_NULL, null=True, blank=True
-    )
-    id_vehiculo = models.ForeignKey(
-        Vehiculo, on_delete=models.CASCADE, null=True, blank=True
-    )
-    hora_reserva = models.DateTimeField()
-    fecha_reserva = models.DateTimeField()
-    estado = models.CharField(max_length=20)
-
-    def __str__(self):
-        return f"Reserva {self.id_reserva} - Estado: {self.estado}"
-
-
-# Modelo intermedio para representar los servicios en una reserva.
-class ReservasServicios(models.Model):
-    id_servicio = models.ForeignKey(
-        Servicios, on_delete=models.CASCADE, null=True, blank=True
-    )
-    id_reserva = models.ForeignKey(
-        Reservas, on_delete=models.CASCADE, null=True, blank=True
-    )
-    metodo_de_pago = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"Servicio {self.id_servicio} en Reserva {self.id_reserva}"
-
-
-# Modelo para representar las reseñas de clientes.
+# Modelo para representar reseñas realizadas por los clientes.
 class Reviews(models.Model):
-    id_review = models.AutoField(primary_key=True)
-    id_cliente = models.ForeignKey(
-        Cliente, on_delete=models.CASCADE, null=True, blank=True
-    )
-    comentarios = models.CharField(max_length=255)
-    calificacion = models.IntegerField()
-    fecha_review = models.DateField()
+    comentarios = models.CharField(max_length=45)  # Comentarios sobre el servicio o vehículo.
+    calificacion = models.IntegerField()  # Calificación del servicio, entre 1 y 5.
+    fecha_review = models.DateField()  # Fecha en que se realizó la reseña.
+    cliente = models.ForeignKey(
+        'Clientes', on_delete=models.CASCADE, null=True
+    )  # Cliente que hizo la reseña.
+    vehiculo = models.ForeignKey(
+        'Vehiculo', on_delete=models.CASCADE, null=True
+    )  # Vehículo relacionado con la reseña.
 
+    # Representación legible de la reseña.
     def __str__(self):
-        return f"Review {self.id_review} - Calificación: {self.calificacion}"
+        return f"Review de {self.cliente} para {self.vehiculo}"
+
+
+# Modelo para representar a los clientes.
+class Clientes(models.Model):
+    nombre = models.CharField(max_length=45)  # Nombre del cliente.
+    email = models.EmailField(max_length=45)  # Correo electrónico único del cliente.
+    password = models.CharField(max_length=300)  # Contraseña cifrada del cliente.
+    telefono = models.CharField(max_length=45)  # Teléfono de contacto.
+    direccion = models.CharField(max_length=45)  # Dirección del cliente.
+    fecha_registro = models.DateTimeField(default=timezone.now, null=True)  # Fecha de registro del cliente.
+
+    # Método para cifrar y guardar la contraseña.
+    def set_password(self, password):
+        self.password = make_password(password)
+
+    # Representación legible del cliente.
+    def __str__(self):
+        return self.nombre
+
+
+# Modelo para representar vehículos asociados a los clientes.
+class Vehiculo(models.Model):
+    cliente = models.ForeignKey(
+        Clientes, on_delete=models.CASCADE, related_name="vehiculos", null=True
+    )  # Relación de "uno a muchos" con los clientes.
+    marca = models.CharField(max_length=45)  # Marca del vehículo.
+    modelo = models.CharField(max_length=45)  # Modelo del vehículo.
+    year = models.CharField(max_length=45)  # Año de fabricación del vehículo.
+    patente = models.CharField(max_length=5)  # Patente o matrícula del vehículo.
+
+    # Representación legible del vehículo.
+    def __str__(self):
+        return f"{self.marca} {self.modelo} ({self.patente})"
