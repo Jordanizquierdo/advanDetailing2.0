@@ -113,9 +113,18 @@ class VehiculoForm(forms.ModelForm):
     class Meta:
         model = Vehiculo
         fields = ['marca', 'modelo', 'year', 'patente']
-        
-    marca = forms.ChoiceField(choices=[('Toyota', 'Toyota'), ('Ford', 'Ford'), ('Chevrolet', 'Chevrolet')])
-    modelo = forms.ChoiceField(choices=[])
+
+    def clean_marca(self):
+        marca = self.cleaned_data.get('marca')
+        if not marca:
+            raise forms.ValidationError("Este campo es obligatorio.")
+        return marca
+
+    def clean_modelo(self):
+        modelo = self.cleaned_data.get('modelo')
+        if not modelo:
+            raise forms.ValidationError("Este campo es obligatorio.")
+        return modelo
 
 
 # InlineFormSet para relacionar clientes con sus vehículos, permite agregar o eliminar vehículos.

@@ -143,23 +143,25 @@ def carrito(request):
 
 def registrar_cliente(request):
     if request.method == 'POST':
-        print(request.POST)  # Ver los datos recibidos en el POST
+        print(request.POST)  # Para depuración
         form = ClienteForm(request.POST)
-        formset = VehiculoFormSet(request.POST)
+        formset = VehiculoFormSet(request.POST, prefix='vehiculos')
 
         if form.is_valid() and formset.is_valid():
-            cliente = form.save()
+            cliente = form.save(commit=False)
+            cliente.set_password(form.cleaned_data['password'])  # Cifrar la contraseña
+            cliente.save()
             for vehiculo_form in formset:
                 vehiculo = vehiculo_form.save(commit=False)
                 vehiculo.cliente = cliente
                 vehiculo.save()
             return redirect('/')
         else:
-            print(form.errors)
+            print(form.errors)  # Para depuración
             print(formset.errors)
     else:
         form = ClienteForm()
-        formset = VehiculoFormSet()
+        formset = VehiculoFormSet(prefix='vehiculos')
 
     return render(request, 'app1/Registro.html', {'form': form, 'formset': formset})
 

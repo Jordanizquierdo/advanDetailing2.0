@@ -7,26 +7,25 @@
     <title>Registro de Cliente y Vehículos</title>
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
     <script>
-        function updateModels(formPrefix) {
-            var marca = document.getElementById("id_form-" + formPrefix + "-marca").value;
-            var modeloSelect = document.getElementById("id_form-" + formPrefix + "-modelo");
-            modeloSelect.innerHTML = '';  // Limpiar los modelos anteriores
+        // Actualiza los modelos según la marca seleccionada
+        function updateModels(index) {
+            const marcaSelect = document.getElementById(`id_form-${index}-marca`);
+            const modeloSelect = document.getElementById(`id_form-${index}-modelo`);
+            modeloSelect.innerHTML = ''; // Limpiar las opciones previas
 
-            var modelos = [];
+            const modelosPorMarca = {
+                Toyota: ["Corolla", "Camry", "Hilux"],
+                Ford: ["Focus", "Fiesta", "Ranger"],
+                Chevrolet: ["Cruze", "Aveo", "S10"]
+            };
 
-            if (marca == "Toyota") {
-                modelos = ["Corolla", "Camry", "Hilux"];
-            } else if (marca == "Ford") {
-                modelos = ["Focus", "Fiesta", "Ranger"];
-            } else if (marca == "Chevrolet") {
-                modelos = ["Cruze", "Aveo", "S10"];
-            }
+            const modelos = modelosPorMarca[marcaSelect.value] || [];
 
-            // Añadir las opciones de modelos al select
-            modelos.forEach(function(modelo) {
-                var option = document.createElement("option");
+            // Agregar las opciones al select de modelo
+            modelos.forEach(modelo => {
+                const option = document.createElement("option");
                 option.value = modelo;
-                option.text = modelo;
+                option.textContent = modelo;
                 modeloSelect.appendChild(option);
             });
         }
@@ -40,54 +39,51 @@
 
             <!-- Campos del Cliente -->
             <div class="input-field">
-                <label>Nombre</label>
-                <input type="text" name="nombre" value="{{ form.nombre.value }}">
+                <label for="id_nombre">Nombre</label>
+                {{ form.nombre }}
                 {% if form.nombre.errors %}
                     <div class="error-message">{{ form.nombre.errors.0 }}</div>
                 {% endif %}
             </div>
 
             <div class="input-field">
-                <label>Correo Electrónico</label>
-                <input type="email" name="email" value="{{ form.email.value }}">
+                <label for="id_email">Correo Electrónico</label>
+                {{ form.email }}
                 {% if form.email.errors %}
                     <div class="error-message">{{ form.email.errors.0 }}</div>
                 {% endif %}
             </div>
 
             <div class="input-field">
-                <label>Teléfono</label>
-                <input type="text" name="telefono" value="{{ form.telefono.value }}">
+                <label for="id_telefono">Teléfono</label>
+                {{ form.telefono }}
                 {% if form.telefono.errors %}
                     <div class="error-message">{{ form.telefono.errors.0 }}</div>
                 {% endif %}
             </div>
 
             <div class="input-field">
-                <label>Dirección</label>
-                <input type="text" name="direccion" value="{{ form.direccion.value }}">
+                <label for="id_direccion">Dirección</label>
+                {{ form.direccion }}
                 {% if form.direccion.errors %}
                     <div class="error-message">{{ form.direccion.errors.0 }}</div>
                 {% endif %}
             </div>
 
             <div class="input-field">
-                <label>Contraseña</label>
-                <input type="password" name="password" required>
+                <label for="id_password">Contraseña</label>
+                {{ form.password }}
                 {% if form.password.errors %}
                     <div class="error-message">{{ form.password.errors.0 }}</div>
                 {% endif %}
             </div>
 
             <div class="input-field">
-                <label>Confirmar Contraseña</label>
-                <input type="password" name="confirm_password" required>
-                {% if form.confirm_password.errors %}
-                    <div class="error-message">{{ form.confirm_password.errors.0 }}</div>
-                {% endif %}
+                <label for="id_confirm_password">Confirmar Contraseña</label>
+                <input type="password" id="id_confirm_password" name="confirm_password" required>
             </div>
 
-            <!-- Vehiculos Formset -->
+            <!-- Vehículos Formset -->
             <h3>Información de Vehículos</h3>
             {{ formset.management_form }}
             <div id="vehiculos">
@@ -95,24 +91,45 @@
                     <div class="vehiculo-form">
                         <!-- Campo Marca -->
                         <div class="input-field">
-                            {{ form.marca.label_tag }}
-                            {{ form.marca }} <!-- Aquí usamos el campo marca del formset -->
+                            <label for="id_form-{{ forloop.counter0 }}-marca">Marca</label>
+                            <select id="id_form-{{ forloop.counter0 }}-marca" name="form-{{ forloop.counter0 }}-marca" onchange="updateModels('{{ forloop.counter0 }}')">
+                                <option value="">Seleccione una marca</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Chevrolet">Chevrolet</option>
+                            </select>
+                            {% if form.marca.errors %}
+                                <div class="error-message">{{ form.marca.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <!-- Campo Modelo -->
                         <div class="input-field">
-                            {{ form.modelo.label_tag }}
-                            {{ form.modelo }} <!-- Aquí usamos el campo modelo del formset -->
+                            <label for="id_form-{{ forloop.counter0 }}-modelo">Modelo</label>
+                            <select id="id_form-{{ forloop.counter0 }}-modelo" name="form-{{ forloop.counter0 }}-modelo">
+                                <option value="">Seleccione un modelo</option>
+                            </select>
+                            {% if form.modelo.errors %}
+                                <div class="error-message">{{ form.modelo.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
-                        <!-- Otros campos del formulario (year, patente, etc.) -->
+                        <!-- Campo Año -->
                         <div class="input-field">
-                            {{ form.year.label_tag }}
+                            <label for="id_form-{{ forloop.counter0 }}-year">Año</label>
                             {{ form.year }}
+                            {% if form.year.errors %}
+                                <div class="error-message">{{ form.year.errors.0 }}</div>
+                            {% endif %}
                         </div>
+
+                        <!-- Campo Patente -->
                         <div class="input-field">
-                            {{ form.patente.label_tag }}
+                            <label for="id_form-{{ forloop.counter0 }}-patente">Patente</label>
                             {{ form.patente }}
+                            {% if form.patente.errors %}
+                                <div class="error-message">{{ form.patente.errors.0 }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
