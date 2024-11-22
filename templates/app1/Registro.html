@@ -1,30 +1,55 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Cliente y Vehículos</title>
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <script>
+        function updateModels(formPrefix) {
+            var marca = document.getElementById("id_form-" + formPrefix + "-marca").value;
+            var modeloSelect = document.getElementById("id_form-" + formPrefix + "-modelo");
+            modeloSelect.innerHTML = '';  // Limpiar los modelos anteriores
+
+            var modelos = [];
+
+            if (marca == "Toyota") {
+                modelos = ["Corolla", "Camry", "Hilux"];
+            } else if (marca == "Ford") {
+                modelos = ["Focus", "Fiesta", "Ranger"];
+            } else if (marca == "Chevrolet") {
+                modelos = ["Cruze", "Aveo", "S10"];
+            }
+
+            // Añadir las opciones de modelos al select
+            modelos.forEach(function(modelo) {
+                var option = document.createElement("option");
+                option.value = modelo;
+                option.text = modelo;
+                modeloSelect.appendChild(option);
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="form-container">
         <h2>Registro de Cliente y Vehículos</h2>
         <form method="POST">
             {% csrf_token %}
-            
+
             <!-- Campos del Cliente -->
             <div class="input-field">
                 <label>Nombre</label>
-                <input type="text" name="nombre">
+                <input type="text" name="nombre" value="{{ form.nombre.value }}">
                 {% if form.nombre.errors %}
                     <div class="error-message">{{ form.nombre.errors.0 }}</div>
                 {% endif %}
             </div>
-            
+
             <div class="input-field">
                 <label>Correo Electrónico</label>
-                <input type="email" name="email">
+                <input type="email" name="email" value="{{ form.email.value }}">
                 {% if form.email.errors %}
                     <div class="error-message">{{ form.email.errors.0 }}</div>
                 {% endif %}
@@ -32,7 +57,7 @@
 
             <div class="input-field">
                 <label>Teléfono</label>
-                <input type="text" name="telefono">
+                <input type="text" name="telefono" value="{{ form.telefono.value }}">
                 {% if form.telefono.errors %}
                     <div class="error-message">{{ form.telefono.errors.0 }}</div>
                 {% endif %}
@@ -40,7 +65,7 @@
 
             <div class="input-field">
                 <label>Dirección</label>
-                <input type="text" name="direccion">
+                <input type="text" name="direccion" value="{{ form.direccion.value }}">
                 {% if form.direccion.errors %}
                     <div class="error-message">{{ form.direccion.errors.0 }}</div>
                 {% endif %}
@@ -68,14 +93,19 @@
             <div id="vehiculos">
                 {% for form in formset %}
                     <div class="vehiculo-form">
+                        <!-- Campo Marca -->
                         <div class="input-field">
                             {{ form.marca.label_tag }}
-                            {{ form.marca }}
+                            {{ form.marca }} <!-- Aquí usamos el campo marca del formset -->
                         </div>
+
+                        <!-- Campo Modelo -->
                         <div class="input-field">
                             {{ form.modelo.label_tag }}
-                            {{ form.modelo }}
+                            {{ form.modelo }} <!-- Aquí usamos el campo modelo del formset -->
                         </div>
+
+                        <!-- Otros campos del formulario (year, patente, etc.) -->
                         <div class="input-field">
                             {{ form.year.label_tag }}
                             {{ form.year }}
@@ -87,7 +117,7 @@
                     </div>
                 {% endfor %}
             </div>
-            
+
             <button type="submit" class="submit-button">Registrarse</button>
         </form>
     </div>

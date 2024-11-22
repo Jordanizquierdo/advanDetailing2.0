@@ -113,6 +113,9 @@ class VehiculoForm(forms.ModelForm):
     class Meta:
         model = Vehiculo
         fields = ['marca', 'modelo', 'year', 'patente']
+        
+    marca = forms.ChoiceField(choices=[('Toyota', 'Toyota'), ('Ford', 'Ford'), ('Chevrolet', 'Chevrolet')])
+    modelo = forms.ChoiceField(choices=[])
 
 
 # InlineFormSet para relacionar clientes con sus vehículos, permite agregar o eliminar vehículos.
