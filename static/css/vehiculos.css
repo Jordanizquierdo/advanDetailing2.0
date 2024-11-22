@@ -1,6 +1,6 @@
 /* General */
 body {
-    background-color: #f5f5f5;
+    background-color: #1a1a2e;
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
@@ -89,6 +89,7 @@ button:hover {
     color: white;
     text-decoration: none;
     padding: 10px 15px;
+    margin-left: 20%;
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
@@ -96,7 +97,7 @@ button:hover {
 }
 
 .add-button:hover {
-    background-color: #5078FF;
+    background-color: #354d9e;
 }
 
 
@@ -114,5 +115,69 @@ button:hover {
 }
 
 .back-button:hover {
-    background-color: #e53935;
+    background-color: #9b2725;
 }
+
+/* Animaciones */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* Animación para los vehículos */
+.vehicle-item {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-in-out forwards;
+    animation-delay: calc(0.2s * var(--vehicle-index));
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-in-out forwards;
+}
+
+form label, 
+form input{
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.2s ease-in-out forwards;
+    animation-delay: calc(0.2s * var(--form-index));
+}
+
+form label:nth-child(1) { --form-index: 0; }
+form input:nth-child(2) { --form-index: 1; }
+form label:nth-child(3) { --form-index: 2; }
+form input:nth-child(4) { --form-index: 3; }
+form label:nth-child(5) { --form-index: 4; }
+form input:nth-child(6) { --form-index: 5; }
+form button { --form-index: 6; }

@@ -10,12 +10,6 @@
 <body>
     <div class="container">
         <h2>Mis Vehículos</h2>
-
-        <!-- Botón para agregar un vehículo -->
-        <div style="text-align: center; margin-bottom: 20px;">
-            <a href="{% url 'agregar_vehiculo' %}" class="add-button">Agregar Vehículo</a>
-        </div>
-
         <div class="vehicle-list">
             {% if vehiculos %}
                 {% for vehiculo in vehiculos %}
@@ -32,7 +26,9 @@
         </div>
         <div style="text-align: center; margin-top: 20px;">
             <a href="{% url 'home' %}" class="back-button">Volver</a>
+            <a href="{% url 'agregar_vehiculo' %}" class="add-button">Agregar Vehículo</a>
         </div>
+
     </div>
 </body>
 </html>

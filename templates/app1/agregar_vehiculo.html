@@ -23,12 +23,13 @@
             
             <label for="patente">Patente:</label>
             <input type="text" id="patente" name="patente" placeholder="Ej: ABC123" required>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="submit">Agregar Vehículo</button>
+                <a href="{% url 'ver_vehiculos' %}" class="back-button">Volver</a>
+            </div>
             
-            <button type="submit">Agregar Vehículo</button>
         </form>
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'ver_vehiculos' %}" class="back-button">Volver</a>
-        </div>
     </div>
 </body>
 </html>

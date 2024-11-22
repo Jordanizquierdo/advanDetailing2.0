@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="{% static 'css/reservas.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h2>Reservas de {{ cliente.nombre }}</h2>
+    <div class="container animated">
+        <h2 class="animated">Reservas de {{ cliente.nombre }}</h2>
 
         <!-- Reservas Futuras -->
-        <div class="reservations-section">
-            <h3>Reservas Futuras</h3>
+        <div class="reservations-section animated">
+            <h3 class="animated">Reservas Futuras</h3>
             {% if reservas_futuras %}
-                <div class="table-container">
-                    <table class="table">
+                <div class="table-container animated">
+                    <table class="table animated">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -46,16 +46,16 @@
                     </table>
                 </div>
             {% else %}
-                <p class="no-reservations">No tienes reservas futuras registradas.</p>
+                <p class="no-reservations animated">No tienes reservas futuras registradas.</p>
             {% endif %}
         </div>
 
         <!-- Reservas Pasadas -->
-        <div class="reservations-section">
-            <h3>Reservas Pasadas</h3>
+        <div class="reservations-section animated">
+            <h3 class="animated">Reservas Pasadas</h3>
             {% if reservas_pasadas %}
-                <div class="table-container">
-                    <table class="table">
+                <div class="table-container animated">
+                    <table class="table animated">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -85,11 +85,11 @@
                     </table>
                 </div>
             {% else %}
-                <p class="no-reservations">No tienes reservas pasadas registradas.</p>
+                <p class="no-reservations animated">No tienes reservas pasadas registradas.</p>
             {% endif %}
         </div>
 
-        <a href="{% url 'home' %}" class="btn">Volver al Inicio</a>
+        <a href="{% url 'home' %}" class="btn animated">Volver al Inicio</a>
     </div>
 </body>
 </html>
