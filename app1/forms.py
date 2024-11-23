@@ -79,7 +79,10 @@ class CustomAuthenticationForm(forms.Form):
         return self.user
 
 
-# Formulario para gestionar clientes con validación de contraseña.
+from django import forms
+from django.core.exceptions import ValidationError
+import re
+
 class ClienteForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Contraseña")
     confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirmar Contraseña")
@@ -88,7 +91,7 @@ class ClienteForm(forms.ModelForm):
         model = Clientes
         fields = ['nombre', 'email', 'password', 'telefono', 'direccion']
 
-    # Validación para confirmar que las contraseñas coinciden.
+    # Validación para confirmar que las contraseñas coinciden
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
@@ -97,7 +100,33 @@ class ClienteForm(forms.ModelForm):
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_password', "Las contraseñas no coinciden.")
         
+        # Validación de contraseñas robustas
+        if password:
+            self.validate_password_strength(password)
+
         return cleaned_data
+
+    # Método para validar que la contraseña es robusta
+    def validate_password_strength(self, password):
+        # Longitud mínima de 8 caracteres
+        if len(password) < 8:
+            raise ValidationError("La contraseña debe tener al menos 8 caracteres.")
+        
+        # Al menos una letra mayúscula
+        if not re.search(r'[A-Z]', password):
+            raise ValidationError("La contraseña debe contener al menos una letra mayúscula.")
+        
+        # Al menos una letra minúscula
+        if not re.search(r'[a-z]', password):
+            raise ValidationError("La contraseña debe contener al menos una letra minúscula.")
+        
+        # Al menos un número
+        if not re.search(r'[0-9]', password):
+            raise ValidationError("La contraseña debe contener al menos un número.")
+        
+        # Al menos un carácter especial
+        if not re.search(r'[@$!%*?&]', password):
+            raise ValidationError("La contraseña debe contener al menos un carácter especial (@, $, !, %, *, ?, &).")
 
     # Método para guardar el cliente y encriptar su contraseña.
     def save(self, commit=True):
@@ -106,6 +135,7 @@ class ClienteForm(forms.ModelForm):
         if commit:
             cliente.save()
         return cliente
+
 
 
 # Formulario para gestionar vehículos.

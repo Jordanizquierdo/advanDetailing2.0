@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.utils.timezone import now
-from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo,Reviews
+from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo,Reviews,ErrorLog
 from .forms import CustomAuthenticationForm, ClienteForm, VehiculoFormSet
 from django.http import JsonResponse
 from django.db import connection
@@ -277,6 +277,53 @@ def mision_view(request):
 
 
 
+# def agregar_resena_view(request):
+#     if request.method == 'POST':
+#         cliente_id = request.session.get('cliente_id')
+#         vehiculo_id = request.POST.get('vehiculo_id')
+#         comentarios = request.POST.get('comentarios')
+#         calificacion = request.POST.get('calificacion')
+
+#         errores = []
+
+#         # Validaciones de los campos
+#         if not cliente_id:
+#             errores.append('No se encontró un cliente asociado. Por favor, inicia sesión.')
+#         if not vehiculo_id:
+#             errores.append('El campo "Vehículo" es obligatorio.')
+#         if not comentarios or comentarios.strip() == "":
+#             errores.append('El campo "Comentarios" es obligatorio.')
+#         if not calificacion:
+#             errores.append('El campo "Calificación" es obligatorio.')
+#         elif not calificacion.isdigit() or int(calificacion) not in range(1, 6):
+#             errores.append('La calificación debe ser un número entre 1 y 5.')
+
+#         # Mostrar los errores, si existen
+#         if errores:
+#             for error in errores:
+#                 messages.error(request, error)
+#             return redirect('agregar_resena')
+
+#         # Proceder a guardar la reseña si no hay errores
+#         try:
+#             with connection.cursor() as cursor:
+#                 cursor.callproc('app1_crear_resena', [cliente_id, vehiculo_id, comentarios, calificacion])
+#             messages.success(request, 'Reseña agregada exitosamente.')
+#         except Exception as e:
+#             messages.error(request, f'Hubo un problema al guardar la reseña: {e}')
+
+#         return redirect('ver_resenas')
+
+#     # Obtener los vehículos del cliente para el formulario
+#     cliente_id = request.session.get('cliente_id')
+#     vehiculos = Vehiculo.objects.filter(cliente_id=cliente_id) if cliente_id else []
+
+#     return render(request, 'app1/agregar_resena.html', {'vehiculos': vehiculos})
+
+
+
+
+
 def agregar_resena_view(request):
     if request.method == 'POST':
         cliente_id = request.session.get('cliente_id')
@@ -310,6 +357,19 @@ def agregar_resena_view(request):
                 cursor.callproc('app1_crear_resena', [cliente_id, vehiculo_id, comentarios, calificacion])
             messages.success(request, 'Reseña agregada exitosamente.')
         except Exception as e:
+            # Capturar el error y guardarlo en la base de datos
+            error_type = str(type(e).__name__)  # Tipo de error
+            error_message = str(e)  # Mensaje del error
+            stack_trace = str(e.__traceback__)  # Traceback del error
+
+            # Crear un registro en la base de datos con los detalles del error
+            ErrorLog.objects.create(
+                error_type=error_type,
+                error_message=error_message,
+                stack_trace=stack_trace
+            )
+
+            # Mostrar un mensaje de error al usuario
             messages.error(request, f'Hubo un problema al guardar la reseña: {e}')
 
         return redirect('ver_resenas')
@@ -319,6 +379,16 @@ def agregar_resena_view(request):
     vehiculos = Vehiculo.objects.filter(cliente_id=cliente_id) if cliente_id else []
 
     return render(request, 'app1/agregar_resena.html', {'vehiculos': vehiculos})
+
+
+
+
+
+
+
+
+
+
 
 
 def ver_resenas_view(request):

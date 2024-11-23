@@ -102,3 +102,13 @@ class Vehiculo(models.Model):
     # Representación legible del vehículo.
     def __str__(self):
         return f"{self.marca} {self.modelo} ({self.patente})"
+
+
+class ErrorLog(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    error_type = models.CharField(max_length=255)
+    error_message = models.TextField()
+    stack_trace = models.TextField()
+
+    def __str__(self):
+        return f"{self.error_type} - {self.timestamp}"
