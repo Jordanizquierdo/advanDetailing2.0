@@ -6,52 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/mvs.css' %}">
     <title>Visión - AdvanDetailing</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #00796B;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        section {
-            padding: 40px;
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #ffffff;
-        }
-        p {
-            line-height: 1.6;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        a {
-            color: #333;
-            text-align: center;
-            align-items: center;
-            position: fixed;
-            font-weight: bold;
-        }
-    </style>
+    
 </head>
 <body>
+    <!-- top_bar -->
+    <div class="topbar">
+        <div class="topbar-content">
+        <div class="topbar-links">
+            <a href="/quienes-somos/">Quiénes Somos</a>
+            <a href="/vision/">Visión</a>
+            <a href="/mision/">Misión</a>
+        </div>
+        <div class="topbar-auth">
+            <!-- Opciones para usuario autenticado -->
+            <a href="{% url 'home' %}">Inicio</a>
+            <a href="/resenas/">Reseñas</a>
+            <a href="/reservas/">Mis Reservas</a>
+            <a href="/ver_vehiculos/">Mis Vehículos</a>
+            <a href="/logout/">Cerrar Sesión</a>
+        </div>
+        </div>
+    </div>
     <header>
         <h1>AdvanDetailing</h1>
         <p>Confiabilidad y Excelencia en el Cuidado de Vehículos</p>
@@ -65,10 +40,11 @@
         <p>
             Queremos ser reconocidos por nuestro compromiso con la excelencia, el profesionalismo y el cuidado detallado de cada vehículo, construyendo relaciones duraderas con nuestros clientes y contribuyendo a la preservación del valor y la estética de sus autos.
         </p>
-            <a href="/">Volver al inicio</a>
+            
     </section>
 
     <footer>
+        <a href="/">Volver al inicio</a><br>
         &copy; 2024 AdvanDetailing. Todos los derechos reservados.
     </footer>
 </body>

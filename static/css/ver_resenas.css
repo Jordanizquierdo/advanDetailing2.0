@@ -1,28 +1,79 @@
+/* Estilos Generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #424452; /* Fondo oscuro */
+    color: #FFF; /* Texto blanco */
     margin: 0;
     padding: 0;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+/* Barra Superior */
+.topbar {
+    width: 100%;
+    background-color: #1a1a2e; /* Fondo de la barra superior */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
 }
 
+.topbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilos de enlaces de la barra superior */
+.topbar-links a,
+.topbar-auth a {
+    color: #FFF; /* Texto blanco */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.topbar-links a:hover,
+.topbar-auth a:hover {
+    color: #00d9ff; /* Azul claro */
+}
+
+/* Contenedor Principal */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #333; /* Fondo del contenedor */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Encabezados */
 header {
     text-align: center;
     margin-bottom: 20px;
 }
 
-h1 {
-    color: #333;
-    font-size: 2.5rem;
+h1, h2 {
+    color: #FFF; /* Texto blanco */
     margin: 0;
 }
 
-/* Estilo para el botón de añadir reseña */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* Botón Añadir Reseña */
 .add-button-container {
     text-align: center;
     margin-bottom: 40px;
@@ -43,13 +94,7 @@ h1 {
     background-color: #00d9ff;
 }
 
-/* Estilo general para las secciones de reseñas */
-h2 {
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-}
-
+/* Reseñas */
 .reviews-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -57,11 +102,12 @@ h2 {
 }
 
 .review {
-    background-color: white;
+    background-color: #1a1a2e;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    color: #FFF; /* Texto blanco */
 }
 
 .review:hover {
@@ -70,10 +116,10 @@ h2 {
 
 .review p {
     margin: 10px 0;
-    color: #555;
+    color: #CCC;
 }
 
-/* Estilos para las acciones de reseña */
+/* Acciones de Reseña */
 .review-actions {
     margin-top: 10px;
     display: flex;
@@ -81,7 +127,6 @@ h2 {
     gap: 10px;
 }
 
-/* Botón Editar */
 .edit-button {
     background-color: #5078FF;
     color: white;
@@ -91,15 +136,13 @@ h2 {
     font-size: 0.9rem;
     font-weight: bold;
     text-align: center;
-    display: inline-block;
     transition: background-color 0.3s ease;
 }
 
 .edit-button:hover {
-    background-color: #5078FF;
+    background-color: #00a3c4;
 }
 
-/* Botón Eliminar */
 .delete-button {
     background-color: #e53935;
     color: white;
@@ -116,21 +159,15 @@ h2 {
     background-color: #d32f2f;
 }
 
-.delete-form {
-    margin: 0;
-    display: inline-block;
-}
-
-/* Estilo para cuando no hay reseñas */
 .no-reviews {
     text-align: center;
     font-size: 1.2rem;
-    color: #888;
+    color: #AAA;
 }
 
-/* Botón de volver */
+/* Botón Volver */
 .back-button {
-    width: 50px;
+    width: 50%;
     background-color: #e24a4a;
     color: white;
     border: none;
@@ -139,14 +176,12 @@ h2 {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
-    
-    /* Centering the button */
-    display: block;
-    margin: 0 auto;
     text-align: center;
+    display: block;
+    margin: 20px auto;
+    transition: background-color 0.3s;
 }
 
 .back-button:hover {
-    background-color: #e53935;
+    background-color: #d32f2f;
 }

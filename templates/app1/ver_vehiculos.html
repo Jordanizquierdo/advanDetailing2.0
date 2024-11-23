@@ -8,6 +8,24 @@
     <link rel="stylesheet" href="{% static 'css/vehiculos.css' %}">
 </head>
 <body>
+    <!-- top_bar -->
+    <div class="topbar">
+        <div class="topbar-content">
+        <div class="topbar-links">
+            <a href="/quienes-somos/">Quiénes Somos</a>
+            <a href="/vision/">Visión</a>
+            <a href="/mision/">Misión</a>
+        </div>
+        <div class="topbar-auth">
+            <!-- Opciones para usuario autenticado -->
+            <a href="{% url 'home' %}">Inicio</a>
+            <a href="/resenas/">Reseñas</a>
+            <a href="/reservas/">Mis Reservas</a>
+            <a href="/ver_vehiculos/">Mis Vehículos</a>
+            <a href="/logout/">Cerrar Sesión</a>
+        </div>
+        </div>
+    </div>
     <div class="container">
         <h2>Mis Vehículos</h2>
 

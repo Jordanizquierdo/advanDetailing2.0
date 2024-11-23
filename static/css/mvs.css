@@ -6,6 +6,40 @@ body {
     margin: 0;
     padding: 0;
   }
+  /* Barra Superior */
+.topbar {
+  width: 100%;
+  background-color: #1a1a2e; /* Fondo de la barra superior */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+}
+
+.topbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estilos de enlaces de la barra superior */
+.topbar-links a,
+.topbar-auth a {
+  color: #FFF; /* Texto blanco */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.topbar-links a:hover,
+.topbar-auth a:hover {
+  color: #00d9ff; /* Azul claro */
+}
   
   /* Header */
   header {

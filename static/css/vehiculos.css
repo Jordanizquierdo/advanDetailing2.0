@@ -1,30 +1,71 @@
 /* General */
 body {
-    background-color: #f5f5f5;
+    background-color: #424452; /* Fondo oscuro */
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    color: #FFF; /* Texto blanco */
 }
 
+/* Barra Superior */
+.topbar {
+    width: 100%;
+    background-color: #1a1a2e; /* Fondo oscuro */
+    position: sticky; /* Mantiene la barra visible en la parte superior */
+    top: 0; /* Se asegura de que esté pegada a la parte superior */
+    z-index: 1000; /* Coloca la barra encima de otros elementos */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para distinguirla */
+    padding: 10px 20px;
+}
+
+/* Contenido dentro de la barra */
+.topbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Enlaces en la barra */
+.topbar-links a,
+.topbar-auth a {
+    color: #FFF; /* Texto blanco */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.topbar-links a:hover,
+.topbar-auth a:hover {
+    color: #00d9ff; /* Azul claro al pasar el cursor */
+}
+
+/* Contenedor Principal */
 .container {
-    background: #ffffff;
+    background: #1a1a2e; /* Fondo oscuro del contenedor */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 20px;
     max-width: 600px;
     width: 90%;
+    margin: auto;
+    margin-top: 200px;
 }
 
+/* Encabezados */
 h2 {
     text-align: center;
-    color: #333333;
+    color: #FFF; /* Texto blanco */
     margin-bottom: 20px;
 }
 
+/* Formularios */
 form {
     display: flex;
     flex-direction: column;
@@ -33,16 +74,19 @@ form {
 
 label {
     font-weight: bold;
-    color: #555555;
+    color: #CCC; /* Texto gris claro */
 }
 
 input, select {
     padding: 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #555; /* Borde gris oscuro */
     border-radius: 5px;
     font-size: 16px;
+    background-color: #333; /* Fondo oscuro */
+    color: #FFF; /* Texto blanco */
 }
 
+/* Botón General */
 button {
     background-color: #5078FF;
     color: white;
@@ -55,15 +99,16 @@ button {
 }
 
 button:hover {
-    background-color: #5078FF;
+    background-color: #00d9ff; /* Azul claro */
 }
 
+/* Lista de Vehículos */
 .vehicle-list {
     margin-top: 20px;
 }
 
 .vehicle-item {
-    background-color: #f9f9f9;
+    background-color: #333; /* Fondo oscuro del ítem */
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
@@ -72,12 +117,11 @@ button:hover {
 
 .vehicle-item p {
     margin: 5px 0;
-    color: #555555;
-    
+    color: #CCC; /* Texto gris claro */
 }
 
 .no-vehicles {
-    color: #888888;
+    color: #AAA; /* Texto gris tenue */
     text-align: center;
     margin-top: 10px;
 }
@@ -96,14 +140,13 @@ button:hover {
 }
 
 .add-button:hover {
-    background-color: #5078FF;
+    background-color: #00d9ff; /* Azul claro */
 }
-
 
 /* Botón de volver */
 .back-button {
     display: inline-block;
-    background-color: #f44336;
+    background-color: #f44336; /* Rojo vibrante */
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -114,5 +157,5 @@ button:hover {
 }
 
 .back-button:hover {
-    background-color: #e53935;
+    background-color: #d32f2f; /* Rojo más oscuro */
 }
