@@ -1,7 +1,7 @@
 
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password,check_password
 
 
 # Modelo para representar a los encargados del sistema.
@@ -83,6 +83,9 @@ class Clientes(models.Model):
     # Método para cifrar y guardar la contraseña.
     def set_password(self, password):
         self.password = make_password(password)
+    
+    def check_password(self, password):
+        return check_password(password, self.password)
 
     # Representación legible del cliente.
     def __str__(self):

@@ -1,135 +1,275 @@
+
 /* Estilos Generales */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #424452; /* Fondo oscuro */
-    color: #FFF; /* Texto blanco */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background-color: #424452;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
 /* Barra Superior */
 .topbar-content {
-    background-color: #1a1a2e;
-    color: #FFF;
-    padding: 15px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    height: 60px;
-    box-sizing: border-box;
+  background-color: #1a1a2e;    
+  color: #FFF;                  
+  padding: 15px 30px;
+  display: flex;                
+  align-items: center;         
+  justify-content: space-between; 
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
+
 
 .topbar-links,
 .topbar-auth {
-    display: flex;
-    gap: 15px;
+  display: flex;                  
+  gap: 15px;                       
 }
 
 /* Estilos de los enlaces */
 .topbar-links a,
 .topbar-auth a {
-    color: #FFF;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s;
+  color: #FFF;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s;
 }
 
 .topbar-links a:hover,
 .topbar-auth a:hover {
-    color: #00d9ff;
+  color: #00d9ff;
 }
 
 /* Contenedor Principal */
-.container {
-    background: #333; /* Fondo oscuro para el contenedor */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 800px;
-    width: 90%;
-    margin: 20px auto;
-    box-sizing: border-box;
+.main-container {
+  display: flex;
+  padding: 40px;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 100px auto;
+  background-color: #424452;
 }
 
-h2 {
-    text-align: center;
-    color: #FFF; /* Texto blanco */
-    margin-bottom: 20px;
+/* Barra Lateral de Carrito */
+.slicebar {
+  background-color: #1a1a2e; 
+  color: #FFF; 
+  width: 260px;
+  padding: 20px;
+  border-radius: 10px;
+  height: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  justify-content: center; 
 }
 
-h3 {
-    margin-top: 20px;
-    color: #00d9ff; /* Azul brillante */
+
+.slicebar-title {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  margin-bottom: 30px;
 }
 
-/* Tabla */
-.table-container {
-    margin-top: 10px;
+.total {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 20px 0;
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    color: #FFF; /* Texto blanco */
+#btn, #btn-secondary {
+  background-color: transparent;
+  border: 2px solid #00d9ff;
+  color: #00d9ff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
 }
 
-.table thead th {
-    background-color: #1a1a2e;
-    color: white;
-    padding: 10px;
-    text-align: left;
+#btn:hover, #btn-secondary:hover {
+  background-color: #00d9ff;
+  color: #FFF;
 }
 
-.table tbody td {
-    border-bottom: 1px solid #555; /* Bordes oscuros */
-    padding: 8px;
+/* Estilos de Servicios */
+.services {
+  display: flex;
+  flex-wrap: wrap;             
+  justify-content: center;    
+  gap: 20px;                   
 }
 
-.table tbody tr:nth-child(even) {
-    background-color: #424452; /* Alternar filas */
+
+.service {
+  background-color: #FFF;
+  color: #333;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  transition: box-shadow 0.3s, transform 0.3s;
+  width: 220px;
+  height: 220px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.table tbody tr:hover {
-    background-color: #333; /* Resaltado */
+.service:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Botones */
-.btn {
-    display: inline-block;
-    background-color: transparent;
-    border: 2px solid #00d9ff;
-    color: #00d9ff;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: bold;
-    text-align: center;
-    font-size: 16px;
-    margin-top: 20px;
-    transition: background-color 0.3s, color 0.3s;
-    cursor: pointer;
+.service.blue {
+  background-color: #5078FF;
+  color: white;
 }
 
-.btn:hover {
-    background-color: #00d9ff;
-    color: #FFF;
+.service h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
-/* Reservas */
-.reservations-section {
-    margin-bottom: 20px;
+.service button {
+  color: white;
+  font-size: 16px;
+  background-color: #00d9ff;
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.no-reservations {
-    color: #888888;
-    text-align: center;
-    margin-top: 10px;
+.service button:hover {
+  background-color: #00a3c4;
+}
+
+/* Detalles del Servicio */
+.service-details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #FFF;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  margin-top: 20px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.service-details-column {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.service-details-column p {
+  margin: 10px 0;
+}
+
+.service-details-price {
+  text-align: right;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+
+.add-to-cart-button {
+  background-color: transparent;
+  border: 2px solid #00d9ff;
+  color: #00d9ff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+.add-to-cart-button:hover {
+  background-color: #00d9ff;
+  color: #FFF;
+}
+
+.special-service {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #FFF;
+  border-radius: 8px;
+  background-color: #333;
+  width: 200px;
+  height: 220px;
+  color: #FFF;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.special-service h4 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.special-service p {
+  font-size: 14px;
+  margin-bottom: 5px
+}
+
+.special-service h3 {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* Botón para el Panel de Administración */
+.admin-button {
+  background-color: #1a1a2e;
+  color: #FFF;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.admin-button:hover {
+  background-color: #00a3c4;
+}
+
+h1 {
+  text-align: center;
+  color: #FFF;
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación inicial (sin mostrar) */
+.animated {
+  opacity: 0;
+  animation: fadeInUp 1s ease-in-out forwards;
+}
+
+/* Asegurarse que la topbar no tenga animaciones */
+.topbar-content {
+  animation: none;
 }
