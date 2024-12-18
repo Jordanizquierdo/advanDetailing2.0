@@ -1,133 +1,133 @@
 from django.test import TestCase
-from django.contrib.auth.hashers import make_password
-from .forms import CustomAuthenticationForm, ClienteForm, VehiculoForm
-from .models import Clientes, Encargado
-from django.core.exceptions import ValidationError
-from django import forms
+from django.utils import timezone
+from django.contrib.auth.hashers import check_password
+from app1.models import Encargado, Clientes, Vehiculo, Servicios, Reservas, Reviews
 
-
-class CustomAuthenticationFormTest(TestCase):
-    def setUp(self):
-        # Crear datos de prueba
-        self.cliente = Clientes.objects.create(
+class EncargadoModelTest(TestCase):
+    def test_create_encargado(self):
+        encargado = Encargado.objects.create(
             nombre="Juan",
-            email="juan@example.com",
-            password=make_password("password123"),
-            telefono="123456789",
-            direccion="Calle Falsa 123",
+            apellido="Perez",
+            correo="juan@example.com",
+            telefono="123456789"
         )
-        self.encargado = Encargado.objects.create(
-            nombre="Admin",
-            apellido="Apellido",
-            password=make_password("adminpassword"),
-            correo="admin@example.com",
+        encargado.set_password("password123")
+        self.assertTrue(check_password("password123", encargado.password))
+        self.assertEqual(str(encargado), "Juan Perez")
+
+class ClientesModelTest(TestCase):
+    def test_create_cliente(self):
+        cliente = Clientes.objects.create(
+            nombre="Maria",
+            email="maria@example.com",
             telefono="987654321",
+            direccion="Calle 123",
+            fecha_registro=timezone.now()
+        )
+        cliente.set_password("mypassword")
+        self.assertTrue(check_password("mypassword", cliente.password))
+        self.assertEqual(str(cliente), "Maria")
+
+class VehiculoModelTest(TestCase):
+    def test_create_vehiculo(self):
+        cliente = Clientes.objects.create(
+            nombre="Carlos",
+            email="carlos@example.com",
+            telefono="555444333",
+            direccion="Avenida 456"
+        )
+        vehiculo = Vehiculo.objects.create(
+            cliente=cliente,
+            marca="Toyota",
+            modelo="Corolla",
+            year="2020",
+            patente="ABC12"
+        )
+        self.assertEqual(str(vehiculo), "Toyota Corolla (ABC12)")
+        self.assertEqual(vehiculo.cliente.nombre, "Carlos")
+
+class ServiciosModelTest(TestCase):
+    def test_create_servicio(self):
+        servicio = Servicios.objects.create(
+            nombre_servicio="Lavado Básico",
+            descripcion="Lavado exterior del vehículo",
+            precio=15000,
+            duracion="30 minutos"
+        )
+        self.assertEqual(str(servicio), "Lavado Básico")
+
+class ReservasModelTest(TestCase):
+    def test_create_reserva(self):
+        encargado = Encargado.objects.create(
+            nombre="Sofia",
+            apellido="Gomez",
+            correo="sofia@example.com",
+            telefono="123123123"
+        )
+        cliente = Clientes.objects.create(
+            nombre="Ana",
+            email="ana@example.com",
+            telefono="456456456",
+            direccion="Calle Falsa 123"
+        )
+        vehiculo = Vehiculo.objects.create(
+            cliente=cliente,
+            marca="Honda",
+            modelo="Civic",
+            year="2019",
+            patente="XYZ99"
+        )
+        servicio1 = Servicios.objects.create(
+            nombre_servicio="Lavado Premium",
+            descripcion="Lavado completo interior y exterior",
+            precio=30000,
+            duracion="1 hora"
+        )
+        servicio2 = Servicios.objects.create(
+            nombre_servicio="Encerado",
+            descripcion="Protección con cera para pintura",
+            precio=20000,
+            duracion="45 minutos"
+        )
+        reserva = Reservas.objects.create(
+            hora_reserva=timezone.now(),
+            fecha_reserva=timezone.now(),
+            estado="confirmada",
+            administrador=encargado,
+            cliente=cliente,
+            vehiculo=vehiculo
+        )
+        reserva.servicios.set([servicio1, servicio2])
+        self.assertEqual(reserva.administrador.nombre, "Sofia")
+        self.assertEqual(reserva.cliente.nombre, "Ana")
+        self.assertEqual(reserva.vehiculo.marca, "Honda")
+        self.assertIn(servicio1, reserva.servicios.all())
+        self.assertEqual(
+            str(reserva), "Reserva de Ana para Lavado Premium, Encerado"
         )
 
-    def test_valid_login_with_email(self):
-        """Prueba un login válido usando el email del cliente"""
-        form_data = {"username_or_email": "juan@example.com", "password": "password123"}
-        form = CustomAuthenticationForm(data=form_data)
-        self.assertTrue(form.is_valid(), "El formulario no es válido con un email y contraseña correctos.")
-        self.assertEqual(form.get_user(), self.cliente, "El usuario autenticado no coincide con el cliente esperado.")
-
-    def test_valid_login_with_username(self):
-        """Prueba un login válido usando el nombre del cliente"""
-        form_data = {"username_or_email": "Juan", "password": "password123"}
-        form = CustomAuthenticationForm(data=form_data)
-        self.assertTrue(form.is_valid(), "El formulario no es válido con un nombre de usuario y contraseña correctos.")
-        self.assertEqual(form.get_user(), self.cliente, "El usuario autenticado no coincide con el cliente esperado.")
-
-    def test_invalid_login(self):
-        """Prueba un login inválido con una contraseña incorrecta"""
-        form_data = {"username_or_email": "juan@example.com", "password": "wrongpassword"}
-        form = CustomAuthenticationForm(data=form_data)
-        self.assertFalse(form.is_valid(), "El formulario es válido con credenciales incorrectas.")
-        self.assertIn("Usuario o contraseña incorrectos.", form.errors["__all__"], "No se encontró el error esperado en el formulario.")
-
-
-class ClienteFormTest(TestCase):
-    def test_valid_cliente_form(self):
-        """Prueba si el formulario ClienteForm es válido con datos correctos"""
-        form_data = {
-            'nombre': 'Cliente Prueba',
-            'email': 'cliente@test.com',
-            'password': 'Password123@',
-            'confirm_password': 'Password123@',
-            'telefono': '123456789',
-            'direccion': 'Calle Falsa 123',
-        }
-        form = ClienteForm(data=form_data)
-        self.assertTrue(form.is_valid(), "El formulario no es válido con datos correctos.")
-
-    def test_passwords_do_not_match(self):
-        """Prueba si el formulario rechaza contraseñas que no coinciden"""
-        form_data = {
-            "nombre": "Juan",
-            "email": "juan@example.com",
-            "password": "password123",
-            "confirm_password": "password456",
-            "telefono": "123456789",
-            "direccion": "Calle Falsa 123",
-        }
-        form = ClienteForm(data=form_data)
-        self.assertFalse(form.is_valid(), "El formulario es válido con contraseñas que no coinciden.")
-        self.assertIn("Las contraseñas no coinciden.", form.errors["confirm_password"], "No se encontró el error esperado para contraseñas que no coinciden.")
-
-    def test_invalid_cliente_form_weak_password(self):
-        """Prueba que el formulario ClienteForm rechace contraseñas débiles"""
-        form_data = {
-            'nombre': 'Cliente Prueba',
-            'email': 'cliente@test.com',
-            'password': '123456',
-            'confirm_password': '123456',
-            'telefono': '123456789',
-            'direccion': 'Calle Falsa 123',
-        }
-        form = ClienteForm(data=form_data)
-        self.assertFalse(form.is_valid(), "El formulario es válido con una contraseña débil.")
-
-        # Debugging: Imprimir errores si no están donde se esperan
-        if 'password' not in form.errors:
-            print("Errores del formulario:", form.errors)
-
-        # Verificar que los errores están en el campo 'password'
-        self.assertIn('password', form.errors, "No se encontró el error de validación para contraseña.")
-        self.assertIn("La contraseña debe tener al menos 8 caracteres.", form.errors['password'], "El mensaje de error para contraseñas débiles no es el esperado.")
-
-
-class VehiculoFormTest(TestCase):
-    def test_valid_vehiculo_form(self):
-        """Prueba si el formulario VehiculoForm es válido con datos correctos"""
-        form_data = {
-            "marca": "Toyota",
-            "modelo": "Corolla",
-            "year": "2022",
-            "patente": "ABC12",
-        }
-        form = VehiculoForm(data=form_data)
-        self.assertTrue(form.is_valid(), "El formulario VehiculoForm no es válido con datos correctos.")
-
-    def test_marca_required(self):
-        """Prueba que el campo marca sea obligatorio"""
-        form_data = {
-            "marca": "",
-            "modelo": "Corolla",
-            "year": "2022",
-            "patente": "ABC12",
-        }
-        form = VehiculoForm(data=form_data)
-        self.assertFalse(form.is_valid(), "El formulario es válido sin una marca.")
-        self.assertIn("Este campo es obligatorio.", form.errors["marca"], "No se encontró el error esperado para el campo 'marca'.")
-
-    def test_modelo_required(self):
-        """Prueba que el campo modelo sea obligatorio"""
-        form_data = {
-            "marca": "Toyota",
-            "modelo": "",
-            "year": "2022",
-            "patente": "ABC12",
-        }
-        form = VehiculoForm(data=form_data)
-        self.assertFalse(form.is_valid(), "El formulario es válido sin un modelo.")
-        self.assertIn("Este campo es obligatorio.", form.errors["modelo"], "No se encontró el error esperado para el campo 'modelo'.")
+class ReviewsModelTest(TestCase):
+    def test_create_review(self):
+        cliente = Clientes.objects.create(
+            nombre="Lucas",
+            email="lucas@example.com",
+            telefono="999888777",
+            direccion="Plaza Mayor 789"
+        )
+        vehiculo = Vehiculo.objects.create(
+            cliente=cliente,
+            marca="Mazda",
+            modelo="3",
+            year="2021",
+            patente="LMN45"
+        )
+        review = Reviews.objects.create(
+            comentarios="Excelente servicio y atención.",
+            calificacion=5,
+            fecha_review=timezone.now(),
+            cliente=cliente,
+            vehiculo=vehiculo
+        )
+        self.assertEqual(review.cliente.nombre, "Lucas")
+        self.assertEqual(review.vehiculo.marca, "Mazda")
+        self.assertEqual(str(review), "Review de Lucas para Mazda 3 (LMN45)")

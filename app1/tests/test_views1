@@ -1,0 +1,147 @@
+from django.test import TestCase, Client
+from django.urls import reverse
+from app1.models import Clientes, Encargado, Vehiculo, Reservas, Servicios
+from django.utils.timezone import now
+import json
+from datetime import datetime, timedelta
+
+class ViewTests(TestCase):
+    def setUp(self):
+        # Configuración inicial
+        self.client = Client()
+
+        # Crear un encargado
+        self.encargado = Encargado.objects.create(
+            nombre="Admin",
+            apellido="Test",
+            correo="admin@test.com",
+            telefono="123456789"
+        )
+        self.encargado.set_password("Admin123!")
+        self.encargado.save()
+
+        # Crear un cliente
+        self.cliente = Clientes.objects.create(
+            nombre="Cliente",
+            email="cliente@test.com",
+            telefono="987654321",
+            direccion="Calle Falsa 123"
+        )
+        self.cliente.set_password("Cliente123!")
+        self.cliente.save()
+
+        # Crear un vehículo asociado al cliente
+        self.vehiculo = Vehiculo.objects.create(
+            cliente=self.cliente,
+            marca="Toyota",
+            modelo="Corolla",
+            year="2020",
+            patente="ABC12"
+        )
+
+        # Crear servicios
+        self.servicio1 = Servicios.objects.create(
+            nombre_servicio="Lavado Básico",
+            descripcion="Incluye lavado exterior.",
+            precio=10000,
+            duracion="30 minutos"
+        )
+        self.servicio2 = Servicios.objects.create(
+            nombre_servicio="Lavado Avanzado",
+            descripcion="Incluye lavado exterior e interior.",
+            precio=20000,
+            duracion="1 hora"
+        )
+
+        # Crear reservas
+        self.reserva_futura = Reservas.objects.create(
+            hora_reserva=now() + timedelta(days=1),
+            fecha_reserva=now(),
+            estado="pendiente",
+            cliente=self.cliente,
+            vehiculo=self.vehiculo
+        )
+        self.reserva_futura.servicios.add(self.servicio1)
+
+        self.reserva_pasada = Reservas.objects.create(
+            hora_reserva=now() - timedelta(days=1),
+            fecha_reserva=now(),
+            estado="completada",
+            cliente=self.cliente,
+            vehiculo=self.vehiculo
+        )
+        self.reserva_pasada.servicios.add(self.servicio2)
+
+    def test_login_view_encargado(self):
+        # Intentar iniciar sesión como encargado
+        response = self.client.post(reverse('login'), {
+            'email': 'admin@test.com',
+            'password': 'Admin123!'
+        })
+        self.assertRedirects(response, reverse('index_admin'))
+        self.assertIn('encargado_id', self.client.session)
+
+    def test_login_view_cliente(self):
+        # Intentar iniciar sesión como cliente
+        response = self.client.post(reverse('login'), {
+            'email': 'cliente@test.com',
+            'password': 'Cliente123!'
+        })
+        self.assertRedirects(response, reverse('home'))
+        print(response.url)  # Imprime la URL de la redirección
+        self.assertIn('cliente_id', self.client.session)
+
+    def test_login_view_invalid_user(self):
+        # Intentar iniciar sesión con datos incorrectos
+        response = self.client.post(reverse('login'), {
+            'email': 'wrong@test.com',
+            'password': 'WrongPassword!'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No se encontró una cuenta con este correo.")
+
+    def test_logout_view(self):
+        # Iniciar sesión y luego cerrar sesión
+        self.client.post(reverse('login'), {
+            'email': 'cliente@test.com',
+            'password': 'Cliente123!'
+        })
+        response = self.client.get(reverse('logout'))
+        self.assertRedirects(response, reverse('home'))
+        self.assertNotIn('cliente_id', self.client.session)
+
+    def test_index_admin_view(self):
+        # Verificar el contenido de la página de administración
+        self.client.post(reverse('login'), {
+            'email': 'admin@test.com',
+            'password': 'Admin123!'
+        })
+        response = self.client.get(reverse('index_admin'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Toyota Corolla")
+
+    
+
+    def test_registrar_cliente_view(self):
+        # Registrar un nuevo cliente
+        response = self.client.post(reverse('register'), {
+            'nombre': 'Nuevo Cliente',
+            'email': 'nuevo@test.com',
+            'password': 'Nuevo123!',
+            'confirm_password': 'Nuevo123!',
+            'telefono': '123456789',
+            'direccion': 'Nueva Dirección'
+        })
+        self.assertRedirects(response, '/')
+        self.assertTrue(Clientes.objects.filter(email='nuevo@test.com').exists())
+
+    def test_reservas_view(self):
+        # Verificar las reservas futuras y pasadas de un cliente
+        self.client.post(reverse('login'), {
+            'email': 'cliente@test.com',
+            'password': 'Cliente123!'
+        })
+        response = self.client.get(reverse('reservas'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Lavado Básico") 
+        self.assertContains(response, "Lavado Avanzado")  

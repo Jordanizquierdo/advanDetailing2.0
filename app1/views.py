@@ -39,7 +39,7 @@ def login_view(request):
             cliente = Clientes.objects.get(email__iexact=email)
             if check_password(password, cliente.password):
                 request.session['cliente_id'] = cliente.id
-                return redirect("/home")
+                return redirect("home")
             else:
                 messages.error(request, "Contraseña incorrecta para cliente.")
         except Clientes.DoesNotExist:
@@ -175,7 +175,7 @@ def reservas_view(request):
         reservas_futuras = []
         reservas_pasadas = []
         cliente = None
-
+# 11111
     context = {
         'reservas_futuras': reservas_futuras,
         'reservas_pasadas': reservas_pasadas,
