@@ -8,6 +8,7 @@ from .models import Clientes, Encargado, Reservas, Servicios, Vehiculo,Reviews,E
 from .forms import CustomAuthenticationForm, ClienteForm, VehiculoFormSet
 from django.http import JsonResponse
 from django.db import connection
+from django.urls import reverse
 
 
 def login_view(request):
@@ -146,8 +147,9 @@ def registrar_cliente(request):
         form = ClienteForm(request.POST)
         
         if form.is_valid():
+
             cliente = form.save()
-            return redirect('/')
+            return redirect(reverse('login'))
     else:
         form = ClienteForm()
 
@@ -372,7 +374,7 @@ def agregar_resena_view(request):
             # Mostrar un mensaje de error al usuario
             messages.error(request, f'Hubo un problema al guardar la reseña: {e}')
 
-        return redirect('ver_resenas')
+        return redirect('ver_resenas_view')
 
     # Obtener los vehículos del cliente para el formulario
     cliente_id = request.session.get('cliente_id')
