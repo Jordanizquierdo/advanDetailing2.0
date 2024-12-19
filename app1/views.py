@@ -454,7 +454,7 @@ def actualizar_resena(request, resena_id):
             with connection.cursor() as cursor:
                 cursor.callproc('app1_actualizar_resena', [resena_id, comentarios, calificacion])
             messages.success(request, 'Reseña actualizada exitosamente.')
-            return redirect('ver_resenas')  # Redirigir a la página de todas las reseñas
+            return redirect('ver_resenas_view')  # Redirigir a la página de todas las reseñas
         except Exception as e:
             messages.error(request, f'Error al actualizar la reseña: {str(e)}')
 
@@ -473,6 +473,6 @@ def eliminar_resena(request, resena_id):
         except Exception as e:
             messages.error(request, f'Error al eliminar la reseña: {str(e)}')
 
-    return redirect('ver_resenas')
+    return redirect('ver_resenas_view')
 
 
