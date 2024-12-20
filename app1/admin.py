@@ -2,6 +2,42 @@ from django.contrib import admin
 from django.contrib.auth.hashers import make_password  # Importa make_password
 from .models import Clientes, Reservas, Encargado, Servicios, Reviews, Vehiculo
 
+"""
+Configuración del panel de administración de Django para la gestión de modelos.
+
+Este archivo registra y configura modelos para su gestión en el panel de administración de Django. 
+Se implementan funciones personalizadas para mejorar la experiencia de administración, como 
+mostrar vehículos asociados y servicios relacionados, así como cifrar contraseñas de usuarios 
+antes de guardarlos en la base de datos.
+
+Modelos Registrados:
+--------------------
+1. **Clientes**: Permite gestionar la información de los clientes, con soporte para cifrado de 
+   contraseñas y visualización de vehículos asociados.
+   
+2. **Reservas**: Administra reservas, mostrando detalles del cliente, vehículo y servicios relacionados.
+
+3. **Encargado**: Gestiona datos de los encargados, incluyendo cifrado de contraseñas.
+
+4. **Servicios**: Muestra servicios ofrecidos con información detallada.
+
+5. **Reviews**: Permite gestionar reseñas realizadas por los clientes.
+
+6. **Vehiculo**: Administra vehículos registrados, mostrando detalles clave como marca, modelo y patente.
+
+Funciones Personalizadas:
+-------------------------
+- **mostrar_vehiculos**: Lista los vehículos asociados a un cliente en el panel de administración.
+- **mostrar_servicios**: Lista los servicios asociados a una reserva específica.
+- **save_model**: Cifra las contraseñas antes de guardar objetos de los modelos `Clientes` y `Encargado`.
+
+Notas Importantes:
+------------------
+- `make_password` se utiliza para asegurar el almacenamiento seguro de contraseñas.
+- `list_display` define los campos que se muestran en la lista principal de cada modelo.
+- Se añaden descripciones amigables usando `short_description` para mejorar la presentación en la interfaz de administración.
+"""
+
 # Registro para el modelo Clientes
 @admin.register(Clientes)
 class ClientesAdmin(admin.ModelAdmin):

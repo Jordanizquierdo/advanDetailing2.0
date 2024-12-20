@@ -6,9 +6,18 @@ import json
 
 
 class SystemTestRegisterLoginReservationAddVehicle(TestCase):
+    """
+    Pruebas integrales para registrar un cliente, iniciar sesión, agregar un vehículo
+    y realizar una reserva en el sistema.
+
+    Métodos de prueba:
+        setUp(): Configuración inicial para crear objetos necesarios.
+        test_full_user_flow(): Prueba completa que verifica el flujo del usuario desde el registro
+        hasta la creación de una reserva.
+    """
     def setUp(self):
         """
-        Configuración inicial para las pruebas.
+        Configuración inicial para las pruebas. Crea un cliente HTTP y un servicio de ejemplo.
         """
         self.client = Client()
 
@@ -21,16 +30,23 @@ class SystemTestRegisterLoginReservationAddVehicle(TestCase):
 
     def test_full_user_flow(self):
         """
-        Prueba integral que cubre registro, inicio de sesión, agregar vehículo y realizar una reserva.
+        Prueba integral que cubre el registro, inicio de sesión, agregar un vehículo
+        y realizar una reserva.
+
+        Verifica:
+        - Registro exitoso y redirección al login.
+        - Inicio de sesión exitoso y creación de sesión.
+        - Adición de un vehículo y redirección a la vista correspondiente.
+        - Creación de una reserva asociada al vehículo y servicio especificado.
         """
         # 1. Registrar un cliente
         register_data = {
-        'nombre': 'Nuevo Cliente',
-        'email': 'nuevo.cliente@test.com',
-        'telefono': '123456789',
-        'direccion': 'Calle Falsa 123',
-        'password': 'cliente123',
-        'confirm_password': 'cliente123'
+            'nombre': 'Nuevo Cliente',
+            'email': 'nuevo.cliente@test.com',
+            'telefono': '123456789',
+            'direccion': 'Calle Falsa 123',
+            'password': 'cliente123',
+            'confirm_password': 'cliente123'
         }
         response = self.client.post(reverse('register'), register_data)
 
