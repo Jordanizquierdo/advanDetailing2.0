@@ -100,7 +100,7 @@ class Vehiculo(models.Model):
     marca = models.CharField(max_length=45)  # Marca del vehículo.
     modelo = models.CharField(max_length=45)  # Modelo del vehículo.
     year = models.CharField(max_length=45)  # Año de fabricación del vehículo.
-    patente = models.CharField(max_length=5)  # Patente o matrícula del vehículo.
+    patente = models.CharField(max_length=6)  # Patente del vehículo.
 
     # Representación legible del vehículo.
     def __str__(self):
