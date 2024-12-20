@@ -200,7 +200,7 @@ class Vehiculo(models.Model):
     marca = models.CharField(max_length=45)
     modelo = models.CharField(max_length=45)
     year = models.CharField(max_length=45)
-    patente = models.CharField(max_length=5)
+    patente = models.CharField(max_length=6)
 
     def __str__(self):
         return f"{self.marca} {self.modelo} ({self.patente})"
